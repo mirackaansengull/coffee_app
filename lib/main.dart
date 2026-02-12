@@ -1,5 +1,5 @@
 import 'package:coffee_app/themes/theme.dart';
-import 'package:coffee_app/views/Home_view.dart';
+import 'package:coffee_app/views/Main_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.dark,
           darkTheme: AppTheme.dark,
           themeMode: ThemeMode.dark,
-          home: const HomeView(),
+          home: const MainShell(),
         );
       },
     );
