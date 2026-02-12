@@ -53,7 +53,10 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget {
             border: InputBorder.none,
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+              vertical: 12.h,
+            ),
           ),
           style: TextStyle(color: AppColors.textPrimary, fontSize: 14.sp),
         ),

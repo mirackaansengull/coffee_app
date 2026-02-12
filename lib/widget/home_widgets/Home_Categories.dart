@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:coffee_app/themes/theme.dart';
 
+const List<String> coffeeTypes = [
+  'Sıcak Kahve',
+  'Soğuk Kahve',
+  'Filtre Kahve',
+  'Espresso',
+  'Türk Kahvesi',
+  'Latte',
+];
 
 class Categories extends StatelessWidget {
-  const Categories({required this.label, required this.onTap});
+  const Categories({super.key, required this.label, required this.onTap});
 
   final String label;
   final VoidCallback onTap;

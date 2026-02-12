@@ -14,11 +14,19 @@ class GetLocation extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.location_on_outlined, size: 20.sp, color: AppColors.textPrimary),
+            Icon(
+              Icons.location_on_outlined,
+              size: 20.sp,
+              color: AppColors.textPrimary,
+            ),
             SizedBox(width: 8.w),
             Text(
               "Konumunuzu Seçiniz",
-              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textPrimary,
+              ),
             ),
           ],
         ),

@@ -6,7 +6,7 @@ class AppColors {
   AppColors._();
 
   // Ana arka plan renkleri
-  static const Color backgroundPrimary = Color(0xFF1B1B1B);   // 27, 27, 27
+  static const Color backgroundPrimary = Color(0xFF1B1B1B); // 27, 27, 27
   static const Color backgroundSecondary = Color(0xFF333333); // 51, 51, 51
   static const Color surfaceDark = Color(0xFF272727);
   static const Color surfaceMedium = Color(0xFF3D3D3D);
@@ -32,20 +32,14 @@ class AppGradients {
   static const LinearGradient background = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      AppColors.backgroundPrimary,
-      AppColors.backgroundSecondary,
-    ],
+    colors: [AppColors.backgroundPrimary, AppColors.backgroundSecondary],
   );
 
   /// Arama kutusu gradient'i (soldan sağa)
   static const LinearGradient searchBar = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
-    colors: [
-      AppColors.surfaceDark,
-      AppColors.surfaceMedium,
-    ],
+    colors: [AppColors.surfaceDark, AppColors.surfaceMedium],
   );
 }
 
@@ -76,21 +70,66 @@ class AppTheme {
         onSurfaceVariant: AppColors.textHint,
       ),
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w300),
-        bodyMedium: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w300),
-        bodySmall: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w300),
-        titleLarge: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
-        titleMedium: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
-        titleSmall: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
-        labelLarge: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
-        labelMedium: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w300),
-        labelSmall: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w300),
-        displayLarge: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
-        displayMedium: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
-        displaySmall: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
-        headlineLarge: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
-        headlineMedium: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
-        headlineSmall: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500),
+        bodyLarge: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w300,
+        ),
+        bodyMedium: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w300,
+        ),
+        bodySmall: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w300,
+        ),
+        titleLarge: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
+        titleMedium: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
+        titleSmall: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
+        labelLarge: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
+        labelMedium: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w300,
+        ),
+        labelSmall: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w300,
+        ),
+        displayLarge: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
+        displayMedium: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
+        displaySmall: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
+        headlineLarge: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
+        headlineMedium: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
+        headlineSmall: TextStyle(
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w500,
+        ),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.backgroundPrimary,
@@ -98,7 +137,11 @@ class AppTheme {
         elevation: 0,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: TextStyle(color: AppColors.textHint, fontFamily: 'Poppins', fontWeight: FontWeight.w300),
+        hintStyle: TextStyle(
+          color: AppColors.textHint,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w300,
+        ),
         filled: true,
         fillColor: Colors.transparent,
         border: InputBorder.none,

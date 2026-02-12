@@ -16,14 +16,20 @@ class LoadingView extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Container(
-            color: AppColors.overlayDark.withValues(alpha: AppColors.overlayDarkOpacity),
+            color: AppColors.overlayDark.withValues(
+              alpha: AppColors.overlayDarkOpacity,
+            ),
           ),
           Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/images/logo.png', width: 300.w, height: 300.h),
+                Image.asset(
+                  'assets/images/logo.png',
+                  width: 300.w,
+                  height: 300.h,
+                ),
                 SizedBox(
                   width: 40.w,
                   height: 50.h,
