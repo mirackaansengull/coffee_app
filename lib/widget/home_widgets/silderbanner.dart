@@ -13,49 +13,57 @@ class BannerSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final horizontalMargin = 20.w * 2;
+    final bannerWidth = screenWidth - horizontalMargin;
+    final bannerHeight = 180.h;
+
     return Container(
-      height: 180.h,
+      width: bannerWidth,
+      height: bannerHeight,
       margin: EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w),
       child: CarouselSlider(
         options: CarouselOptions(
-          height: 180.h,
-          enlargeCenterPage: true,
+          height: bannerHeight,
+          viewportFraction: 1,
+          enlargeCenterPage: false,
           autoPlay: true,
-          aspectRatio: 16 / 9,
           autoPlayCurve: Curves.fastOutSlowIn,
           enableInfiniteScroll: true,
-          autoPlayAnimationDuration: Duration(milliseconds: 800),
-          viewportFraction: 1,
+          autoPlayAnimationDuration: const Duration(milliseconds: 800),
         ),
         items: _imgList
             .map(
-              (item) => ClipRRect(
+              (url) => ClipRRect(
                 borderRadius: BorderRadius.circular(12.r),
-                child: Image.network(
-                  item,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Container(
+                child: SizedBox(
+                  width: bannerWidth,
+                  height: bannerHeight,
+                  child: Image.network(
+                    url,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        color: const Color(0xFF2A2A2A),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) => Container(
                       color: const Color(0xFF2A2A2A),
                       child: Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                              : null,
+                        child: Icon(
+                          Icons.broken_image_outlined,
+                          size: 24.w,
+                          color: Colors.white54,
                         ),
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    color: const Color(0xFF2A2A2A),
-                    child: Center(
-                      child: Icon(
-                        Icons.broken_image_outlined,
-                        size: 24.w,
-                        color: Colors.white54,
                       ),
                     ),
                   ),

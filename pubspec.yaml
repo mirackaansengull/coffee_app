@@ -29,15 +29,9 @@ dev_dependencies:
 
 flutter:
   assets:
-    - assets/images/logo.png
-    - assets/images/loading_background.png
-    - assets/images/logo_horizontal_dark.png
-    - assets/images/logo_horizontal_light.png
-    - assets/icons/search.png 
-    - assets/icons/cart.png
-    - assets/icons/favorites.png
-    - assets/icons/profile.png
-    - assets/icons/home.png
+    - assets/images/
+    - assets/icons/
+    - assets/icons/categories_icons/
 
   fonts:
     - family: Poppins

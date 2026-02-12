@@ -43,8 +43,12 @@ class HomeView extends StatelessWidget {
                   itemCount: coffeeTypes.length,
                   separatorBuilder: (context, index) => SizedBox(width: 12.w),
                   itemBuilder: (context, index) {
-                    final item = coffeeTypes[index];
-                    return Categories(label: item, onTap: () {});
+                    final category = coffeeTypes[index];
+                    return Categories(
+                      icon: category.icon,
+                      label: category.label,
+                      onTap: () {},
+                    );
                   },
                 ),
               ),

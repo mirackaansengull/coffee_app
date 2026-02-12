@@ -27,6 +27,7 @@ class CoffeeCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
               'Kahve',
