@@ -34,7 +34,7 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget {
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.transparent,
-            hintText: 'Search coffee',
+            hintText: 'Kahve Ara...',
             hintStyle: TextStyle(
               color: AppColors.textHint,
               fontSize: 14.sp,

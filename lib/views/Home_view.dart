@@ -1,9 +1,10 @@
 import 'package:coffee_app/themes/theme.dart';
 import 'package:coffee_app/widget/appbar.dart';
-import 'package:coffee_app/widget/silderbanner.dart';
+import 'package:coffee_app/widget/home_widgets/silderbanner.dart';
 import 'package:flutter/material.dart';
-import 'package:coffee_app/widget/getlocation.dart';
+import 'package:coffee_app/widget/home_widgets/getlocation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:coffee_app/widget/home_widgets/Home_Categories.dart';
 
 const List<String> _coffeeTypes = [
   'Sıcak Kahve',
@@ -50,7 +51,7 @@ class HomeView extends StatelessWidget {
                 separatorBuilder: (_, __) => SizedBox(width: 12.w),
                 itemBuilder: (context, index) {
                   final item = _coffeeTypes[index];
-                  return _CoffeeTypeChip(
+                  return Categories(
                     label: item,
                     onTap: () {},
                   );
@@ -59,47 +60,6 @@ class HomeView extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CoffeeTypeChip extends StatelessWidget {
-  const _CoffeeTypeChip({required this.label, required this.onTap});
-
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(7.r),
-        child: Container(
-          width: 100.w,
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 61, 35, 32),
-            borderRadius: BorderRadius.circular(7.r),
-            border: Border.all(color: AppColors.surfaceDark, width: 1),
-          ),
-          child: Center(
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textPrimary,
-                fontFamily: 'Poppins',
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
         ),
       ),
     );
