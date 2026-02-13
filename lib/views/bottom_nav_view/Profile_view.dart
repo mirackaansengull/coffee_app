@@ -18,7 +18,6 @@ class _ProfileViewState extends State<ProfileView> {
     'Teslim edildi',
   ];
 
-  /// Profilde gösterilen sipariş: Hazırlanıyor (en üstteki aktif sipariş)
   static const int _profileOrderStep = 1;
   static const String _profileOrderDate = '14.02.2026';
   static const String _profileOrderTime = '12:00';
