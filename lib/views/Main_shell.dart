@@ -1,4 +1,4 @@
-import 'package:coffee_app/themes/theme.dart';
+import 'package:coffee_app/core/theme/theme.dart';
 import 'package:coffee_app/views/bottom_nav_view/Home_view.dart';
 import 'package:coffee_app/views/bottom_nav_view/Cart_view.dart';
 import 'package:coffee_app/views/bottom_nav_view/Favorites_view.dart';

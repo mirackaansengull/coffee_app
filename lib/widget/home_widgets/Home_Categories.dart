@@ -1,6 +1,7 @@
+import 'package:coffee_app/core/constants/asset_paths.dart';
+import 'package:coffee_app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:coffee_app/themes/theme.dart';
 
 class CategoryItem {
   const CategoryItem({required this.label, required this.icon});
@@ -9,13 +10,13 @@ class CategoryItem {
 }
 
 const List<CategoryItem> coffeeTypes = [
-  CategoryItem(label: 'En Çok Satanlar', icon: ImageIcon(AssetImage('assets/icons/categories_icons/en_cok_satanlar.png'))),
-  CategoryItem(label: 'Sıcak Kahve', icon: ImageIcon(AssetImage('assets/icons/categories_icons/sicak_kahve.png'))),
-  CategoryItem(label: 'Soğuk Kahve', icon: ImageIcon(AssetImage('assets/icons/categories_icons/soguk_kahve.png'))),
-  CategoryItem(label: 'Filtre Kahve',icon: ImageIcon(AssetImage('assets/icons/categories_icons/filtre_kahve.png'))),
-  CategoryItem(label: 'Espresso', icon: ImageIcon(AssetImage('assets/icons/categories_icons/espresso.png'))),
-  CategoryItem(label: 'Türk Kahvesi', icon: ImageIcon(AssetImage('assets/icons/categories_icons/turk_kahvesi.png'))),
-  CategoryItem(label: 'Latte', icon: ImageIcon(AssetImage('assets/icons/categories_icons/latte.png'))),
+  CategoryItem(label: 'En Çok Satanlar', icon: ImageIcon(AssetImage(AssetPaths.categoryEnCokSatanlar))),
+  CategoryItem(label: 'Sıcak Kahve', icon: ImageIcon(AssetImage(AssetPaths.categorySicakKahve))),
+  CategoryItem(label: 'Soğuk Kahve', icon: ImageIcon(AssetImage(AssetPaths.categorySogukKahve))),
+  CategoryItem(label: 'Filtre Kahve', icon: ImageIcon(AssetImage(AssetPaths.categoryFiltreKahve))),
+  CategoryItem(label: 'Espresso', icon: ImageIcon(AssetImage(AssetPaths.categoryEspresso))),
+  CategoryItem(label: 'Türk Kahvesi', icon: ImageIcon(AssetImage(AssetPaths.categoryTurkKahvesi))),
+  CategoryItem(label: 'Latte', icon: ImageIcon(AssetImage(AssetPaths.categoryLatte))),
 ];
 
 class Categories extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:coffee_app/themes/theme.dart';
+import 'package:coffee_app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 class CartView extends StatelessWidget {

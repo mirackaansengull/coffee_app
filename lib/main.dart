@@ -1,4 +1,5 @@
-import 'package:coffee_app/themes/theme.dart';
+import 'package:coffee_app/core/constants/app_constants.dart';
+import 'package:coffee_app/core/theme/theme.dart';
 import 'package:coffee_app/views/Main_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: AppConstants.designSize,
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {

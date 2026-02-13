@@ -1,16 +1,11 @@
-import 'package:coffee_app/themes/theme.dart';
+import 'package:coffee_app/core/constants/app_constants.dart';
+import 'package:coffee_app/core/constants/order_constants.dart';
+import 'package:coffee_app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AllOrdersView extends StatelessWidget {
   const AllOrdersView({super.key});
-
-  static const List<String> _orderStatuses = [
-    'Onay bekliyor',
-    'Hazırlanıyor',
-    'Sipariş hazır',
-    'Teslim edildi',
-  ];
 
   /// En üstte: Hazırlanıyor. Altında: hepsi Teslim edildi, farklı puanlar.
   static final List<Map<String, dynamic>> _orders = [
@@ -40,7 +35,7 @@ class AllOrdersView extends StatelessWidget {
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
-            fontFamily: 'Poppins',
+            fontFamily: AppConstants.fontFamily,
           ),
         ),
         centerTitle: true,
@@ -55,7 +50,7 @@ class AllOrdersView extends StatelessWidget {
             time: o['time'] as String,
             step: o['step'] as int,
             rating: o['rating'] as int,
-            statuses: _orderStatuses,
+            statuses: OrderConstants.statusLabels,
           );
         },
       ),
@@ -114,7 +109,7 @@ class _OrderCardState extends State<_OrderCard> {
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: AppColors.textHint,
-                  fontFamily: 'Poppins',
+                  fontFamily: AppConstants.fontFamily,
                 ),
               ),
             ],
@@ -126,7 +121,7 @@ class _OrderCardState extends State<_OrderCard> {
               fontSize: 13.sp,
               fontWeight: FontWeight.w500,
               color: orange,
-              fontFamily: 'Poppins',
+              fontFamily: AppConstants.fontFamily,
             ),
           ),
           SizedBox(height: 14.h),
@@ -154,10 +149,10 @@ class _OrderCardState extends State<_OrderCard> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Onay', style: TextStyle(fontSize: 9.sp, color: AppColors.textHint, fontFamily: 'Poppins')),
-                Text('Hazırlanıyor', style: TextStyle(fontSize: 9.sp, color: AppColors.textHint, fontFamily: 'Poppins')),
-                Text('Hazır', style: TextStyle(fontSize: 9.sp, color: AppColors.textHint, fontFamily: 'Poppins')),
-                Text('Teslim', style: TextStyle(fontSize: 9.sp, color: AppColors.textHint, fontFamily: 'Poppins')),
+                ...OrderConstants.stepLabels.map((label) => Text(
+                    label,
+                    style: TextStyle(fontSize: 9.sp, color: AppColors.textHint, fontFamily: AppConstants.fontFamily),
+                  )),
               ],
             ),
           ),
@@ -165,7 +160,7 @@ class _OrderCardState extends State<_OrderCard> {
             SizedBox(height: 16.h),
             Text(
               '5 yıldız üzerinden puan verin',
-              style: TextStyle(fontSize: 12.sp, color: AppColors.textHint, fontFamily: 'Poppins'),
+              style: TextStyle(fontSize: 12.sp, color: AppColors.textHint, fontFamily: AppConstants.fontFamily),
             ),
             SizedBox(height: 8.h),
             Row(

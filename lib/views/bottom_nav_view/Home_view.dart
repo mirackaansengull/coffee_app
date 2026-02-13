@@ -1,11 +1,9 @@
-import 'package:coffee_app/themes/theme.dart';
+import 'package:coffee_app/core/theme/theme.dart';
 import 'package:coffee_app/views/Coffee_detail.dart';
 import 'package:coffee_app/widget/global_widgets/coffee_card.dart';
-import 'package:coffee_app/widget/home_widgets/silderbanner.dart';
+import 'package:coffee_app/widget/home_widgets/home_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:coffee_app/widget/home_widgets/getlocation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:coffee_app/widget/home_widgets/Home_Categories.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
