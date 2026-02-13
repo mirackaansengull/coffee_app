@@ -17,11 +17,35 @@ class CoffeeCard extends StatelessWidget {
         children: [
           Expanded(
             flex: 3,
-            child: Image.network(
-              'https://i.lezzet.com.tr/images-800x600/46cb7ac3-c782-4738-bd67-16bc0733ef34-25a66585-419d-4e34-8547-0650bac57d30',
-              fit: BoxFit.cover,
-              width: double.infinity,
-            ),
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(15.r)),
+                    image: const DecorationImage(
+                      image: NetworkImage('https://i.lezzet.com.tr/images-800x600/46cb7ac3-c782-4738-bd67-16bc0733ef34-25a66585-419d-4e34-8547-0650bac57d30'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+                Positioned(
+                  top: 10.h,
+                  right: 10.w,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.favorite_border),
+                      color: Colors.white,
+                      onPressed: () {
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )
           ),
           SizedBox(height: 8.h),
           Padding(
