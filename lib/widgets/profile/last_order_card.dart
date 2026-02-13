@@ -1,4 +1,5 @@
 import 'package:coffee_app/core/constants/order_constants.dart';
+import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,14 +26,27 @@ class _LastOrderCardState extends State<LastOrderCard> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppThemeColors.of(context);
     final step = widget.orderStep;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: AppColors.surfaceDark,
+        color: colors.surfaceDark,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: AppColors.surfaceMedium, width: 1),
+        border: Border.all(color: colors.surfaceBorder, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +59,7 @@ class _LastOrderCardState extends State<LastOrderCard> {
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: colors.textPrimary,
                   fontFamily: 'Poppins',
                 ),
               ),
@@ -53,7 +67,7 @@ class _LastOrderCardState extends State<LastOrderCard> {
                 '${widget.orderDate} · ${widget.orderTime}',
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: AppColors.textHint,
+                  color: colors.textHint,
                   fontFamily: 'Poppins',
                 ),
               ),
@@ -70,7 +84,7 @@ class _LastOrderCardState extends State<LastOrderCard> {
             ),
           ),
           SizedBox(height: 14.h),
-          _buildProgressBar(step),
+          _buildProgressBar(context, step),
           SizedBox(height: 6.h),
           Padding(
             padding: EdgeInsets.only(top: 4.h),
@@ -82,20 +96,21 @@ class _LastOrderCardState extends State<LastOrderCard> {
                   OrderConstants.stepLabels[i],
                   style: TextStyle(
                     fontSize: 9.sp,
-                    color: AppColors.textHint,
+                    color: colors.textHint,
                     fontFamily: 'Poppins',
                   ),
                 ),
               ),
             ),
           ),
-          if (step == 3) ..._buildRatingSection(),
+          if (step == 3) ..._buildRatingSection(context),
         ],
       ),
     );
   }
 
-  Widget _buildProgressBar(int step) {
+  Widget _buildProgressBar(BuildContext context, int step) {
+    final colors = AppThemeColors.of(context);
     return Row(
       children: List.generate(4, (i) {
         final isFilled = i <= step;
@@ -104,7 +119,7 @@ class _LastOrderCardState extends State<LastOrderCard> {
             height: 6.h,
             margin: EdgeInsets.only(right: i < 3 ? 2.w : 0),
             decoration: BoxDecoration(
-              color: isFilled ? _orange : AppColors.surfaceMedium,
+              color: isFilled ? _orange : colors.surfaceMedium,
               borderRadius: BorderRadius.horizontal(
                 left: Radius.circular(i == 0 ? 3.r : 0),
                 right: Radius.circular(i == 3 ? 3.r : 0),
@@ -116,14 +131,15 @@ class _LastOrderCardState extends State<LastOrderCard> {
     );
   }
 
-  List<Widget> _buildRatingSection() {
+  List<Widget> _buildRatingSection(BuildContext context) {
+    final colors = AppThemeColors.of(context);
     return [
       SizedBox(height: 16.h),
       Text(
         '5 yıldız üzerinden puan verin',
         style: TextStyle(
           fontSize: 12.sp,
-          color: AppColors.textHint,
+          color: colors.textHint,
           fontFamily: 'Poppins',
         ),
       ),
@@ -140,7 +156,7 @@ class _LastOrderCardState extends State<LastOrderCard> {
               child: Icon(
                 selected ? Icons.star_rounded : Icons.star_outline_rounded,
                 size: 28.sp,
-                color: selected ? _orange : AppColors.textHint,
+                color: selected ? _orange : colors.textHint,
               ),
             ),
           );

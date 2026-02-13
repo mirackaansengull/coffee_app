@@ -1,3 +1,4 @@
+import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/core/theme/theme.dart';
 import 'package:coffee_app/views/coffee_detail_view.dart';
 import 'package:coffee_app/widgets/home/banner_slider.dart';
@@ -12,12 +13,13 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppThemeColors.of(context);
     return Scaffold(
-      backgroundColor: AppColors.backgroundSecondary,
+      backgroundColor: colors.backgroundSecondary,
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(gradient: AppGradients.background),
+        decoration: BoxDecoration(gradient: colors.gradientBackground),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(

@@ -1,3 +1,4 @@
+import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/core/theme/theme.dart';
 import 'package:coffee_app/views/profile_view/all_orders_view.dart';
 import 'package:coffee_app/widgets/profile/last_order_card.dart';
@@ -8,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
+  const ProfileView({super.key, required this.onThemeToggle});
+
+  final VoidCallback onThemeToggle;
 
   static const int _profileOrderStep = 1;
   static const String _profileOrderDate = '14.02.2026';
@@ -16,18 +19,19 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppThemeColors.of(context);
     return Scaffold(
-      backgroundColor: AppColors.backgroundSecondary,
+      backgroundColor: colors.backgroundSecondary,
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(gradient: AppGradients.background),
+        decoration: BoxDecoration(gradient: colors.gradientBackground),
         child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.fromLTRB(12.w, 20.h, 20.w, 20.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const ProfileHeader(),
+                ProfileHeader(onThemeToggle: onThemeToggle),
                 SizedBox(height: 24.h),
                 OrdersSectionHeader(
                   onSeeAllTap: () {

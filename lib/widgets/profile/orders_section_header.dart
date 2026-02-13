@@ -1,3 +1,4 @@
+import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +13,7 @@ class OrdersSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppThemeColors.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -22,7 +24,7 @@ class OrdersSectionHeader extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+              color: colors.textPrimary,
               fontFamily: 'Poppins',
             ),
           ),
@@ -38,7 +40,7 @@ class OrdersSectionHeader extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w300,
-                  color: AppColors.textPrimary,
+                  color: colors.textPrimary,
                   fontFamily: 'Poppins',
                 ),
               ),
@@ -46,7 +48,7 @@ class OrdersSectionHeader extends StatelessWidget {
               Icon(
                 Icons.chevron_right_rounded,
                 size: 18.sp,
-                color: AppColors.textPrimary,
+                color: colors.textPrimary,
               ),
             ],
           ),

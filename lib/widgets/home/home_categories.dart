@@ -1,5 +1,4 @@
 import 'package:coffee_app/core/constants/asset_paths.dart';
-import 'package:coffee_app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,9 +35,20 @@ class Categories extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 61, 35, 32),
+            color: const Color.fromARGB(255, 189, 113, 0), // Profil aşama rengi ile aynı
             borderRadius: BorderRadius.circular(7.r),
-            border: Border.all(color: AppColors.surfaceDark, width: 1),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.12),
+                blurRadius: 4,
+                offset: const Offset(0, 1),
+              ),
+            ],
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -47,7 +57,7 @@ class Categories extends StatelessWidget {
               ImageIcon(
                 icon.image,
                 size: 18.sp,
-                color: AppColors.textPrimary,
+                color: Colors.white,
               ),
               SizedBox(width: 6.w),
               Flexible(
@@ -57,7 +67,7 @@ class Categories extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 11.sp,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.textPrimary,
+                    color: Colors.white,
                     fontFamily: 'Poppins',
                   ),
                   maxLines: 2,

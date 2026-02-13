@@ -1,5 +1,6 @@
 import 'package:coffee_app/core/constants/app_constants.dart';
 import 'package:coffee_app/core/constants/order_constants.dart';
+import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,13 +21,14 @@ class AllOrdersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppThemeColors.of(context);
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
+      backgroundColor: colors.backgroundPrimary,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundPrimary,
+        backgroundColor: colors.backgroundPrimary,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp, color: colors.textPrimary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -34,7 +36,7 @@ class AllOrdersView extends StatelessWidget {
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+            color: colors.textPrimary,
             fontFamily: AppConstants.fontFamily,
           ),
         ),
@@ -88,15 +90,28 @@ class _OrderCardState extends State<_OrderCard> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppThemeColors.of(context);
     const orange = Color(0xFFFF9800);
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: AppColors.surfaceDark,
+        color: colors.surfaceDark,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: AppColors.surfaceMedium, width: 1),
+        border: Border.all(color: colors.surfaceBorder, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +123,7 @@ class _OrderCardState extends State<_OrderCard> {
                 '${widget.date} · ${widget.time}',
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: AppColors.textHint,
+                  color: colors.textHint,
                   fontFamily: AppConstants.fontFamily,
                 ),
               ),
@@ -133,7 +148,7 @@ class _OrderCardState extends State<_OrderCard> {
                   height: 6.h,
                   margin: EdgeInsets.only(right: i < 3 ? 2.w : 0),
                   decoration: BoxDecoration(
-                    color: isFilled ? orange : AppColors.surfaceMedium,
+                    color: isFilled ? orange : colors.surfaceMedium,
                     borderRadius: BorderRadius.horizontal(
                       left: Radius.circular(i == 0 ? 3.r : 0),
                       right: Radius.circular(i == 3 ? 3.r : 0),
@@ -151,7 +166,7 @@ class _OrderCardState extends State<_OrderCard> {
               children: [
                 ...OrderConstants.stepLabels.map((label) => Text(
                     label,
-                    style: TextStyle(fontSize: 9.sp, color: AppColors.textHint, fontFamily: AppConstants.fontFamily),
+                    style: TextStyle(fontSize: 9.sp, color: colors.textHint, fontFamily: AppConstants.fontFamily),
                   )),
               ],
             ),
@@ -160,7 +175,7 @@ class _OrderCardState extends State<_OrderCard> {
             SizedBox(height: 16.h),
             Text(
               '5 yıldız üzerinden puan verin',
-              style: TextStyle(fontSize: 12.sp, color: AppColors.textHint, fontFamily: AppConstants.fontFamily),
+              style: TextStyle(fontSize: 12.sp, color: colors.textHint, fontFamily: AppConstants.fontFamily),
             ),
             SizedBox(height: 8.h),
             Row(
@@ -175,7 +190,7 @@ class _OrderCardState extends State<_OrderCard> {
                     child: Icon(
                       selected ? Icons.star_rounded : Icons.star_outline_rounded,
                       size: 26.sp,
-                      color: selected ? orange : AppColors.textHint,
+                      color: selected ? orange : colors.textHint,
                     ),
                   ),
                 );

@@ -1,3 +1,4 @@
+import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,10 +8,16 @@ class CoffeeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppThemeColors.of(context);
     return Card(
-      elevation: 2,
+      elevation: 6,
+      shadowColor: Colors.black.withValues(alpha: 0.1),
       margin: EdgeInsets.zero,
-      color: AppColors.backgroundSecondary,
+      color: colors.backgroundSecondary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.r),
+        side: BorderSide(color: colors.surfaceBorder, width: 1),
+      ),
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,7 +65,7 @@ class CoffeeCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w500,
-                color: AppColors.textPrimary, 
+                color: colors.textPrimary, 
                 fontFamily: 'Poppins',
               ),
               maxLines: 1,
@@ -69,7 +76,7 @@ class CoffeeCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w500,
-                color: AppColors.textPrimary,
+                color: colors.textPrimary,
                 fontFamily: 'Poppins',
               ),
             ),

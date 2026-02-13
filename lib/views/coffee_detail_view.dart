@@ -1,3 +1,4 @@
+import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,27 +81,31 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppThemeColors.of(context);
     final brown = const Color(0xFF8B4513);
+    final iconColor = Theme.of(context).brightness == Brightness.light
+        ? Colors.black
+        : Colors.white;
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
+      backgroundColor: colors.backgroundPrimary,
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
           SliverAppBar(
             expandedHeight: 220.h,
             pinned: true,
-            backgroundColor: AppColors.backgroundPrimary,
+            backgroundColor: colors.backgroundPrimary,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp),
+              icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp, color: Colors.white),
               onPressed: () => Navigator.pop(context),
-              color: AppColors.textPrimary,
+              color: Colors.white,
             ),
             title: _showAppBarTitle
                 ? Text('Türk Kahvesi',
                     style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                        color: colors.textPrimary,
                         fontFamily: 'Poppins'))
                 : null,
             flexibleSpace: FlexibleSpaceBar(background: Image.network(_imageUrl, fit: BoxFit.cover)),
@@ -118,7 +123,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                             style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.textPrimary,
+                                color: colors.textPrimary,
                                 fontFamily: 'Poppins')),
                       ),
                       Row(
@@ -132,9 +137,16 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                             child: Container(
                                 padding: EdgeInsets.all(8.w),
                                 decoration: BoxDecoration(
-                                    color: AppColors.surfaceDark,
-                                    borderRadius: BorderRadius.circular(10.r)),
-                                child: Icon(Icons.remove_rounded, color: AppColors.textPrimary, size: 18.sp)),
+                                    color: colors.surfaceDark,
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    border: Border.all(color: colors.surfaceBorder, width: 1),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black.withValues(alpha: 0.08),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 2)),
+                                    ]),
+                                child: Icon(Icons.remove_rounded, color: colors.textPrimary, size: 18.sp)),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -142,7 +154,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                                 style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.textPrimary,
+                                    color: colors.textPrimary,
                                     fontFamily: 'Poppins')),
                           ),
                           InkWell(
@@ -151,9 +163,16 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                             child: Container(
                                 padding: EdgeInsets.all(8.w),
                                 decoration: BoxDecoration(
-                                    color: AppColors.surfaceDark,
-                                    borderRadius: BorderRadius.circular(10.r)),
-                                child: Icon(Icons.add_rounded, color: AppColors.textPrimary, size: 18.sp)),
+                                    color: colors.surfaceDark,
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    border: Border.all(color: colors.surfaceBorder, width: 1),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black.withValues(alpha: 0.08),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 2)),
+                                    ]),
+                                child: Icon(Icons.add_rounded, color: colors.textPrimary, size: 18.sp)),
                           ),
                         ],
                       ),
@@ -164,7 +183,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w300,
-                          color: AppColors.textHint,
+                          color: colors.textHint,
                           fontFamily: 'Poppins',
                           height: 1.35)),
                   SizedBox(height: 14.h),
@@ -172,7 +191,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
+                          color: colors.textPrimary,
                           fontFamily: 'Poppins')),
                   SizedBox(height: 8.h),
                   ...List.generate(
@@ -192,11 +211,17 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                                 decoration: BoxDecoration(
                                     color: _selectedSizeIndex == i
                                         ? brown.withValues(alpha: 0.3)
-                                        : AppColors.surfaceDark,
+                                        : colors.surfaceDark,
                                     borderRadius: BorderRadius.circular(10.r),
                                     border: Border.all(
-                                        color: _selectedSizeIndex == i ? brown : AppColors.surfaceMedium,
-                                        width: _selectedSizeIndex == i ? 2 : 1)),
+                                        color: _selectedSizeIndex == i ? brown : colors.surfaceBorder,
+                                        width: 1),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black.withValues(alpha: _selectedSizeIndex == i ? 0.12 : 0.06),
+                                          blurRadius: _selectedSizeIndex == i ? 10 : 6,
+                                          offset: const Offset(0, 2)),
+                                    ]),
                                 child: Row(
                                   children: [
                                     SizedBox(
@@ -209,10 +234,12 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                                           child: Image.asset(
                                             'assets/icons/boy_secimi.png',
                                             fit: BoxFit.contain,
+                                            color: iconColor,
+                                            colorBlendMode: BlendMode.srcIn,
                                             errorBuilder: (_, __, ___) => Icon(
                                               Icons.coffee_rounded,
                                               size: iconSz.sp,
-                                              color: AppColors.textPrimary,
+                                              color: iconColor,
                                             ),
                                           ),
                                         ),
@@ -223,14 +250,14 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                                         style: TextStyle(
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
-                                            color: AppColors.textPrimary,
+                                            color: colors.textPrimary,
                                             fontFamily: 'Poppins')),
                                     const Spacer(),
                                     Text('$sizePrice TL',
                                         style: TextStyle(
                                             fontSize: 12.sp,
                                             fontWeight: FontWeight.w500,
-                                            color: AppColors.textPrimary,
+                                            color: colors.textPrimary,
                                             fontFamily: 'Poppins')),
                                   ],
                                 ),
@@ -243,7 +270,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
+                          color: colors.textPrimary,
                           fontFamily: 'Poppins')),
                   SizedBox(height: 6.h),
                   ...List.generate(
@@ -262,23 +289,29 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                                 decoration: BoxDecoration(
                                     color: _milkIndex == i
                                         ? brown.withValues(alpha: 0.3)
-                                        : AppColors.surfaceDark,
+                                        : colors.surfaceDark,
                                     borderRadius: BorderRadius.circular(8.r),
                                     border: Border.all(
-                                        color: _milkIndex == i ? brown : AppColors.surfaceMedium,
-                                        width: _milkIndex == i ? 2 : 1)),
+                                        color: _milkIndex == i ? brown : colors.surfaceBorder,
+                                        width: 1),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black.withValues(alpha: _milkIndex == i ? 0.12 : 0.06),
+                                          blurRadius: _milkIndex == i ? 10 : 6,
+                                          offset: const Offset(0, 2)),
+                                    ]),
                                 child: Row(
                                   children: [
                                     Text(label,
                                         style: TextStyle(
                                             fontSize: 12.sp,
-                                            color: AppColors.textPrimary,
+                                            color: colors.textPrimary,
                                             fontFamily: 'Poppins')),
                                     if (price > 0)
                                       Text(' (+$price TL)',
                                           style: TextStyle(
                                               fontSize: 11.sp,
-                                              color: AppColors.textHint,
+                                              color: colors.textHint,
                                               fontFamily: 'Poppins')),
                                   ],
                                 ),
@@ -291,7 +324,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
+                          color: colors.textPrimary,
                           fontFamily: 'Poppins')),
                   SizedBox(height: 6.h),
                   InkWell(
@@ -300,22 +333,28 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
                       decoration: BoxDecoration(
-                          color: _extraShot ? brown.withValues(alpha: 0.3) : AppColors.surfaceDark,
+                          color: _extraShot ? brown.withValues(alpha: 0.3) : colors.surfaceDark,
                           borderRadius: BorderRadius.circular(8.r),
                           border: Border.all(
-                              color: _extraShot ? brown : AppColors.surfaceMedium,
-                              width: _extraShot ? 2 : 1)),
+                              color: _extraShot ? brown : colors.surfaceBorder,
+                              width: 1),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withValues(alpha: _extraShot ? 0.12 : 0.06),
+                                blurRadius: _extraShot ? 10 : 6,
+                                offset: const Offset(0, 2)),
+                          ]),
                       child: Row(
                         children: [
                           Text('Extra shot klasik içim',
                               style: TextStyle(
                                   fontSize: 12.sp,
-                                  color: AppColors.textPrimary,
+                                  color: colors.textPrimary,
                                   fontFamily: 'Poppins')),
                           Text(' (+25 TL)',
                               style: TextStyle(
                                   fontSize: 11.sp,
-                                  color: AppColors.textHint,
+                                  color: colors.textHint,
                                   fontFamily: 'Poppins')),
                         ],
                       ),
@@ -326,7 +365,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
+                          color: colors.textPrimary,
                           fontFamily: 'Poppins')),
                   SizedBox(height: 6.h),
                   Wrap(
@@ -340,18 +379,19 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                                   style: TextStyle(
                                       fontSize: 11.sp,
                                       fontFamily: 'Poppins',
-                                      color: AppColors.textPrimary)),
+                                      color: colors.textPrimary)),
                               selected: _syrups[i],
                               onSelected: (_) => setState(() => _syrups[i] = !_syrups[i]),
-                              backgroundColor: AppColors.surfaceDark,
+                              backgroundColor: colors.surfaceDark,
                               selectedColor: brown.withValues(alpha: 0.3),
                               checkmarkColor: brown,
                               labelStyle: TextStyle(
                                   fontSize: 11.sp,
                                   fontFamily: 'Poppins',
-                                  color: AppColors.textPrimary),
-                              side: BorderSide(
-                                  color: _syrups[i] ? brown : AppColors.surfaceMedium),
+                                  color: colors.textPrimary),
+                                  side: BorderSide(
+                                  color: _syrups[i] ? brown : colors.surfaceBorder,
+                                  width: 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14.r)),
                             )),
@@ -366,12 +406,12 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
       bottomNavigationBar: Container(
         padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 12.h + MediaQuery.paddingOf(context).bottom),
         decoration: BoxDecoration(
-            color: AppColors.backgroundPrimary,
+            color: colors.backgroundPrimary,
             boxShadow: [
               BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, -2))
+                  color: Colors.black.withValues(alpha: 0.5),
+                  blurRadius: 16,
+                  offset: const Offset(0, -4)),
             ]),
         child: SafeArea(
           top: false,
@@ -384,13 +424,13 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                   Text('Toplam',
                       style: TextStyle(
                           fontSize: 11.sp,
-                          color: AppColors.textHint,
+                          color: colors.textHint,
                           fontFamily: 'Poppins')),
                   Text('$_totalPrice TL',
                       style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
+                          color: colors.textPrimary,
                           fontFamily: 'Poppins')),
                 ],
               ),
