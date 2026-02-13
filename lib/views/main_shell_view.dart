@@ -1,9 +1,9 @@
 import 'package:coffee_app/core/theme/theme.dart';
-import 'package:coffee_app/views/bottom_nav_view/Home_view.dart';
-import 'package:coffee_app/views/bottom_nav_view/Cart_view.dart';
-import 'package:coffee_app/views/bottom_nav_view/Favorites_view.dart';
-import 'package:coffee_app/views/bottom_nav_view/Profile_view.dart';
-import 'package:coffee_app/widget/global_widgets/appbar.dart';
+import 'package:coffee_app/views/bottom_navigation/cart_view.dart';
+import 'package:coffee_app/views/bottom_navigation/favorites_view.dart';
+import 'package:coffee_app/views/bottom_navigation/home_view.dart';
+import 'package:coffee_app/views/bottom_navigation/profile_view.dart';
+import 'package:coffee_app/widgets/shared/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class MainShell extends StatefulWidget {

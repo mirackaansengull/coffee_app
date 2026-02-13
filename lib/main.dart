@@ -1,6 +1,6 @@
 import 'package:coffee_app/core/constants/app_constants.dart';
 import 'package:coffee_app/core/theme/theme.dart';
-import 'package:coffee_app/views/Main_shell.dart';
+import 'package:coffee_app/views/main_shell_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

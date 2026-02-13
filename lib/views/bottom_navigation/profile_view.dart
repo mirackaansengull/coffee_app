@@ -1,9 +1,9 @@
 import 'package:coffee_app/core/theme/theme.dart';
-import 'package:coffee_app/views/bottom_nav_view/profile_views/All_orders_view.dart';
-import 'package:coffee_app/widget/profile_widgets/last_order_card.dart';
-import 'package:coffee_app/widget/profile_widgets/orders_section_header.dart';
-import 'package:coffee_app/widget/profile_widgets/profile_header.dart';
-import 'package:coffee_app/widget/profile_widgets/profile_tile.dart';
+import 'package:coffee_app/views/profile_view/all_orders_view.dart';
+import 'package:coffee_app/widgets/profile/last_order_card.dart';
+import 'package:coffee_app/widgets/profile/orders_section_header.dart';
+import 'package:coffee_app/widgets/profile/profile_header.dart';
+import 'package:coffee_app/widgets/profile/profile_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
