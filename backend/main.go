@@ -1,37 +1,55 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"time"
+    "context"
+    "fmt"
+    "log"
+    "os"
+    "time"
 
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+    "github.com/joho/godotenv"
+    "go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func main() {
-	// 1. Bağlantı ayarlarını yapılandır (URI kısmını kendine göre düzenle)
-	// Eğer yereldeyse: mongodb://localhost:27017
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+    // 1. .env dosyasını yükle (Yerel geliştirme için)
+    // Canlı ortamda (Vercel/Render) .env dosyası olmayacağı için hata verirse loglamak yerine pas geçiyoruz.
+    _ = godotenv.Load()
 
-	// 2. MongoDB'ye bağlan
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+    // 2. Ortam değişkeninden URI'yi al
+    mongoURI := os.Getenv("MONGO_URL")
 
-	client, err := mongo.Connect(ctx, clientOptions)
-	if err != nil {
-		log.Fatal("Bağlantı hatası:", err)
-	}
+    // Eğer URI boşsa, kodun çalışmaması için hata veriyoruz
+    if mongoURI == "" {
+        log.Fatal("HATA: MONGO_URL ortam değişkeni ayarlanmamış! Lütfen .env dosyanızı veya panel ayarlarınızı kontrol edin.")
+    }
 
-	// 3. Bağlantıyı doğrula (Ping at)
-	err = client.Ping(ctx, nil)
-	if err != nil {
-		log.Fatal("Veritabanına ulaşılamadı:", err)
-	}
+    // 3. Bağlantı ayarlarını yapılandır
+    clientOptions := options.Client().ApplyURI(mongoURI)
 
-	fmt.Println("MongoDB'ye başarıyla bağlandık! 🚀")
+    // 4. MongoDB'ye bağlanmak için bir zaman aşımı (timeout) oluştur
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
 
-	// İşlem bittiğinde bağlantıyı kapatmak için:
-	// defer client.Disconnect(ctx)
+    // 5. Bağlantıyı başlat
+    client, err := mongo.Connect(ctx, clientOptions)
+    if err != nil {
+        log.Fatal("Bağlantı başlatılamadı:", err)
+    }
+
+    // 6. Bağlantıyı doğrula (Ping at)
+    err = client.Ping(ctx, nil)
+    if err != nil {
+        log.Fatal("Veritabanına ulaşılamadı (Ping başarısız):", err)
+    }
+
+    fmt.Println("MongoDB'ye başarıyla bağlandık! 🚀")
+
+    // Program kapandığında bağlantıyı düzgünce kapatmak için:
+    defer func() {
+        if err = client.Disconnect(ctx); err != nil {
+            log.Fatal("Bağlantı kapatılırken hata oluştu:", err)
+        }
+    }()
 }
