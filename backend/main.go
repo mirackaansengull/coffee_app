@@ -18,7 +18,7 @@ func main() {
     _ = godotenv.Load()
 
     // 2. Ortam değişkeninden URI'yi al
-    mongoURI := os.Getenv("MONGO_URL")
+    mongoURI := os.Getenv("MONGO_URl")
 
     // Eğer URI boşsa, kodun çalışmaması için hata veriyoruz
     if mongoURI == "" {
