@@ -46,6 +46,21 @@ func main() {
 
     fmt.Println("MongoDB'ye başarıyla bağlandık! 🚀")
 
+	fmt.Println("Sunucu 8080 portunda başlatılıyor...")
+
+// Render genellikle PORT ortam değişkenini kendi atar
+port := os.Getenv("PORT")
+if port == "" {
+    port = "8080"
+}
+
+// Basit bir test rotası
+http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Kahve App Backend Çalışıyor! ☕")
+})
+
+// Sunucuyu başlat (Bu satır uygulamayı açık tutar)
+log.Fatal(http.ListenAndServe(":"+port, nil))
     // Program kapandığında bağlantıyı düzgünce kapatmak için:
     defer func() {
         if err = client.Disconnect(ctx); err != nil {
