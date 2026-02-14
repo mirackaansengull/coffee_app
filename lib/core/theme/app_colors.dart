@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Uygulama genelinde kullanılan tüm renkler.
 class AppColors {
   AppColors._();
 

@@ -1,5 +1,5 @@
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
-import 'package:coffee_app/core/theme/theme.dart';
+import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/views/profile_view/all_orders_view.dart';
 import 'package:coffee_app/widgets/profile/last_order_card.dart';
 import 'package:coffee_app/widgets/profile/orders_section_header.dart';
