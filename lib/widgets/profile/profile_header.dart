@@ -26,7 +26,6 @@ class ProfileHeader extends StatelessWidget {
         SizedBox(height: 8.h),
         Row(
           children: [
-            // Sol üst: kaydırmalı tema geçiş (basınca geçilen temanın ikonuna kayar)
             _ThemeToggleSwitch(
               isDark: isDark,
               onToggle: onThemeToggle,
@@ -106,7 +105,6 @@ class ProfileHeader extends StatelessWidget {
   }
 }
 
-/// Kaydırmalı tema seçici: basınca geçilen temanın ikonuna doğru kayar.
 class _ThemeToggleSwitch extends StatelessWidget {
   const _ThemeToggleSwitch({
     required this.isDark,
@@ -157,7 +155,6 @@ class _ThemeToggleSwitch extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              // Kayyan dolgu: geçilen temanın tarafına gider (dark = sol, light = sağ)
               AnimatedAlign(
                 duration: duration,
                 curve: curve,
@@ -183,7 +180,6 @@ class _ThemeToggleSwitch extends StatelessWidget {
                   ),
                 ),
               ),
-              // İkonlar
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

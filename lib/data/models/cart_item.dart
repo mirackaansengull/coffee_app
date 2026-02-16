@@ -1,4 +1,3 @@
-/// Sepet kalemi. Gerçek veri API/state'ten gelecek.
 class CartItem {
   const CartItem({
     required this.id,

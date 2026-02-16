@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:coffee_app/core/theme/app_colors.dart';
 
-/// Uygulama genelinde kullanılan gradient tanımları.
 class AppGradients {
   AppGradients._();
 

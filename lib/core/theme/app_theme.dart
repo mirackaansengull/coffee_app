@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/core/constants/app_constants.dart';
 
-/// MaterialApp theme ve darkTheme verisi.
 class AppTheme {
   AppTheme._();
 

@@ -1,4 +1,3 @@
-/// Sipariş durumu ve adım etiketleri.
 class OrderConstants {
   OrderConstants._();
 

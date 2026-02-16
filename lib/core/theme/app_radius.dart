@@ -1,4 +1,3 @@
-/// Border radius sabitleri (.r kullanılmayan yerlerde).
 class AppRadius {
   AppRadius._();
 

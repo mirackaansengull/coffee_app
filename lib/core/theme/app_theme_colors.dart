@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Tema rengi ve gradient'leri. Dark/light geçişinde otomatik güncellenir.
 class AppThemeColors extends ThemeExtension<AppThemeColors> {
   const AppThemeColors({
     required this.backgroundPrimary,
@@ -22,8 +21,6 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color backgroundSecondary;
   final Color surfaceDark;
   final Color surfaceMedium;
-
-  /// Kart ve kutular için belirgin kenarlık rengi.
   final Color surfaceBorder;
   final Color textPrimary;
   final Color textHint;

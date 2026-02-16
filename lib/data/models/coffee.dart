@@ -1,4 +1,3 @@
-/// Kahve ürün modeli. Gerçek veri API'den geleceği için alanlar buna göre tanımlı.
 class Coffee {
   const Coffee({
     required this.id,

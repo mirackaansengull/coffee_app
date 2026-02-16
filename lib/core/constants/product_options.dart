@@ -1,5 +1,3 @@
-/// Ürün detay sayfasındaki boyut, süt, şurup seçenekleri.
-/// Gerçek uygulamada API'den veya ürüne özel gelebilir.
 class ProductOptions {
   ProductOptions._();
 

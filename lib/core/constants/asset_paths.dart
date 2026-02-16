@@ -1,4 +1,3 @@
-/// Asset dosya yolları (tek yerden yönetim).
 class AssetPaths {
   AssetPaths._();
 
