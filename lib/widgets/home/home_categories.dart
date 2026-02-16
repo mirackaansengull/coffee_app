@@ -9,17 +9,43 @@ class CategoryItem {
 }
 
 const List<CategoryItem> coffeeTypes = [
-  CategoryItem(label: 'En Çok Satanlar', icon: ImageIcon(AssetImage(AssetPaths.categoryEnCokSatanlar))),
-  CategoryItem(label: 'Sıcak Kahve', icon: ImageIcon(AssetImage(AssetPaths.categorySicakKahve))),
-  CategoryItem(label: 'Soğuk Kahve', icon: ImageIcon(AssetImage(AssetPaths.categorySogukKahve))),
-  CategoryItem(label: 'Filtre Kahve', icon: ImageIcon(AssetImage(AssetPaths.categoryFiltreKahve))),
-  CategoryItem(label: 'Espresso', icon: ImageIcon(AssetImage(AssetPaths.categoryEspresso))),
-  CategoryItem(label: 'Türk Kahvesi', icon: ImageIcon(AssetImage(AssetPaths.categoryTurkKahvesi))),
-  CategoryItem(label: 'Latte', icon: ImageIcon(AssetImage(AssetPaths.categoryLatte))),
+  CategoryItem(
+    label: 'En Çok Satanlar',
+    icon: ImageIcon(AssetImage(AssetPaths.categoryEnCokSatanlar)),
+  ),
+  CategoryItem(
+    label: 'Sıcak Kahve',
+    icon: ImageIcon(AssetImage(AssetPaths.categorySicakKahve)),
+  ),
+  CategoryItem(
+    label: 'Soğuk Kahve',
+    icon: ImageIcon(AssetImage(AssetPaths.categorySogukKahve)),
+  ),
+  CategoryItem(
+    label: 'Filtre Kahve',
+    icon: ImageIcon(AssetImage(AssetPaths.categoryFiltreKahve)),
+  ),
+  CategoryItem(
+    label: 'Espresso',
+    icon: ImageIcon(AssetImage(AssetPaths.categoryEspresso)),
+  ),
+  CategoryItem(
+    label: 'Türk Kahvesi',
+    icon: ImageIcon(AssetImage(AssetPaths.categoryTurkKahvesi)),
+  ),
+  CategoryItem(
+    label: 'Latte',
+    icon: ImageIcon(AssetImage(AssetPaths.categoryLatte)),
+  ),
 ];
 
 class Categories extends StatelessWidget {
-  const Categories({super.key, required this.icon, required this.label, required this.onTap});
+  const Categories({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   final ImageIcon icon;
   final String label;
@@ -35,7 +61,12 @@ class Categories extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 189, 113, 0), // Profil aşama rengi ile aynı
+            color: const Color.fromARGB(
+              255,
+              189,
+              113,
+              0,
+            ), // Profil aşama rengi ile aynı
             borderRadius: BorderRadius.circular(7.r),
             boxShadow: [
               BoxShadow(
@@ -54,11 +85,7 @@ class Categories extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ImageIcon(
-                icon.image,
-                size: 18.sp,
-                color: Colors.white,
-              ),
+              ImageIcon(icon.image, size: 18.sp, color: Colors.white),
               SizedBox(width: 6.w),
               Flexible(
                 child: Text(

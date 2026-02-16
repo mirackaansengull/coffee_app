@@ -21,21 +21,66 @@ class AppTheme {
       ),
       extensions: const [AppThemeColors.dark],
       textTheme: TextTheme(
-        bodyLarge: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w300),
-        bodyMedium: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w300),
-        bodySmall: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w300),
-        titleLarge: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        titleMedium: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        titleSmall: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        labelLarge: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        labelMedium: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w300),
-        labelSmall: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w300),
-        displayLarge: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        displayMedium: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        displaySmall: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        headlineLarge: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        headlineMedium: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        headlineSmall: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
+        bodyLarge: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w300,
+        ),
+        bodyMedium: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w300,
+        ),
+        bodySmall: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w300,
+        ),
+        titleLarge: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        titleMedium: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        titleSmall: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        labelLarge: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        labelMedium: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w300,
+        ),
+        labelSmall: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w300,
+        ),
+        displayLarge: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        displayMedium: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        displaySmall: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        headlineLarge: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        headlineMedium: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        headlineSmall: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: c.backgroundPrimary,
@@ -75,21 +120,66 @@ class AppTheme {
       ),
       extensions: const [AppThemeColors.light],
       textTheme: TextTheme(
-        bodyLarge: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w300),
-        bodyMedium: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w300),
-        bodySmall: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w300),
-        titleLarge: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        titleMedium: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        titleSmall: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        labelLarge: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        labelMedium: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w300),
-        labelSmall: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w300),
-        displayLarge: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        displayMedium: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        displaySmall: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        headlineLarge: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        headlineMedium: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
-        headlineSmall: const TextStyle(fontFamily: AppConstants.fontFamily, fontWeight: FontWeight.w500),
+        bodyLarge: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w300,
+        ),
+        bodyMedium: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w300,
+        ),
+        bodySmall: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w300,
+        ),
+        titleLarge: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        titleMedium: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        titleSmall: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        labelLarge: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        labelMedium: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w300,
+        ),
+        labelSmall: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w300,
+        ),
+        displayLarge: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        displayMedium: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        displaySmall: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        headlineLarge: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        headlineMedium: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
+        headlineSmall: const TextStyle(
+          fontFamily: AppConstants.fontFamily,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: c.backgroundPrimary,

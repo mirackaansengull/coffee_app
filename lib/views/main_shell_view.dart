@@ -32,10 +32,7 @@ class _MainShellState extends State<MainShell> {
     ];
     return Scaffold(
       appBar: Appbar(),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: pages,
-      ),
+      body: IndexedStack(index: _currentIndex, children: pages),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: colors.backgroundPrimary,
@@ -57,7 +54,11 @@ class _MainShellState extends State<MainShell> {
                 _NavItem(
                   icon: ColorFiltered(
                     colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-                    child: Image.asset('assets/icons/home.png', width: 26, height: 26),
+                    child: Image.asset(
+                      'assets/icons/home.png',
+                      width: 26,
+                      height: 26,
+                    ),
                   ),
                   label: 'Ana Sayfa',
                   isSelected: _currentIndex == 0,
@@ -66,7 +67,11 @@ class _MainShellState extends State<MainShell> {
                 _NavItem(
                   icon: ColorFiltered(
                     colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-                    child: Image.asset('assets/icons/cart.png', width: 26, height: 26),
+                    child: Image.asset(
+                      'assets/icons/cart.png',
+                      width: 26,
+                      height: 26,
+                    ),
                   ),
                   label: 'Sepet',
                   isSelected: _currentIndex == 1,
@@ -75,7 +80,11 @@ class _MainShellState extends State<MainShell> {
                 _NavItem(
                   icon: ColorFiltered(
                     colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-                    child: Image.asset('assets/icons/favorites.png', width: 26, height: 26),
+                    child: Image.asset(
+                      'assets/icons/favorites.png',
+                      width: 26,
+                      height: 26,
+                    ),
                   ),
                   label: 'Favoriler',
                   isSelected: _currentIndex == 2,
@@ -84,7 +93,11 @@ class _MainShellState extends State<MainShell> {
                 _NavItem(
                   icon: ColorFiltered(
                     colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-                    child: Image.asset('assets/icons/profile.png', width: 26, height: 26),
+                    child: Image.asset(
+                      'assets/icons/profile.png',
+                      width: 26,
+                      height: 26,
+                    ),
                   ),
                   label: 'Profil',
                   isSelected: _currentIndex == 3,
@@ -126,10 +139,7 @@ class _NavItem extends StatelessWidget {
             SizedBox(
               width: 26,
               height: 26,
-              child: Opacity(
-                opacity: isSelected ? 1.0 : 0.6,
-                child: icon,
-              ),
+              child: Opacity(opacity: isSelected ? 1.0 : 0.6, child: icon),
             ),
             const SizedBox(height: 4),
             Text(

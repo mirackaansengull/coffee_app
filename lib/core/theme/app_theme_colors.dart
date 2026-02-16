@@ -22,6 +22,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color backgroundSecondary;
   final Color surfaceDark;
   final Color surfaceMedium;
+
   /// Kart ve kutular için belirgin kenarlık rengi.
   final Color surfaceBorder;
   final Color textPrimary;
@@ -120,11 +121,21 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
 
   @override
   ThemeExtension<AppThemeColors> lerp(
-      ThemeExtension<AppThemeColors>? other, double t) {
+    ThemeExtension<AppThemeColors>? other,
+    double t,
+  ) {
     if (other is! AppThemeColors) return this;
     return AppThemeColors(
-      backgroundPrimary: Color.lerp(backgroundPrimary, other.backgroundPrimary, t)!,
-      backgroundSecondary: Color.lerp(backgroundSecondary, other.backgroundSecondary, t)!,
+      backgroundPrimary: Color.lerp(
+        backgroundPrimary,
+        other.backgroundPrimary,
+        t,
+      )!,
+      backgroundSecondary: Color.lerp(
+        backgroundSecondary,
+        other.backgroundSecondary,
+        t,
+      )!,
       surfaceDark: Color.lerp(surfaceDark, other.surfaceDark, t)!,
       surfaceMedium: Color.lerp(surfaceMedium, other.surfaceMedium, t)!,
       surfaceBorder: Color.lerp(surfaceBorder, other.surfaceBorder, t)!,
@@ -132,9 +143,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       textHint: Color.lerp(textHint, other.textHint, t)!,
       cursor: Color.lerp(cursor, other.cursor, t)!,
       overlayDark: Color.lerp(overlayDark, other.overlayDark, t)!,
-      overlayDarkOpacity: overlayDarkOpacity + (other.overlayDarkOpacity - overlayDarkOpacity) * t,
-      progressIndicator: Color.lerp(progressIndicator, other.progressIndicator, t)!,
-      gradientBackground: t < 0.5 ? gradientBackground : other.gradientBackground,
+      overlayDarkOpacity:
+          overlayDarkOpacity +
+          (other.overlayDarkOpacity - overlayDarkOpacity) * t,
+      progressIndicator: Color.lerp(
+        progressIndicator,
+        other.progressIndicator,
+        t,
+      )!,
+      gradientBackground: t < 0.5
+          ? gradientBackground
+          : other.gradientBackground,
       gradientSearchBar: t < 0.5 ? gradientSearchBar : other.gradientSearchBar,
     );
   }

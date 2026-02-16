@@ -1,15 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:coffee_app/data/repositorys/banner_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BannerSlider extends StatelessWidget {
   const BannerSlider({super.key});
-
-  static const List<String> _imgList = [
-    'https://r.resimlink.com/g-5eUFwuD.webp',
-    'https://r.resimlink.com/gmkvRDO.webp',
-    'https://r.resimlink.com/pbYv9M.webp',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +12,7 @@ class BannerSlider extends StatelessWidget {
     final horizontalMargin = 20.w * 2;
     final bannerWidth = screenWidth - horizontalMargin;
     final bannerHeight = 180.h;
+    final imgList = BannerRepository.instance.getBannerImageUrls();
 
     return Container(
       width: bannerWidth,
@@ -32,7 +28,7 @@ class BannerSlider extends StatelessWidget {
           enableInfiniteScroll: true,
           autoPlayAnimationDuration: const Duration(milliseconds: 800),
         ),
-        items: _imgList
+        items: imgList
             .map(
               (url) => ClipRRect(
                 borderRadius: BorderRadius.circular(12.r),
@@ -50,7 +46,7 @@ class BannerSlider extends StatelessWidget {
                           child: CircularProgressIndicator(
                             value: loadingProgress.expectedTotalBytes != null
                                 ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
+                                      loadingProgress.expectedTotalBytes!
                                 : null,
                           ),
                         ),

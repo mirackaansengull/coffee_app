@@ -138,7 +138,10 @@ class _ThemeToggleSwitch extends StatelessWidget {
           decoration: BoxDecoration(
             color: trackColor,
             borderRadius: BorderRadius.circular(20.r),
-            border: Border.all(color: AppThemeColors.of(context).surfaceBorder, width: 1),
+            border: Border.all(
+              color: AppThemeColors.of(context).surfaceBorder,
+              width: 1,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.1),
@@ -158,7 +161,9 @@ class _ThemeToggleSwitch extends StatelessWidget {
               AnimatedAlign(
                 duration: duration,
                 curve: curve,
-                alignment: isDark ? Alignment.centerLeft : Alignment.centerRight,
+                alignment: isDark
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
                 child: AnimatedContainer(
                   duration: duration,
                   curve: curve,

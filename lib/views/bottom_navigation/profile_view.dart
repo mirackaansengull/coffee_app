@@ -1,4 +1,5 @@
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
+import 'package:coffee_app/data/repositorys/order_repository.dart';
 import 'package:coffee_app/views/profile_view/all_orders_view.dart';
 import 'package:coffee_app/widgets/profile/last_order_card.dart';
 import 'package:coffee_app/widgets/profile/orders_section_header.dart';
@@ -12,13 +13,10 @@ class ProfileView extends StatelessWidget {
 
   final VoidCallback onThemeToggle;
 
-  static const int _profileOrderStep = 1;
-  static const String _profileOrderDate = '14.02.2026';
-  static const String _profileOrderTime = '12:00';
-
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
+    final lastOrder = OrderRepository.instance.getLastOrder();
     return Scaffold(
       backgroundColor: colors.backgroundSecondary,
       body: Container(
@@ -36,16 +34,19 @@ class ProfileView extends StatelessWidget {
                   onSeeAllTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AllOrdersView()),
+                      MaterialPageRoute(
+                        builder: (context) => const AllOrdersView(),
+                      ),
                     );
                   },
                 ),
                 SizedBox(height: 10.h),
-                LastOrderCard(
-                  orderStep: _profileOrderStep,
-                  orderDate: _profileOrderDate,
-                  orderTime: _profileOrderTime,
-                ),
+                if (lastOrder != null)
+                  LastOrderCard(
+                    orderStep: lastOrder.step,
+                    orderDate: lastOrder.date,
+                    orderTime: lastOrder.time,
+                  ),
                 SizedBox(height: 20.h),
                 ProfileTile(
                   icon: Icons.credit_card_rounded,

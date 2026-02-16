@@ -1,33 +1,29 @@
 import 'package:coffee_app/core/constants/app_constants.dart';
 import 'package:coffee_app/core/constants/order_constants.dart';
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
+import 'package:coffee_app/data/repositorys/order_repository.dart';
+import 'package:coffee_app/data/models/order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AllOrdersView extends StatelessWidget {
   const AllOrdersView({super.key});
 
-  /// En üstte: Hazırlanıyor. Altında: hepsi Teslim edildi, farklı puanlar.
-  static final List<Map<String, dynamic>> _orders = [
-    {'date': '14.02.2026', 'time': '12:00', 'step': 1, 'rating': 0},
-    {'date': '13.02.2026', 'time': '14:30', 'step': 3, 'rating': 5},
-    {'date': '10.02.2026', 'time': '09:15', 'step': 3, 'rating': 4},
-    {'date': '07.02.2026', 'time': '18:45', 'step': 3, 'rating': 3},
-    {'date': '05.02.2026', 'time': '11:20', 'step': 3, 'rating': 4},
-    {'date': '01.02.2026', 'time': '16:00', 'step': 3, 'rating': 2},
-    {'date': '28.01.2026', 'time': '13:10', 'step': 3, 'rating': 5},
-  ];
-
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
+    final orders = OrderRepository.instance.getOrders();
     return Scaffold(
       backgroundColor: colors.backgroundPrimary,
       appBar: AppBar(
         backgroundColor: colors.backgroundPrimary,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp, color: colors.textPrimary),
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 20.sp,
+            color: colors.textPrimary,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -43,14 +39,11 @@ class AllOrdersView extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
-        itemCount: _orders.length,
+        itemCount: orders.length,
         itemBuilder: (context, index) {
-          final o = _orders[index];
+          final order = orders[index];
           return _OrderCard(
-            date: o['date'] as String,
-            time: o['time'] as String,
-            step: o['step'] as int,
-            rating: o['rating'] as int,
+            order: order,
             statuses: OrderConstants.statusLabels,
           );
         },
@@ -60,18 +53,9 @@ class AllOrdersView extends StatelessWidget {
 }
 
 class _OrderCard extends StatefulWidget {
-  const _OrderCard({
-    required this.date,
-    required this.time,
-    required this.step,
-    required this.rating,
-    required this.statuses,
-  });
+  const _OrderCard({required this.order, required this.statuses});
 
-  final String date;
-  final String time;
-  final int step;
-  final int rating;
+  final Order order;
   final List<String> statuses;
 
   @override
@@ -84,13 +68,14 @@ class _OrderCardState extends State<_OrderCard> {
   @override
   void initState() {
     super.initState();
-    _rating = widget.rating;
+    _rating = widget.order.rating;
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
     const orange = Color(0xFFFF9800);
+    final order = widget.order;
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: 12.h),
@@ -119,7 +104,7 @@ class _OrderCardState extends State<_OrderCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${widget.date} · ${widget.time}',
+                '${order.date} · ${order.time}',
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: colors.textHint,
@@ -130,7 +115,7 @@ class _OrderCardState extends State<_OrderCard> {
           ),
           SizedBox(height: 8.h),
           Text(
-            widget.statuses[widget.step],
+            widget.statuses[order.step],
             style: TextStyle(
               fontSize: 13.sp,
               fontWeight: FontWeight.w500,
@@ -141,7 +126,7 @@ class _OrderCardState extends State<_OrderCard> {
           SizedBox(height: 14.h),
           Row(
             children: List.generate(4, (i) {
-              final isFilled = i <= widget.step;
+              final isFilled = i <= order.step;
               return Expanded(
                 child: Container(
                   height: 6.h,
@@ -163,18 +148,28 @@ class _OrderCardState extends State<_OrderCard> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ...OrderConstants.stepLabels.map((label) => Text(
+                ...OrderConstants.stepLabels.map(
+                  (label) => Text(
                     label,
-                    style: TextStyle(fontSize: 9.sp, color: colors.textHint, fontFamily: AppConstants.fontFamily),
-                  )),
+                    style: TextStyle(
+                      fontSize: 9.sp,
+                      color: colors.textHint,
+                      fontFamily: AppConstants.fontFamily,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-          if (widget.step == 3) ...[
+          if (order.step == 3) ...[
             SizedBox(height: 16.h),
             Text(
               '5 yıldız üzerinden puan verin',
-              style: TextStyle(fontSize: 12.sp, color: colors.textHint, fontFamily: AppConstants.fontFamily),
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: colors.textHint,
+                fontFamily: AppConstants.fontFamily,
+              ),
             ),
             SizedBox(height: 8.h),
             Row(
@@ -187,7 +182,9 @@ class _OrderCardState extends State<_OrderCard> {
                     onTap: () => setState(() => _rating = star),
                     borderRadius: BorderRadius.circular(8.r),
                     child: Icon(
-                      selected ? Icons.star_rounded : Icons.star_outline_rounded,
+                      selected
+                          ? Icons.star_rounded
+                          : Icons.star_outline_rounded,
                       size: 26.sp,
                       color: selected ? orange : colors.textHint,
                     ),

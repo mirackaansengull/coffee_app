@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OrdersSectionHeader extends StatelessWidget {
-  const OrdersSectionHeader({
-    super.key,
-    required this.onSeeAllTap,
-  });
+  const OrdersSectionHeader({super.key, required this.onSeeAllTap});
 
   final VoidCallback onSeeAllTap;
 

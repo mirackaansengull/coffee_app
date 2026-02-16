@@ -1,4 +1,5 @@
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
+import 'package:coffee_app/data/repositorys/coffee_repository.dart';
 import 'package:coffee_app/views/coffee_detail_view.dart';
 import 'package:coffee_app/widgets/home/banner_slider.dart';
 import 'package:coffee_app/widgets/home/home_categories.dart';
@@ -13,6 +14,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
+    final coffees = CoffeeRepository.instance.getCoffees();
     return Scaffold(
       backgroundColor: colors.backgroundSecondary,
       body: Container(
@@ -39,7 +41,9 @@ class HomeView extends StatelessWidget {
                 height: 40.h,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
+                  ),
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   itemCount: coffeeTypes.length,
                   separatorBuilder: (context, index) => SizedBox(width: 12.w),
@@ -54,24 +58,33 @@ class HomeView extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20.h),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CoffeeDetail()));
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12.w,
-                      mainAxisSpacing: 12.h,
-                      childAspectRatio: 0.72,
-                    ),
-                    itemCount: 10,
-                    itemBuilder: (context, index) => const CoffeeCard(),
+              Padding(
+                padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12.w,
+                    mainAxisSpacing: 12.h,
+                    childAspectRatio: 0.72,
                   ),
+                  itemCount: coffees.length,
+                  itemBuilder: (context, index) {
+                    final coffee = coffees[index];
+                    return CoffeeCard(
+                      coffee: coffee,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CoffeeDetail(coffee: coffee),
+                          ),
+                        );
+                      },
+                      onFavoriteTap: () {},
+                    );
+                  },
                 ),
               ),
             ],
