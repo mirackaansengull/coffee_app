@@ -7,17 +7,18 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 )
 
 const brevoURL = "https://api.brevo.com/v3/smtp/email"
 
 func sendVerificationCode(toEmail, code, subject, bodyPrefix string) error {
-	apiKey := os.Getenv("BREVO_API_KEY")
+	apiKey := strings.TrimSpace(os.Getenv("BREVO_API_KEY"))
 	if apiKey == "" {
 		return fmt.Errorf("BREVO_API_KEY ortam değişkeni ayarlanmamış")
 	}
-	senderEmail := os.Getenv("BREVO_SENDER_EMAIL")
-	senderName := os.Getenv("BREVO_SENDER_NAME")
+	senderEmail := strings.TrimSpace(os.Getenv("BREVO_SENDER_EMAIL"))
+	senderName := strings.TrimSpace(os.Getenv("BREVO_SENDER_NAME"))
 	if senderEmail == "" {
 		senderEmail = "noreply@example.com"
 	}
