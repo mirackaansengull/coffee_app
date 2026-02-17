@@ -1,12 +1,17 @@
+import 'package:coffee_app/data/repositories/bloc/auth_bloc.dart';
 import 'package:coffee_app/core/constants/app_constants.dart';
 import 'package:coffee_app/core/theme/app_theme.dart';
-import 'package:coffee_app/data/services/auth_service.dart';
+import 'package:coffee_app/data/repositories/auth_repository.dart';
 import 'package:coffee_app/views/auth/login_view.dart';
 import 'package:coffee_app/views/main_shell_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
   runApp(const MyApp());
 }
 
@@ -19,21 +24,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.dark;
-  bool _isLoggedIn = false;
-  bool _initialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    AuthService.instance.loadFromStorage().then((_) {
-      if (mounted) {
-        setState(() {
-          _isLoggedIn = AuthService.instance.isLoggedIn;
-          _initialized = true;
-        });
-      }
-    });
-  }
 
   void _toggleTheme() {
     setState(() {
@@ -45,30 +35,46 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: AppConstants.designSize,
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          themeMode: _themeMode,
-          home: !_initialized
-              ? const Scaffold(
-                  body: Center(child: CircularProgressIndicator()),
-                )
-              : _isLoggedIn
-                  ? MainShell(
+    return RepositoryProvider<AuthRepository>(
+      create: (_) => AuthRepository(),
+      child: BlocProvider<AuthBloc>(
+        create: (context) {
+          final bloc = AuthBloc(repository: context.read<AuthRepository>());
+          bloc.add(AuthCheckRequested());
+          return bloc;
+        },
+        child: ScreenUtilInit(
+          designSize: AppConstants.designSize,
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: _themeMode,
+              home: BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state is AuthInitial || state is AuthLoading) {
+                    return const Scaffold(
+                      body: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+                  if (state is AuthAuthenticated) {
+                    return MainShell(
+                      user: state.user,
                       onThemeToggle: _toggleTheme,
-                      onLogout: () => setState(() => _isLoggedIn = false),
-                    )
-                  : LoginView(
-                      onLoginSuccess: () => setState(() => _isLoggedIn = true),
-                    ),
-        );
-      },
+                      onLogout: () =>
+                          context.read<AuthBloc>().add(AuthLogoutRequested()),
+                    );
+                  }
+                  return const LoginView();
+                },
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

@@ -1,6 +1,9 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiConstants {
   ApiConstants._();
 
-  /// Render'da deploy ettiğiniz backend URL'si (örn: https://coffee-app-xxx.onrender.com)
-  static const String baseUrl = 'http://localhost:8080';
+  /// .env dosyasındaki BASE_URL (yüklü değilse localhost)
+  static String get baseUrl =>
+      dotenv.env['BASE_URL']?.trim() ?? 'http://localhost:8080';
 }

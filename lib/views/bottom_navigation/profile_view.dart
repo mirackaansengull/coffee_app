@@ -1,6 +1,6 @@
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
-import 'package:coffee_app/data/repositorys/order_repository.dart';
-import 'package:coffee_app/data/services/auth_service.dart';
+import 'package:coffee_app/data/models/auth_user.dart';
+import 'package:coffee_app/data/repositories/order_repository.dart';
 import 'package:coffee_app/views/profile_view/all_orders_view.dart';
 import 'package:coffee_app/widgets/profile/last_order_card.dart';
 import 'package:coffee_app/widgets/profile/orders_section_header.dart';
@@ -12,10 +12,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ProfileView extends StatelessWidget {
   const ProfileView({
     super.key,
+    required this.user,
     required this.onThemeToggle,
     required this.onLogout,
   });
 
+  final AuthUser user;
   final VoidCallback onThemeToggle;
   final VoidCallback onLogout;
 
@@ -23,9 +25,8 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
     final lastOrder = OrderRepository.instance.getLastOrder();
-    final user = AuthService.instance.user;
-    final userName = user?['name'] as String? ?? 'Kullanıcı';
-    final userEmail = user?['email'] as String? ?? '';
+    final userName = user.name.isEmpty ? 'Kullanıcı' : user.name;
+    final userEmail = user.email;
     return Scaffold(
       backgroundColor: colors.backgroundSecondary,
       body: Container(
@@ -80,10 +81,7 @@ class ProfileView extends StatelessWidget {
                 ProfileTile(
                   icon: Icons.logout_rounded,
                   title: 'Çıkış Yap',
-                  onTap: () async {
-                    await AuthService.instance.logout();
-                    onLogout();
-                  },
+                  onTap: onLogout,
                   isDestructive: true,
                 ),
                 SizedBox(height: 24.h),

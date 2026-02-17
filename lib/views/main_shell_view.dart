@@ -1,4 +1,5 @@
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
+import 'package:coffee_app/data/models/auth_user.dart';
 import 'package:coffee_app/views/bottom_navigation/cart_view.dart';
 import 'package:coffee_app/views/bottom_navigation/favorites_view.dart';
 import 'package:coffee_app/views/bottom_navigation/home_view.dart';
@@ -9,10 +10,12 @@ import 'package:flutter/material.dart';
 class MainShell extends StatefulWidget {
   const MainShell({
     super.key,
+    required this.user,
     required this.onThemeToggle,
     required this.onLogout,
   });
 
+  final AuthUser user;
   final VoidCallback onThemeToggle;
   final VoidCallback onLogout;
 
@@ -34,6 +37,7 @@ class _MainShellState extends State<MainShell> {
       const CartView(),
       const FavoritesView(),
       ProfileView(
+        user: widget.user,
         onThemeToggle: widget.onThemeToggle,
         onLogout: widget.onLogout,
       ),

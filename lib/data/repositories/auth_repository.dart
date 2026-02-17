@@ -1,60 +1,40 @@
 import 'dart:convert';
 
 import 'package:coffee_app/core/constants/api_constants.dart';
+import 'package:coffee_app/data/models/auth_result.dart';
+import 'package:coffee_app/data/models/auth_user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthService {
-  AuthService._();
-  static final AuthService instance = AuthService._();
+class AuthRepository {
+  AuthRepository();
 
   static const _keyToken = 'auth_token';
   static const _keyUser = 'auth_user';
+  String get _base => ApiConstants.baseUrl;
 
-  String? _token;
-  Map<String, dynamic>? _user;
-
-  String? get token => _token;
-  Map<String, dynamic>? get user => _user;
-  bool get isLoggedIn => _token != null && _token!.isNotEmpty;
-
-  Future<void> loadFromStorage() async {
+  Future<AuthUser?> getCurrentUser() async {
     final prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString(_keyToken);
-    final userJson = prefs.getString(_keyUser);
-    if (userJson != null) {
-      try {
-        _user = Map<String, dynamic>.from(jsonDecode(userJson) as Map);
-      } catch (_) {}
+    final j = prefs.getString(_keyUser);
+    if (j == null) return null;
+    try {
+      return AuthUser.fromJson(Map<String, dynamic>.from(jsonDecode(j) as Map));
+    } catch (_) {
+      return null;
     }
-  }
-
-  Future<void> _saveToStorage() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (_token != null) {
-      await prefs.setString(_keyToken, _token!);
-      if (_user != null) {
-        await prefs.setString(_keyUser, jsonEncode(_user));
-      }
-    } else {
-      await prefs.remove(_keyToken);
-      await prefs.remove(_keyUser);
-    }
-  }
-
-  Future<void> setAuth(String token, Map<String, dynamic> user) async {
-    _token = token;
-    _user = user;
-    await _saveToStorage();
   }
 
   Future<void> logout() async {
-    _token = null;
-    _user = null;
-    await _saveToStorage();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_keyToken);
+    await prefs.remove(_keyUser);
   }
 
-  String get _base => ApiConstants.baseUrl;
+  Future<void> _save(String token, AuthUser user) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyToken, token);
+    await prefs.setString(_keyUser, jsonEncode(user.toJson()));
+  }
 
   Future<AuthResult> sendRegisterCode(String email) async {
     try {
@@ -63,11 +43,11 @@ class AuthService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email.trim().toLowerCase()}),
       );
-      final data = _decodeBody(res.body);
+      final d = _decode(res.body);
       if (res.statusCode == 200) {
-        return AuthResult.success(message: data['message'] as String? ?? 'Kod gönderildi.');
+        return AuthResult.successResult(message: d['message'] as String? ?? 'Kod gönderildi.');
       }
-      return AuthResult.fail(data['error'] as String? ?? 'Bir hata oluştu.');
+      return AuthResult.fail(d['error'] as String? ?? 'Bir hata oluştu.');
     } catch (e) {
       return AuthResult.fail('Bağlantı hatası: $e');
     }
@@ -90,15 +70,13 @@ class AuthService {
           'name': name.trim(),
         }),
       );
-      final data = _decodeBody(res.body);
-      if (res.statusCode == 200 && data['token'] != null) {
-        await setAuth(
-          data['token'] as String,
-          Map<String, dynamic>.from(data['user'] as Map),
-        );
-        return AuthResult.success();
+      final d = _decode(res.body);
+      if (res.statusCode == 200 && d['token'] != null && d['user'] != null) {
+        final user = AuthUser.fromJson(Map<String, dynamic>.from(d['user'] as Map));
+        await _save(d['token'] as String, user);
+        return AuthResult.successResult(user: user);
       }
-      return AuthResult.fail(data['error'] as String? ?? 'Doğrulama başarısız.');
+      return AuthResult.fail(d['error'] as String? ?? 'Doğrulama başarısız.');
     } catch (e) {
       return AuthResult.fail('Bağlantı hatası: $e');
     }
@@ -114,15 +92,13 @@ class AuthService {
           'password': password,
         }),
       );
-      final data = _decodeBody(res.body);
-      if (res.statusCode == 200 && data['token'] != null) {
-        await setAuth(
-          data['token'] as String,
-          Map<String, dynamic>.from(data['user'] as Map),
-        );
-        return AuthResult.success();
+      final d = _decode(res.body);
+      if (res.statusCode == 200 && d['token'] != null && d['user'] != null) {
+        final user = AuthUser.fromJson(Map<String, dynamic>.from(d['user'] as Map));
+        await _save(d['token'] as String, user);
+        return AuthResult.successResult(user: user);
       }
-      return AuthResult.fail(data['error'] as String? ?? 'Giriş başarısız.');
+      return AuthResult.fail(d['error'] as String? ?? 'Giriş başarısız.');
     } catch (e) {
       return AuthResult.fail('Bağlantı hatası: $e');
     }
@@ -135,11 +111,11 @@ class AuthService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email.trim().toLowerCase()}),
       );
-      final data = _decodeBody(res.body);
+      final d = _decode(res.body);
       if (res.statusCode == 200) {
-        return AuthResult.success(message: data['message'] as String? ?? 'Kod gönderildi.');
+        return AuthResult.successResult(message: d['message'] as String? ?? 'Kod gönderildi.');
       }
-      return AuthResult.fail(data['error'] as String? ?? 'Bir hata oluştu.');
+      return AuthResult.fail(d['error'] as String? ?? 'Bir hata oluştu.');
     } catch (e) {
       return AuthResult.fail('Bağlantı hatası: $e');
     }
@@ -160,35 +136,21 @@ class AuthService {
           'newPassword': newPassword,
         }),
       );
-      final data = _decodeBody(res.body);
+      final d = _decode(res.body);
       if (res.statusCode == 200) {
-        return AuthResult.success(message: data['message'] as String? ?? 'Şifre güncellendi.');
+        return AuthResult.successResult(message: d['message'] as String? ?? 'Şifre güncellendi.');
       }
-      return AuthResult.fail(data['error'] as String? ?? 'Şifre sıfırlama başarısız.');
+      return AuthResult.fail(d['error'] as String? ?? 'Şifre sıfırlama başarısız.');
     } catch (e) {
       return AuthResult.fail('Bağlantı hatası: $e');
     }
   }
 
-  Map<String, dynamic> _decodeBody(String body) {
+  Map<String, dynamic> _decode(String body) {
     try {
       return Map<String, dynamic>.from(jsonDecode(body) as Map);
     } catch (_) {
       return {};
     }
   }
-}
-
-class AuthResult {
-  final bool success;
-  final String? message;
-  final String? error;
-
-  AuthResult._({this.success = false, this.message, this.error});
-
-  factory AuthResult.success({String? message}) =>
-      AuthResult._(success: true, message: message);
-
-  factory AuthResult.fail(String error) =>
-      AuthResult._(success: false, error: error);
 }
