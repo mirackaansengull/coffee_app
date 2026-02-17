@@ -7,9 +7,14 @@ import 'package:coffee_app/widgets/shared/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class MainShell extends StatefulWidget {
-  const MainShell({super.key, required this.onThemeToggle});
+  const MainShell({
+    super.key,
+    required this.onThemeToggle,
+    required this.onLogout,
+  });
 
   final VoidCallback onThemeToggle;
+  final VoidCallback onLogout;
 
   @override
   State<MainShell> createState() => _MainShellState();
@@ -28,7 +33,10 @@ class _MainShellState extends State<MainShell> {
       const HomeView(),
       const CartView(),
       const FavoritesView(),
-      ProfileView(onThemeToggle: widget.onThemeToggle),
+      ProfileView(
+        onThemeToggle: widget.onThemeToggle,
+        onLogout: widget.onLogout,
+      ),
     ];
     return Scaffold(
       appBar: Appbar(),

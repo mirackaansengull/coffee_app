@@ -15,8 +15,8 @@ dependencies:
     sdk: flutter
   flutter_screenutil: ^5.9.3
   carousel_slider: ^5.1.2
-
-  
+  http: ^1.2.2
+  shared_preferences: ^2.3.3
   cupertino_icons: ^1.0.8
 
 dev_dependencies:

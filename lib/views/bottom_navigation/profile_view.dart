@@ -1,5 +1,6 @@
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/data/repositorys/order_repository.dart';
+import 'package:coffee_app/data/services/auth_service.dart';
 import 'package:coffee_app/views/profile_view/all_orders_view.dart';
 import 'package:coffee_app/widgets/profile/last_order_card.dart';
 import 'package:coffee_app/widgets/profile/orders_section_header.dart';
@@ -9,14 +10,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileView extends StatelessWidget {
-  const ProfileView({super.key, required this.onThemeToggle});
+  const ProfileView({
+    super.key,
+    required this.onThemeToggle,
+    required this.onLogout,
+  });
 
   final VoidCallback onThemeToggle;
+  final VoidCallback onLogout;
 
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
     final lastOrder = OrderRepository.instance.getLastOrder();
+    final user = AuthService.instance.user;
+    final userName = user?['name'] as String? ?? 'Kullanıcı';
+    final userEmail = user?['email'] as String? ?? '';
     return Scaffold(
       backgroundColor: colors.backgroundSecondary,
       body: Container(
@@ -28,7 +37,11 @@ class ProfileView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ProfileHeader(onThemeToggle: onThemeToggle),
+                ProfileHeader(
+                  userName: userName,
+                  userEmail: userEmail,
+                  onThemeToggle: onThemeToggle,
+                ),
                 SizedBox(height: 24.h),
                 OrdersSectionHeader(
                   onSeeAllTap: () {
@@ -67,7 +80,10 @@ class ProfileView extends StatelessWidget {
                 ProfileTile(
                   icon: Icons.logout_rounded,
                   title: 'Çıkış Yap',
-                  onTap: () {},
+                  onTap: () async {
+                    await AuthService.instance.logout();
+                    onLogout();
+                  },
                   isDestructive: true,
                 ),
                 SizedBox(height: 24.h),
