@@ -58,11 +58,15 @@ func sendRegisterCode(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Email string `json:"email"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.Email == "" {
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, `{"error":"Geçerli email gerekli"}`, http.StatusBadRequest)
 		return
 	}
 	req.Email = strings.TrimSpace(strings.ToLower(req.Email))
+	if req.Email == "" {
+		http.Error(w, `{"error":"Geçerli email gerekli"}`, http.StatusBadRequest)
+		return
+	}
 	ctx := r.Context()
 	var existing User
 	err := usersCol.FindOne(ctx, bson.M{"email": req.Email}).Decode(&existing)
@@ -192,11 +196,15 @@ func sendResetCode(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Email string `json:"email"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.Email == "" {
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, `{"error":"Geçerli email gerekli"}`, http.StatusBadRequest)
 		return
 	}
 	req.Email = strings.TrimSpace(strings.ToLower(req.Email))
+	if req.Email == "" {
+		http.Error(w, `{"error":"Geçerli email gerekli"}`, http.StatusBadRequest)
+		return
+	}
 	ctx := r.Context()
 	var user User
 	if usersCol.FindOne(ctx, bson.M{"email": req.Email}).Decode(&user) != nil {

@@ -12,7 +12,20 @@ import (
 
 const brevoURL = "https://api.brevo.com/v3/smtp/email"
 
+func isValidEmail(s string) bool {
+	s = strings.TrimSpace(s)
+	if len(s) < 6 || len(s) > 254 {
+		return false
+	}
+	at := strings.Index(s, "@")
+	return at > 0 && at < len(s)-1 && strings.Contains(s[at+1:], ".")
+}
+
 func sendVerificationCode(toEmail, code, subject, bodyPrefix string) error {
+	toEmail = strings.TrimSpace(strings.ToLower(toEmail))
+	if !isValidEmail(toEmail) {
+		return fmt.Errorf("geçersiz e-posta adresi")
+	}
 	apiKey := strings.TrimSpace(os.Getenv("BREVO_API_KEY"))
 	if apiKey == "" {
 		return fmt.Errorf("BREVO_API_KEY ortam değişkeni ayarlanmamış")
