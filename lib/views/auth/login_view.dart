@@ -101,10 +101,12 @@ class _LoginViewState extends State<LoginView> {
                       label: 'Giriş Yap',
                       loading: isLoading,
                       onPressed: () {
-                        context.read<AuthBloc>().add(AuthLoginRequested(
-                          email: _emailController.text.trim(),
-                          password: _passwordController.text,
-                        ));
+                        context.read<AuthBloc>().add(
+                          AuthLoginRequested(
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text,
+                          ),
+                        );
                       },
                     ),
                     SizedBox(height: 16.h),

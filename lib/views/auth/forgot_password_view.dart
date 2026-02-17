@@ -128,9 +128,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                           label: 'Kod gönder',
                           loading: isLoading,
                           onPressed: () {
-context.read<ForgotPasswordBloc>().add(
-                                  ForgotPasswordSendCode(_emailController.text.trim()),
-                                );
+                            context.read<ForgotPasswordBloc>().add(
+                              ForgotPasswordSendCode(
+                                _emailController.text.trim(),
+                              ),
+                            );
                           },
                         )
                       else ...[
@@ -138,17 +140,21 @@ context.read<ForgotPasswordBloc>().add(
                           label: 'Şifreyi güncelle',
                           loading: isLoading,
                           onPressed: () {
-context.read<ForgotPasswordBloc>().add(ForgotPasswordReset(
-                                  email: _emailController.text.trim(),
-                                  code: _codeController.text.trim(),
-                                  newPassword: _newPasswordController.text,
-                                ));
+                            context.read<ForgotPasswordBloc>().add(
+                              ForgotPasswordReset(
+                                email: _emailController.text.trim(),
+                                code: _codeController.text.trim(),
+                                newPassword: _newPasswordController.text,
+                              ),
+                            );
                           },
                         ),
                         SizedBox(height: 12.h),
                         TextButton(
                           onPressed: () {
-context.read<ForgotPasswordBloc>().add(ForgotPasswordResetForm());
+                            context.read<ForgotPasswordBloc>().add(
+                              ForgotPasswordResetForm(),
+                            );
                             _codeController.clear();
                           },
                           child: Text(

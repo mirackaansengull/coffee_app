@@ -131,12 +131,14 @@ class _RegisterViewState extends State<RegisterView> {
                           label: 'Kayıt ol',
                           loading: isLoading,
                           onPressed: () {
-                            context.read<RegisterBloc>().add(RegisterVerify(
-                              email: _emailController.text.trim(),
-                              code: _codeController.text.trim(),
-                              password: _passwordController.text,
-                              name: _nameController.text.trim(),
-                            ));
+                            context.read<RegisterBloc>().add(
+                              RegisterVerify(
+                                email: _emailController.text.trim(),
+                                code: _codeController.text.trim(),
+                                password: _passwordController.text,
+                                name: _nameController.text.trim(),
+                              ),
+                            );
                           },
                         ),
                         SizedBox(height: 12.h),

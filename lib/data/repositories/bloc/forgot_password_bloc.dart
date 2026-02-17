@@ -45,10 +45,11 @@ class ForgotPasswordFailure extends ForgotPasswordState {
 }
 
 // --- Bloc ---
-class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
+class ForgotPasswordBloc
+    extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
   ForgotPasswordBloc({required AuthRepository repository})
-      : _repo = repository,
-        super(ForgotPasswordInitial()) {
+    : _repo = repository,
+      super(ForgotPasswordInitial()) {
     on<ForgotPasswordSendCode>(_sendCode);
     on<ForgotPasswordReset>(_reset);
     on<ForgotPasswordResetForm>(_resetForm);
@@ -56,7 +57,9 @@ class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> 
   final AuthRepository _repo;
 
   Future<void> _sendCode(
-      ForgotPasswordSendCode e, Emitter<ForgotPasswordState> emit) async {
+    ForgotPasswordSendCode e,
+    Emitter<ForgotPasswordState> emit,
+  ) async {
     if (e.email.trim().isEmpty) {
       emit(ForgotPasswordFailure('E-posta girin.'));
       return;
@@ -71,7 +74,9 @@ class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> 
   }
 
   Future<void> _reset(
-      ForgotPasswordReset e, Emitter<ForgotPasswordState> emit) async {
+    ForgotPasswordReset e,
+    Emitter<ForgotPasswordState> emit,
+  ) async {
     if (e.code.trim().isEmpty || e.newPassword.length < 6) {
       emit(ForgotPasswordFailure('Kod ve en az 6 karakter şifre girin.'));
       return;
@@ -90,7 +95,9 @@ class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> 
   }
 
   void _resetForm(
-      ForgotPasswordResetForm e, Emitter<ForgotPasswordState> emit) {
+    ForgotPasswordResetForm e,
+    Emitter<ForgotPasswordState> emit,
+  ) {
     emit(ForgotPasswordInitial());
   }
 }

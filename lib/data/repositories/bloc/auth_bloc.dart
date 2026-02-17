@@ -41,8 +41,8 @@ class AuthFailure extends AuthState {
 // --- Bloc ---
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required AuthRepository repository})
-      : _repo = repository,
-        super(AuthInitial()) {
+    : _repo = repository,
+      super(AuthInitial()) {
     on<AuthCheckRequested>(_onCheck);
     on<AuthLoginRequested>(_onLogin);
     on<AuthLogoutRequested>(_onLogout);

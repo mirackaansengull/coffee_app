@@ -45,7 +45,9 @@ class AuthRepository {
       );
       final d = _decode(res.body);
       if (res.statusCode == 200) {
-        return AuthResult.successResult(message: d['message'] as String? ?? 'Kod gönderildi.');
+        return AuthResult.successResult(
+          message: d['message'] as String? ?? 'Kod gönderildi.',
+        );
       }
       return AuthResult.fail(d['error'] as String? ?? 'Bir hata oluştu.');
     } catch (e) {
@@ -72,7 +74,9 @@ class AuthRepository {
       );
       final d = _decode(res.body);
       if (res.statusCode == 200 && d['token'] != null && d['user'] != null) {
-        final user = AuthUser.fromJson(Map<String, dynamic>.from(d['user'] as Map));
+        final user = AuthUser.fromJson(
+          Map<String, dynamic>.from(d['user'] as Map),
+        );
         await _save(d['token'] as String, user);
         return AuthResult.successResult(user: user);
       }
@@ -94,7 +98,9 @@ class AuthRepository {
       );
       final d = _decode(res.body);
       if (res.statusCode == 200 && d['token'] != null && d['user'] != null) {
-        final user = AuthUser.fromJson(Map<String, dynamic>.from(d['user'] as Map));
+        final user = AuthUser.fromJson(
+          Map<String, dynamic>.from(d['user'] as Map),
+        );
         await _save(d['token'] as String, user);
         return AuthResult.successResult(user: user);
       }
@@ -113,7 +119,9 @@ class AuthRepository {
       );
       final d = _decode(res.body);
       if (res.statusCode == 200) {
-        return AuthResult.successResult(message: d['message'] as String? ?? 'Kod gönderildi.');
+        return AuthResult.successResult(
+          message: d['message'] as String? ?? 'Kod gönderildi.',
+        );
       }
       return AuthResult.fail(d['error'] as String? ?? 'Bir hata oluştu.');
     } catch (e) {
@@ -138,9 +146,13 @@ class AuthRepository {
       );
       final d = _decode(res.body);
       if (res.statusCode == 200) {
-        return AuthResult.successResult(message: d['message'] as String? ?? 'Şifre güncellendi.');
+        return AuthResult.successResult(
+          message: d['message'] as String? ?? 'Şifre güncellendi.',
+        );
       }
-      return AuthResult.fail(d['error'] as String? ?? 'Şifre sıfırlama başarısız.');
+      return AuthResult.fail(
+        d['error'] as String? ?? 'Şifre sıfırlama başarısız.',
+      );
     } catch (e) {
       return AuthResult.fail('Bağlantı hatası: $e');
     }

@@ -1,7 +1,7 @@
 import 'package:coffee_app/core/constants/app_constants.dart';
 import 'package:coffee_app/core/constants/order_constants.dart';
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
-import 'package:coffee_app/data/repositorys/order_repository.dart';
+import 'package:coffee_app/data/repositories/order_repository.dart';
 import 'package:coffee_app/data/models/order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

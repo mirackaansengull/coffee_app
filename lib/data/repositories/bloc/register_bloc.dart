@@ -46,15 +46,18 @@ class RegisterFailure extends RegisterState {
 // --- Bloc ---
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   RegisterBloc({required AuthRepository repository})
-      : _repo = repository,
-        super(RegisterInitial()) {
+    : _repo = repository,
+      super(RegisterInitial()) {
     on<RegisterSendCode>(_sendCode);
     on<RegisterVerify>(_verify);
     on<RegisterReset>(_reset);
   }
   final AuthRepository _repo;
 
-  Future<void> _sendCode(RegisterSendCode e, Emitter<RegisterState> emit) async {
+  Future<void> _sendCode(
+    RegisterSendCode e,
+    Emitter<RegisterState> emit,
+  ) async {
     if (e.email.trim().isEmpty) {
       emit(RegisterFailure('E-posta girin.'));
       return;
