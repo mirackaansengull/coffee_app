@@ -1,6 +1,7 @@
 import 'package:coffee_app/core/constants/product_options.dart';
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/data/models/coffee.dart';
+import 'package:coffee_app/data/repositories/coffee_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,6 +22,9 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
   late final List<bool> _syrups;
   bool _showAppBarTitle = false;
   final ScrollController _scrollController = ScrollController();
+  final _repo = CoffeeRepository();
+  bool _isFavorite = false;
+  bool _loadingFavorite = true;
 
   List<Map<String, dynamic>> get _sizes => ProductOptions.sizes;
   List<Map<String, dynamic>> get _milkOptions => ProductOptions.milkOptions;
@@ -31,6 +35,38 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
     super.initState();
     _syrups = List.filled(ProductOptions.syrupOptions.length, false);
     _scrollController.addListener(_onScroll);
+    _checkFavorite();
+  }
+
+  Future<void> _checkFavorite() async {
+    final isFav = await _repo.isFavorite(widget.coffee.id);
+    setState(() {
+      _isFavorite = isFav;
+      _loadingFavorite = false;
+    });
+  }
+
+  Future<void> _toggleFavorite() async {
+    setState(() => _loadingFavorite = true);
+    final success = _isFavorite
+        ? await _repo.removeFavorite(widget.coffee.id)
+        : await _repo.addFavorite(widget.coffee.id);
+    if (success) {
+      setState(() {
+        _isFavorite = !_isFavorite;
+        _loadingFavorite = false;
+      });
+      if (mounted) {
+        Navigator.pop(context, true);
+      }
+    } else {
+      setState(() => _loadingFavorite = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('İşlem başarısız')),
+        );
+      }
+    }
   }
 
   @override
@@ -90,6 +126,24 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
               onPressed: () => Navigator.pop(context),
               color: Colors.white,
             ),
+            actions: [
+              IconButton(
+                icon: _loadingFavorite
+                    ? SizedBox(
+                        width: 20.w,
+                        height: 20.h,
+                        child: const CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : Icon(
+                        _isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: _isFavorite ? Colors.red : Colors.white,
+                      ),
+                onPressed: _loadingFavorite ? null : _toggleFavorite,
+              ),
+            ],
             title: _showAppBarTitle
                 ? Text(
                     widget.coffee.name,

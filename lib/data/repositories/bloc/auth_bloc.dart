@@ -33,6 +33,9 @@ class AuthAuthenticated extends AuthState {
 
 class AuthUnauthenticated extends AuthState {}
 
+/// Login butonu loading gösterirken ekran LoginView kalır (tam ekran loading yok).
+class AuthLoginInProgress extends AuthState {}
+
 class AuthFailure extends AuthState {
   AuthFailure(this.message);
   final String message;
@@ -60,7 +63,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthFailure('E-posta ve şifre girin.'));
       return;
     }
-    emit(AuthLoading());
+    emit(AuthLoginInProgress());
     final r = await _repo.login(e.email, e.password);
     if (r.success && r.user != null) {
       emit(AuthAuthenticated(r.user!));

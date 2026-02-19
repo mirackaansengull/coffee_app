@@ -29,9 +29,9 @@ class AuthInput extends StatelessWidget {
     final colors = AppThemeColors.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: colors.surfaceDark.withValues(alpha: 0.6),
+        color: colors.surfaceDark.withValues(alpha: 1.0),
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: colors.surfaceBorder, width: 1),
+        border: Border.all(color: colors.surfaceBorder.withValues(alpha: 0.8), width: 1),
       ),
       child: TextField(
         controller: controller,

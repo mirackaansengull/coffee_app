@@ -9,11 +9,13 @@ class CoffeeCard extends StatelessWidget {
     required this.coffee,
     this.onTap,
     this.onFavoriteTap,
+    this.isFavorite = false,
   });
 
   final Coffee coffee;
   final VoidCallback? onTap;
   final VoidCallback? onFavoriteTap;
+  final bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +57,8 @@ class CoffeeCard extends StatelessWidget {
                     child: Container(
                       decoration: const BoxDecoration(shape: BoxShape.circle),
                       child: IconButton(
-                        icon: const Icon(Icons.favorite_border),
-                        color: Colors.white,
+                        icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
+                        color: isFavorite ? Colors.red : Colors.white,
                         onPressed: onFavoriteTap,
                       ),
                     ),

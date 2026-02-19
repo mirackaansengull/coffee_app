@@ -38,7 +38,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   static const AppThemeColors dark = AppThemeColors(
     backgroundPrimary: Color(0xFF1B1B1B),
     backgroundSecondary: Color(0xFF333333),
-    surfaceDark: Color(0xFF272727),
+    surfaceDark: Color.fromARGB(255, 32, 32, 32),
     surfaceMedium: Color(0xFF3D3D3D),
     surfaceBorder: Color(0xFF505050),
     textPrimary: Color.fromARGB(255, 223, 223, 223),

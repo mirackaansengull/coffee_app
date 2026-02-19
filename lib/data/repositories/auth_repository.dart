@@ -13,6 +13,22 @@ class AuthRepository {
   static const _keyUser = 'auth_user';
   String get _base => ApiConstants.baseUrl;
 
+  /// Render gibi ücretsiz sunucular uykuya geçer. İlk istekte uyanana kadar
+  /// periyodik ping atar; başarılı olunca tamamlanır (max ~30 sn).
+  Future<void> wakeUpBackend() async {
+    const maxAttempts = 15;
+    const interval = Duration(seconds: 2);
+    for (var i = 0; i < maxAttempts; i++) {
+      try {
+        final res = await http
+            .get(Uri.parse(_base))
+            .timeout(const Duration(seconds: 10));
+        if (res.statusCode == 200) return;
+      } catch (_) {}
+      if (i < maxAttempts - 1) await Future<void>.delayed(interval);
+    }
+  }
+
   Future<AuthUser?> getCurrentUser() async {
     final prefs = await SharedPreferences.getInstance();
     final j = prefs.getString(_keyUser);

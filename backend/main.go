@@ -57,6 +57,8 @@ func main() {
 
 	db := client.Database("coffee_app")
 	initAuth(db)
+	initCoffee(db)
+	initFavorites(db)
 
 	fmt.Println("MongoDB'ye başarıyla bağlandık! 🚀")
 
@@ -75,6 +77,27 @@ func main() {
 	http.HandleFunc("/api/auth/login", cors(login))
 	http.HandleFunc("/api/auth/forgot-password/send-code", cors(sendResetCode))
 	http.HandleFunc("/api/auth/forgot-password/reset", cors(resetPassword))
+
+	http.HandleFunc("/api/coffees", cors(getCoffees))
+	http.HandleFunc("/api/coffee", cors(authMiddleware(createCoffee)))
+	http.HandleFunc("/api/coffee/", cors(authMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPut {
+			updateCoffee(w, r)
+		} else if r.Method == http.MethodDelete {
+			deleteCoffee(w, r)
+		} else {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	})))
+	http.HandleFunc("/api/favorites", cors(authMiddleware(getFavorites)))
+	http.HandleFunc("/api/favorites/add", cors(authMiddleware(addFavorite)))
+	http.HandleFunc("/api/favorites/", cors(authMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/api/favorites/check/") {
+			isFavorite(w, r)
+		} else {
+			removeFavorite(w, r)
+		}
+	})))
 
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

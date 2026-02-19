@@ -135,6 +135,7 @@ func verifyRegister(w http.ResponseWriter, r *http.Request) {
 		Email:     req.Email,
 		Password:  string(hashed),
 		Name:      strings.TrimSpace(req.Name),
+		IsAdmin:   false,
 		CreatedAt: time.Now(),
 	}
 	_, err = usersCol.InsertOne(ctx, user)
@@ -147,7 +148,7 @@ func verifyRegister(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]any{
 		"token": token,
-		"user":  map[string]any{"id": user.ID.Hex(), "email": user.Email, "name": user.Name},
+		"user":  map[string]any{"id": user.ID.Hex(), "email": user.Email, "name": user.Name, "isAdmin": user.IsAdmin},
 	})
 }
 
@@ -184,7 +185,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]any{
 		"token": token,
-		"user":  map[string]any{"id": user.ID.Hex(), "email": user.Email, "name": user.Name},
+		"user":  map[string]any{"id": user.ID.Hex(), "email": user.Email, "name": user.Name, "isAdmin": user.IsAdmin},
 	})
 }
 

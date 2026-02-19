@@ -1,5 +1,6 @@
-import 'package:coffee_app/data/repositories/bloc/auth_bloc.dart';
+import 'package:coffee_app/core/constants/asset_paths.dart';
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
+import 'package:coffee_app/data/repositories/bloc/auth_bloc.dart';
 import 'package:coffee_app/views/auth/forgot_password_view.dart';
 import 'package:coffee_app/views/auth/register_view.dart';
 import 'package:coffee_app/widgets/auth/auth_footer_link.dart';
@@ -35,35 +36,62 @@ class _LoginViewState extends State<LoginView> {
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        final isLoading = state is AuthLoading;
+        final isLoading = state is AuthLoginInProgress;
         final errorMessage = state is AuthFailure ? state.message : null;
 
+        final isLight = Theme.of(context).brightness == Brightness.light;
+        final logoColor = isLight ? Colors.black : Colors.white;
+
         return Scaffold(
-          body: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(gradient: colors.gradientBackground),
-            child: SafeArea(
-              child: SingleChildScrollView(
+          resizeToAvoidBottomInset: false,
+          body: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                AssetPaths.background,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  decoration: BoxDecoration(gradient: colors.gradientBackground),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      colors.backgroundPrimary.withValues(alpha: 0.8),
+                      colors.backgroundSecondary.withValues(alpha: 0.85),
+                    ],
+                  ),
+                ),
+              ),
+              SafeArea(
+                child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: 48.h),
-                    Text(
-                      'Giriş Yap',
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.w600,
-                        color: colors.textPrimary,
-                        fontFamily: 'Poppins',
+                    SizedBox(height: 40.h),
+                    Center(
+                      child: ColorFiltered(
+                        colorFilter: ColorFilter.mode(logoColor, BlendMode.srcIn),
+                        child: Image.asset(
+                          AssetPaths.logoHorizontal,
+                          width: 160.w,
+                          height: 100.h,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: 40.h),
                     Text(
-                      'Hesabına giriş yap',
+                      'Giriş Yap',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 14.sp,
-                        color: colors.textHint,
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w600,
+                        color: colors.textPrimary,
                         fontFamily: 'Poppins',
                       ),
                     ),
@@ -145,6 +173,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             ),
+            ],
           ),
         );
       },

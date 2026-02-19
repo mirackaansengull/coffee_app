@@ -1,7 +1,9 @@
-import 'package:coffee_app/data/repositories/bloc/auth_bloc.dart';
 import 'package:coffee_app/core/constants/app_constants.dart';
 import 'package:coffee_app/core/theme/app_theme.dart';
 import 'package:coffee_app/data/repositories/auth_repository.dart';
+import 'package:coffee_app/data/repositories/bloc/auth_bloc.dart';
+import 'package:coffee_app/views/admin/admin_view.dart';
+import 'package:coffee_app/views/auth/loading_view.dart';
 import 'package:coffee_app/views/auth/login_view.dart';
 import 'package:coffee_app/views/main_shell_view.dart';
 import 'package:flutter/material.dart';
@@ -38,11 +40,8 @@ class _MyAppState extends State<MyApp> {
     return RepositoryProvider<AuthRepository>(
       create: (_) => AuthRepository(),
       child: BlocProvider<AuthBloc>(
-        create: (context) {
-          final bloc = AuthBloc(repository: context.read<AuthRepository>());
-          bloc.add(AuthCheckRequested());
-          return bloc;
-        },
+        create: (context) =>
+            AuthBloc(repository: context.read<AuthRepository>()),
         child: ScreenUtilInit(
           designSize: AppConstants.designSize,
           minTextAdapt: true,
@@ -56,11 +55,25 @@ class _MyAppState extends State<MyApp> {
               home: BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   if (state is AuthInitial || state is AuthLoading) {
-                    return const Scaffold(
-                      body: Center(child: CircularProgressIndicator()),
+                    return LoadingView(
+                      onInit: state is AuthInitial
+                          ? () async {
+                              await context
+                                  .read<AuthRepository>()
+                                  .wakeUpBackend();
+                              if (context.mounted) {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(AuthCheckRequested());
+                              }
+                            }
+                          : null,
                     );
                   }
                   if (state is AuthAuthenticated) {
+                    if (state.user.isAdmin) {
+                      return const AdminView();
+                    }
                     return MainShell(
                       user: state.user,
                       onThemeToggle: _toggleTheme,

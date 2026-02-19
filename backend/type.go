@@ -12,7 +12,17 @@ type User struct {
 	Email     string             `bson:"email" json:"email"`
 	Password  string             `bson:"password" json:"-"`
 	Name      string             `bson:"name" json:"name"`
+	IsAdmin   bool               `bson:"isAdmin" json:"isAdmin"`
 	CreatedAt time.Time          `bson:"createdAt" json:"createdAt"`
+}
+
+type Coffee struct {
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Name        string             `bson:"name" json:"name"`
+	ImageURL    string             `bson:"imageUrl" json:"imageUrl"`
+	Price       int                `bson:"price" json:"price"`
+	Description string             `bson:"description" json:"description"`
+	CreatedAt   time.Time          `bson:"createdAt" json:"createdAt"`
 }
 
 type VerificationCode struct {
