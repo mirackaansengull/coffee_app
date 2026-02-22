@@ -17,7 +17,10 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _imageUrlController = TextEditingController();
-  final _priceController = TextEditingController();
+  final _priceSController = TextEditingController();
+  final _priceMController = TextEditingController();
+  final _priceLController = TextEditingController();
+  final _priceXLController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _repo = CoffeeRepository();
   bool _loading = false;
@@ -31,8 +34,16 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
       final c = widget.coffee!;
       _nameController.text = c.name;
       _imageUrlController.text = c.imageUrl;
-      _priceController.text = c.price.toString();
+      _priceSController.text = (c.priceS ?? c.price).toString();
+      _priceMController.text = (c.priceM ?? c.price).toString();
+      _priceLController.text = (c.priceL ?? c.price).toString();
+      _priceXLController.text = (c.priceXL ?? c.price).toString();
       _descriptionController.text = c.description ?? '';
+    } else {
+      _priceSController.text = '85';
+      _priceMController.text = '100';
+      _priceLController.text = '115';
+      _priceXLController.text = '130';
     }
   }
 
@@ -40,9 +51,44 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
   void dispose() {
     _nameController.dispose();
     _imageUrlController.dispose();
-    _priceController.dispose();
+    _priceSController.dispose();
+    _priceMController.dispose();
+    _priceLController.dispose();
+    _priceXLController.dispose();
     _descriptionController.dispose();
     super.dispose();
+  }
+
+  static int? _parsePrice(String? v) {
+    final p = int.tryParse(v?.trim() ?? '');
+    return (p != null && p > 0) ? p : null;
+  }
+
+  Widget _priceField(String label, TextEditingController controller, AppThemeColors colors) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: '$label (TL)',
+        labelStyle: TextStyle(color: colors.textHint),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: BorderSide(color: colors.surfaceBorder),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: BorderSide(color: colors.surfaceBorder),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: BorderSide(color: colors.textPrimary),
+        ),
+        filled: true,
+        fillColor: colors.surfaceDark,
+      ),
+      style: TextStyle(color: colors.textPrimary),
+      keyboardType: TextInputType.number,
+      validator: (v) => _parsePrice(v) == null ? 'Geçerli fiyat' : null,
+    );
   }
 
   Future<void> _submit() async {
@@ -50,7 +96,10 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
     setState(() => _loading = true);
     final name = _nameController.text.trim();
     final imageUrl = _imageUrlController.text.trim();
-    final price = int.tryParse(_priceController.text.trim()) ?? 0;
+    final priceS = _parsePrice(_priceSController.text) ?? 0;
+    final priceM = _parsePrice(_priceMController.text) ?? 0;
+    final priceL = _parsePrice(_priceLController.text) ?? 0;
+    final priceXL = _parsePrice(_priceXLController.text) ?? 0;
     final description = _descriptionController.text.trim();
     Coffee? result;
     if (_isEdit) {
@@ -58,14 +107,20 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
         id: widget.coffee!.id,
         name: name,
         imageUrl: imageUrl,
-        price: price,
+        priceS: priceS,
+        priceM: priceM,
+        priceL: priceL,
+        priceXL: priceXL,
         description: description.isEmpty ? null : description,
       );
     } else {
       result = await _repo.createCoffee(
         name: name,
         imageUrl: imageUrl,
-        price: price,
+        priceS: priceS,
+        priceM: priceM,
+        priceL: priceL,
+        priceXL: priceXL,
         description: description.isEmpty ? null : description,
       );
     }
@@ -146,33 +201,38 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
               style: TextStyle(color: colors.textPrimary),
               validator: (v) => v?.trim().isEmpty ?? true ? 'Resim URL gerekli' : null,
             ),
-            SizedBox(height: 16.h),
-            TextFormField(
-              controller: _priceController,
-              decoration: InputDecoration(
-                labelText: 'Fiyat (TL)',
-                labelStyle: TextStyle(color: colors.textHint),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide(color: colors.surfaceBorder),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide(color: colors.surfaceBorder),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide(color: colors.textPrimary),
-                ),
-                filled: true,
-                fillColor: colors.surfaceDark,
+            SizedBox(height: 12.h),
+            Text(
+              'Boy fiyatları (TL)',
+              style: TextStyle(
+                fontSize: 13.sp,
+                color: colors.textHint,
+                fontFamily: 'Poppins',
               ),
-              style: TextStyle(color: colors.textPrimary),
-              keyboardType: TextInputType.number,
-              validator: (v) {
-                final p = int.tryParse(v?.trim() ?? '');
-                return p == null || p <= 0 ? 'Geçerli fiyat girin' : null;
-              },
+            ),
+            SizedBox(height: 8.h),
+            Row(
+              children: [
+                Expanded(
+                  child: _priceField('S', _priceSController, colors),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: _priceField('M', _priceMController, colors),
+                ),
+              ],
+            ),
+            SizedBox(height: 10.h),
+            Row(
+              children: [
+                Expanded(
+                  child: _priceField('L', _priceLController, colors),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: _priceField('XL', _priceXLController, colors),
+                ),
+              ],
             ),
             SizedBox(height: 16.h),
             TextFormField(

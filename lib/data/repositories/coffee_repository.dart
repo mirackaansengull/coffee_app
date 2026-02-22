@@ -32,7 +32,10 @@ class CoffeeRepository {
   Future<Coffee?> createCoffee({
     required String name,
     required String imageUrl,
-    required int price,
+    required int priceS,
+    required int priceM,
+    required int priceL,
+    required int priceXL,
     String? description,
   }) async {
     try {
@@ -47,7 +50,11 @@ class CoffeeRepository {
         body: jsonEncode({
           'name': name,
           'imageUrl': imageUrl,
-          'price': price,
+          'price': priceM,
+          'priceS': priceS,
+          'priceM': priceM,
+          'priceL': priceL,
+          'priceXL': priceXL,
           if (description != null) 'description': description,
         }),
       );
@@ -64,7 +71,10 @@ class CoffeeRepository {
     required String id,
     required String name,
     required String imageUrl,
-    required int price,
+    required int priceS,
+    required int priceM,
+    required int priceL,
+    required int priceXL,
     String? description,
   }) async {
     try {
@@ -79,7 +89,11 @@ class CoffeeRepository {
         body: jsonEncode({
           'name': name,
           'imageUrl': imageUrl,
-          'price': price,
+          'price': priceM,
+          'priceS': priceS,
+          'priceM': priceM,
+          'priceL': priceL,
+          'priceXL': priceXL,
           if (description != null) 'description': description,
         }),
       );

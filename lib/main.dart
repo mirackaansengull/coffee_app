@@ -1,6 +1,7 @@
 import 'package:coffee_app/core/constants/app_constants.dart';
 import 'package:coffee_app/core/theme/app_theme.dart';
 import 'package:coffee_app/data/repositories/auth_repository.dart';
+import 'package:coffee_app/data/repositories/banner_repository.dart';
 import 'package:coffee_app/data/repositories/bloc/auth_bloc.dart';
 import 'package:coffee_app/views/admin/admin_view.dart';
 import 'package:coffee_app/views/auth/loading_view.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
+  await BannerRepository.instance.loadBannerImageUrls();
   runApp(const MyApp());
 }
 

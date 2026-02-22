@@ -83,8 +83,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
 
   int get _basePrice {
     final i = _selectedSizeIndex.clamp(0, _sizes.length - 1);
-    final p = _sizes[i]['price'];
-    return (p is int) ? p : 0;
+    return widget.coffee.getPriceForSizeIndex(i);
   }
 
   int get _extrasPrice {
@@ -159,6 +158,45 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
               background: Image.network(
                 widget.coffee.imageUrl,
                 fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    color: colors.surfaceDark,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                        color: colors.progressIndicator,
+                      ),
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: colors.surfaceDark,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.coffee_rounded,
+                          size: 64.sp,
+                          color: colors.textHint,
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          'Görsel yüklenemedi',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: colors.textHint,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -281,9 +319,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                   ...List.generate(_sizes.length, (i) {
                     final sz = _sizes[i];
                     final sizeLabel = sz['label']?.toString() ?? '';
-                    final sizePrice = sz['price'] is int
-                        ? sz['price'] as int
-                        : 0;
+                    final sizePrice = widget.coffee.getPriceForSizeIndex(i);
                     final iconSz = (sz['iconSize'] is num)
                         ? (sz['iconSize'] as num)
                         : 28.0;

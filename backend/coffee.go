@@ -54,6 +54,10 @@ func createCoffee(w http.ResponseWriter, r *http.Request) {
 		Name        string `json:"name"`
 		ImageURL    string `json:"imageUrl"`
 		Price       int    `json:"price"`
+		PriceS      int    `json:"priceS"`
+		PriceM      int    `json:"priceM"`
+		PriceL      int    `json:"priceL"`
+		PriceXL     int    `json:"priceXL"`
 		Description string `json:"description"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -63,8 +67,24 @@ func createCoffee(w http.ResponseWriter, r *http.Request) {
 	req.Name = strings.TrimSpace(req.Name)
 	req.ImageURL = strings.TrimSpace(req.ImageURL)
 	req.Description = strings.TrimSpace(req.Description)
+	priceS, priceM, priceL, priceXL := req.PriceS, req.PriceM, req.PriceL, req.PriceXL
+	if priceS <= 0 {
+		priceS = req.Price
+	}
+	if priceM <= 0 {
+		priceM = req.Price
+	}
+	if priceL <= 0 {
+		priceL = req.Price
+	}
+	if priceXL <= 0 {
+		priceXL = req.Price
+	}
+	if req.Price <= 0 {
+		req.Price = priceM
+	}
 	if req.Name == "" || req.ImageURL == "" || req.Price <= 0 {
-		http.Error(w, `{"error":"İsim, resim URL ve geçerli fiyat gerekli"}`, http.StatusBadRequest)
+		http.Error(w, `{"error":"İsim, resim URL ve geçerli fiyatlar gerekli"}`, http.StatusBadRequest)
 		return
 	}
 	coffee := Coffee{
@@ -72,6 +92,10 @@ func createCoffee(w http.ResponseWriter, r *http.Request) {
 		Name:        req.Name,
 		ImageURL:    req.ImageURL,
 		Price:       req.Price,
+		PriceS:      priceS,
+		PriceM:      priceM,
+		PriceL:      priceL,
+		PriceXL:     priceXL,
 		Description: req.Description,
 		CreatedAt:   time.Now(),
 	}
@@ -107,6 +131,10 @@ func updateCoffee(w http.ResponseWriter, r *http.Request) {
 		Name        string `json:"name"`
 		ImageURL    string `json:"imageUrl"`
 		Price       int    `json:"price"`
+		PriceS      int    `json:"priceS"`
+		PriceM      int    `json:"priceM"`
+		PriceL      int    `json:"priceL"`
+		PriceXL     int    `json:"priceXL"`
 		Description string `json:"description"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -116,8 +144,24 @@ func updateCoffee(w http.ResponseWriter, r *http.Request) {
 	req.Name = strings.TrimSpace(req.Name)
 	req.ImageURL = strings.TrimSpace(req.ImageURL)
 	req.Description = strings.TrimSpace(req.Description)
+	priceS, priceM, priceL, priceXL := req.PriceS, req.PriceM, req.PriceL, req.PriceXL
+	if priceS <= 0 {
+		priceS = req.Price
+	}
+	if priceM <= 0 {
+		priceM = req.Price
+	}
+	if priceL <= 0 {
+		priceL = req.Price
+	}
+	if priceXL <= 0 {
+		priceXL = req.Price
+	}
+	if req.Price <= 0 {
+		req.Price = priceM
+	}
 	if req.Name == "" || req.ImageURL == "" || req.Price <= 0 {
-		http.Error(w, `{"error":"İsim, resim URL ve geçerli fiyat gerekli"}`, http.StatusBadRequest)
+		http.Error(w, `{"error":"İsim, resim URL ve geçerli fiyatlar gerekli"}`, http.StatusBadRequest)
 		return
 	}
 	update := bson.M{
@@ -125,6 +169,10 @@ func updateCoffee(w http.ResponseWriter, r *http.Request) {
 			"name":        req.Name,
 			"imageUrl":    req.ImageURL,
 			"price":       req.Price,
+			"priceS":      priceS,
+			"priceM":      priceM,
+			"priceL":      priceL,
+			"priceXL":     priceXL,
 			"description": req.Description,
 		},
 	}

@@ -32,7 +32,10 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final LinearGradient gradientSearchBar;
 
   static AppThemeColors of(BuildContext context) {
-    return Theme.of(context).extension<AppThemeColors>()!;
+    final ext = Theme.of(context).extension<AppThemeColors>();
+    if (ext != null) return ext;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return isDark ? dark : light;
   }
 
   static const AppThemeColors dark = AppThemeColors(

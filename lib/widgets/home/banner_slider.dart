@@ -8,6 +8,16 @@ class BannerSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: BannerRepository.instance,
+      builder: (context, _) => _BannerSliderContent(),
+    );
+  }
+}
+
+class _BannerSliderContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final horizontalMargin = 20.w * 2;
     final bannerWidth = screenWidth - horizontalMargin;
@@ -27,6 +37,14 @@ class BannerSlider extends StatelessWidget {
           autoPlayCurve: Curves.fastOutSlowIn,
           enableInfiniteScroll: true,
           autoPlayAnimationDuration: const Duration(milliseconds: 800),
+          pageSnapping: true,
+          pauseAutoPlayOnTouch: true,
+          pauseAutoPlayOnManualNavigate: true,
+          pauseAutoPlayInFiniteScroll: false,
+          disableCenter: false,
+          padEnds: true,
+          reverse: false,
+          animateToClosest: true,
         ),
         items: imgList
             .map(
