@@ -136,7 +136,7 @@ func verifyRegister(w http.ResponseWriter, r *http.Request) {
 		ID: userID, Email: req.Email, Password: string(hashed),
 		Name: strings.TrimSpace(req.Name), IsAdmin: false, CreatedAt: now,
 	}
-	doc := bson.M{
+	userDoc := bson.M{
 		"_id":       userID,
 		"email":     req.Email,
 		"password": string(hashed),
@@ -144,7 +144,7 @@ func verifyRegister(w http.ResponseWriter, r *http.Request) {
 		"isAdmin":   false,
 		"createdAt": now,
 	}
-	_, err = usersCol.InsertOne(ctx, doc)
+	_, err = usersCol.InsertOne(ctx, userDoc)
 	if err != nil {
 		http.Error(w, `{"error":"Kullanıcı oluşturulamadı"}`, http.StatusInternalServerError)
 		return
