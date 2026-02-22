@@ -130,15 +130,21 @@ func verifyRegister(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error":"Şifre işlenemedi"}`, http.StatusInternalServerError)
 		return
 	}
+	now := time.Now()
+	userID := primitive.NewObjectID()
 	user := User{
-		ID:        primitive.NewObjectID(),
-		Email:     req.Email,
-		Password:  string(hashed),
-		Name:      strings.TrimSpace(req.Name),
-		IsAdmin:   false,
-		CreatedAt: time.Now(),
+		ID: userID, Email: req.Email, Password: string(hashed),
+		Name: strings.TrimSpace(req.Name), IsAdmin: false, CreatedAt: now,
 	}
-	_, err = usersCol.InsertOne(ctx, user)
+	doc := bson.M{
+		"_id":       userID,
+		"email":     req.Email,
+		"password": string(hashed),
+		"name":      strings.TrimSpace(req.Name),
+		"isAdmin":   false,
+		"createdAt": now,
+	}
+	_, err = usersCol.InsertOne(ctx, doc)
 	if err != nil {
 		http.Error(w, `{"error":"Kullanıcı oluşturulamadı"}`, http.StatusInternalServerError)
 		return
