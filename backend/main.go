@@ -14,14 +14,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func cors(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		origin := r.Header.Get("Origin")
-		if origin != "" {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
-		} else {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-		}
+// Tüm isteklere CORS başlıkları ekleyen tek middleware (tek yer, hata kaçmaz)
+func withCORS(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		w.Header().Set("Access-Control-Max-Age", "86400")
@@ -29,8 +25,8 @@ func cors(next http.HandlerFunc) http.HandlerFunc {
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
-		next.ServeHTTP(w, r)
-	}
+		h.ServeHTTP(w, r)
+	})
 }
 
 func main() {
@@ -75,19 +71,18 @@ func main() {
 	}
 	fmt.Println("Sunucu", port, "portunda başlatılıyor...")
 
-	http.HandleFunc("/", cors(func(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Kahve App Backend Çalışıyor! ☕")
-	}))
-
-	http.HandleFunc("/api/auth/register/send-code", cors(sendRegisterCode))
-	http.HandleFunc("/api/auth/register/verify", cors(verifyRegister))
-	http.HandleFunc("/api/auth/login", cors(login))
-	http.HandleFunc("/api/auth/forgot-password/send-code", cors(sendResetCode))
-	http.HandleFunc("/api/auth/forgot-password/reset", cors(resetPassword))
-
-	http.HandleFunc("/api/coffees", cors(getCoffees))
-	http.HandleFunc("/api/coffee", cors(authMiddleware(createCoffee)))
-	http.HandleFunc("/api/coffee/", cors(authMiddleware(func(w http.ResponseWriter, r *http.Request) {
+	})
+	mux.HandleFunc("/api/auth/register/send-code", sendRegisterCode)
+	mux.HandleFunc("/api/auth/register/verify", verifyRegister)
+	mux.HandleFunc("/api/auth/login", login)
+	mux.HandleFunc("/api/auth/forgot-password/send-code", sendResetCode)
+	mux.HandleFunc("/api/auth/forgot-password/reset", resetPassword)
+	mux.HandleFunc("/api/coffees", getCoffees)
+	mux.HandleFunc("/api/coffee", authMiddleware(createCoffee))
+	mux.HandleFunc("/api/coffee/", authMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPut {
 			updateCoffee(w, r)
 		} else if r.Method == http.MethodDelete {
@@ -95,16 +90,17 @@ func main() {
 		} else {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
-	})))
-	http.HandleFunc("/api/favorites", cors(authMiddleware(getFavorites)))
-	http.HandleFunc("/api/favorites/add", cors(authMiddleware(addFavorite)))
-	http.HandleFunc("/api/favorites/", cors(authMiddleware(func(w http.ResponseWriter, r *http.Request) {
+	}))
+	mux.HandleFunc("/api/favorites", authMiddleware(getFavorites))
+	mux.HandleFunc("/api/favorites/add", authMiddleware(addFavorite))
+	mux.HandleFunc("/api/favorites/", authMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, "/api/favorites/check/") {
 			isFavorite(w, r)
 		} else {
 			removeFavorite(w, r)
 		}
-	})))
+	}))
 
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	handler := withCORS(mux)
+	log.Fatal(http.ListenAndServe(":"+port, handler))
 }
