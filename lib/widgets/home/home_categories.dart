@@ -18,6 +18,10 @@ const List<CategoryItem> coffeeTypes = [
     icon: ImageIcon(AssetImage(AssetPaths.categorySicakKahve)),
   ),
   CategoryItem(
+    label: 'Sıcak Kahveler',
+    icon: ImageIcon(AssetImage(AssetPaths.categorySicakKahve)),
+  ),
+  CategoryItem(
     label: 'Soğuk Kahve',
     icon: ImageIcon(AssetImage(AssetPaths.categorySogukKahve)),
   ),
@@ -45,14 +49,19 @@ class Categories extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.onTap,
+    this.isSelected = false,
   });
 
   final ImageIcon icon;
   final String label;
   final VoidCallback onTap;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
+    final color = isSelected
+        ? const Color.fromARGB(255, 139, 69, 19)
+        : const Color.fromARGB(255, 189, 113, 0);
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -61,12 +70,7 @@ class Categories extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(
-              255,
-              189,
-              113,
-              0,
-            ), // Profil aşama rengi ile aynı
+            color: color,
             borderRadius: BorderRadius.circular(7.r),
             boxShadow: [
               BoxShadow(

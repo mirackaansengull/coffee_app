@@ -21,6 +21,13 @@ class _HomeViewState extends State<HomeView> {
   List<Coffee> _coffees = [];
   Map<String, bool> _favorites = {};
   bool _loading = true;
+  int _selectedCategoryIndex = 0;
+
+  List<Coffee> get _filteredCoffees {
+    if (_selectedCategoryIndex == 0) return _coffees;
+    final label = coffeeTypes[_selectedCategoryIndex].label;
+    return _coffees.where((c) => c.categories.contains(label)).toList();
+  }
 
   @override
   void initState() {
@@ -104,7 +111,8 @@ class _HomeViewState extends State<HomeView> {
                             return Categories(
                               icon: category.icon,
                               label: category.label,
-                              onTap: () {},
+                              isSelected: _selectedCategoryIndex == index,
+                              onTap: () => setState(() => _selectedCategoryIndex = index),
                             );
                           },
                         ),
@@ -112,7 +120,7 @@ class _HomeViewState extends State<HomeView> {
                       SizedBox(height: 20.h),
                       Padding(
                         padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
-                        child: _coffees.isEmpty
+                          child: _filteredCoffees.isEmpty
                             ? Center(
                                 child: Padding(
                                   padding: EdgeInsets.all(32.w),
@@ -145,9 +153,9 @@ class _HomeViewState extends State<HomeView> {
                                   mainAxisSpacing: 12.h,
                                   childAspectRatio: 0.72,
                                 ),
-                                itemCount: _coffees.length,
+                                itemCount: _filteredCoffees.length,
                                 itemBuilder: (context, index) {
-                                  final coffee = _coffees[index];
+                                  final coffee = _filteredCoffees[index];
                                   final isFav = _favorites[coffee.id] ?? false;
                                   return CoffeeCard(
                                     coffee: coffee,

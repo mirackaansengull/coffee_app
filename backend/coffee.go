@@ -51,14 +51,15 @@ func createCoffee(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		Name        string `json:"name"`
-		ImageURL    string `json:"imageUrl"`
-		Price       int    `json:"price"`
-		PriceS      int    `json:"priceS"`
-		PriceM      int    `json:"priceM"`
-		PriceL      int    `json:"priceL"`
-		PriceXL     int    `json:"priceXL"`
-		Description string `json:"description"`
+		Name        string   `json:"name"`
+		ImageURL    string   `json:"imageUrl"`
+		Price       int      `json:"price"`
+		PriceS      int      `json:"priceS"`
+		PriceM      int      `json:"priceM"`
+		PriceL      int      `json:"priceL"`
+		PriceXL     int      `json:"priceXL"`
+		Description string   `json:"description"`
+		Categories  []string `json:"categories"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, `{"error":"Geçersiz istek"}`, http.StatusBadRequest)
@@ -67,6 +68,9 @@ func createCoffee(w http.ResponseWriter, r *http.Request) {
 	req.Name = strings.TrimSpace(req.Name)
 	req.ImageURL = strings.TrimSpace(req.ImageURL)
 	req.Description = strings.TrimSpace(req.Description)
+	if req.Categories == nil {
+		req.Categories = []string{}
+	}
 	priceS, priceM, priceL, priceXL := req.PriceS, req.PriceM, req.PriceL, req.PriceXL
 	if priceS <= 0 {
 		priceS = req.Price
@@ -97,6 +101,7 @@ func createCoffee(w http.ResponseWriter, r *http.Request) {
 		PriceL:      priceL,
 		PriceXL:     priceXL,
 		Description: req.Description,
+		Categories:  req.Categories,
 		CreatedAt:   time.Now(),
 	}
 	_, err := coffeesCol.InsertOne(r.Context(), coffee)
@@ -128,14 +133,15 @@ func updateCoffee(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		Name        string `json:"name"`
-		ImageURL    string `json:"imageUrl"`
-		Price       int    `json:"price"`
-		PriceS      int    `json:"priceS"`
-		PriceM      int    `json:"priceM"`
-		PriceL      int    `json:"priceL"`
-		PriceXL     int    `json:"priceXL"`
-		Description string `json:"description"`
+		Name        string   `json:"name"`
+		ImageURL    string   `json:"imageUrl"`
+		Price       int      `json:"price"`
+		PriceS      int      `json:"priceS"`
+		PriceM      int      `json:"priceM"`
+		PriceL      int      `json:"priceL"`
+		PriceXL     int      `json:"priceXL"`
+		Description string   `json:"description"`
+		Categories  []string `json:"categories"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, `{"error":"Geçersiz istek"}`, http.StatusBadRequest)
@@ -144,6 +150,9 @@ func updateCoffee(w http.ResponseWriter, r *http.Request) {
 	req.Name = strings.TrimSpace(req.Name)
 	req.ImageURL = strings.TrimSpace(req.ImageURL)
 	req.Description = strings.TrimSpace(req.Description)
+	if req.Categories == nil {
+		req.Categories = []string{}
+	}
 	priceS, priceM, priceL, priceXL := req.PriceS, req.PriceM, req.PriceL, req.PriceXL
 	if priceS <= 0 {
 		priceS = req.Price
@@ -174,6 +183,7 @@ func updateCoffee(w http.ResponseWriter, r *http.Request) {
 			"priceL":      priceL,
 			"priceXL":     priceXL,
 			"description": req.Description,
+			"categories":  req.Categories,
 		},
 	}
 	result := coffeesCol.FindOneAndUpdate(r.Context(), bson.M{"_id": objID}, update)

@@ -37,6 +37,7 @@ class CoffeeRepository {
     required int priceL,
     required int priceXL,
     String? description,
+    List<String> categories = const [],
   }) async {
     try {
       final token = await _getToken();
@@ -56,6 +57,7 @@ class CoffeeRepository {
           'priceL': priceL,
           'priceXL': priceXL,
           if (description != null) 'description': description,
+          'categories': categories,
         }),
       );
       if (res.statusCode == 200) {
@@ -76,6 +78,7 @@ class CoffeeRepository {
     required int priceL,
     required int priceXL,
     String? description,
+    List<String> categories = const [],
   }) async {
     try {
       final token = await _getToken();
@@ -95,6 +98,7 @@ class CoffeeRepository {
           'priceL': priceL,
           'priceXL': priceXL,
           if (description != null) 'description': description,
+          'categories': categories,
         }),
       );
       if (res.statusCode == 200) {

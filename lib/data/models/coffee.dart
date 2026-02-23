@@ -9,6 +9,7 @@ class Coffee {
     this.priceL,
     this.priceXL,
     this.description,
+    this.categories = const [],
   });
 
   final String id;
@@ -20,6 +21,7 @@ class Coffee {
   final int? priceL;
   final int? priceXL;
   final String? description;
+  final List<String> categories;
 
   int getPriceForSizeIndex(int index) {
     switch (index) {
@@ -36,9 +38,17 @@ class Coffee {
     }
   }
 
+  static String _parseId(dynamic value) {
+    if (value == null) return '';
+    if (value is String) return value;
+    if (value is Map && value['\$oid'] != null) return value['\$oid'] as String;
+    return value.toString();
+  }
+
   factory Coffee.fromJson(Map<String, dynamic> json) {
+    final idVal = json['id'] ?? json['_id'];
     return Coffee(
-      id: json['id'] as String? ?? json['_id'] as String? ?? '',
+      id: idVal != null ? _parseId(idVal) : '',
       name: json['name'] as String? ?? '',
       imageUrl: json['imageUrl'] as String? ?? '',
       price: (json['price'] as num?)?.toInt() ?? 0,
@@ -47,6 +57,10 @@ class Coffee {
       priceL: (json['priceL'] as num?)?.toInt(),
       priceXL: (json['priceXL'] as num?)?.toInt(),
       description: json['description'] as String?,
+      categories: (json['categories'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
     );
   }
 
@@ -60,5 +74,6 @@ class Coffee {
         if (priceL != null) 'priceL': priceL,
         if (priceXL != null) 'priceXL': priceXL,
         if (description != null) 'description': description,
+        'categories': categories,
       };
 }

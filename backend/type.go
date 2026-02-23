@@ -26,6 +26,7 @@ type Coffee struct {
 	PriceL      int                `bson:"priceL" json:"priceL"`
 	PriceXL     int                `bson:"priceXL" json:"priceXL"`
 	Description string             `bson:"description" json:"description"`
+	Categories  []string           `bson:"categories" json:"categories"`
 	CreatedAt   time.Time          `bson:"createdAt" json:"createdAt"`
 }
 
