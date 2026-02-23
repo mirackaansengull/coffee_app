@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FavoritesView extends StatefulWidget {
-  const FavoritesView({super.key});
+  const FavoritesView({super.key, this.selectedTabIndex});
+
+  /// Favoriler sekmesi bu index'te (main_shell'den gelir). Sekmeye her geçişte listeyi yeniler.
+  final int? selectedTabIndex;
 
   @override
   State<FavoritesView> createState() => _FavoritesViewState();
@@ -17,11 +20,21 @@ class _FavoritesViewState extends State<FavoritesView> {
   final _repo = CoffeeRepository();
   List<Coffee> _favorites = [];
   bool _loading = true;
+  static const int _favoritesIndex = 2;
 
   @override
   void initState() {
     super.initState();
     _loadFavorites();
+  }
+
+  @override
+  void didUpdateWidget(covariant FavoritesView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedTabIndex != _favoritesIndex &&
+        widget.selectedTabIndex == _favoritesIndex) {
+      _loadFavorites();
+    }
   }
 
   Future<void> _loadFavorites() async {
@@ -60,56 +73,72 @@ class _FavoritesViewState extends State<FavoritesView> {
             : RefreshIndicator(
                 onRefresh: _loadFavorites,
                 child: _favorites.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.favorite_border_rounded,
-                              size: 80.sp,
-                              color: colors.textHint,
+                    ? SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height - 200,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.favorite_border_rounded,
+                                  size: 80.sp,
+                                  color: colors.textHint,
+                                ),
+                                SizedBox(height: 16.h),
+                                Text(
+                                  'Henüz favori ürün yok',
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    color: colors.textPrimary,
+                                    fontFamily: 'Poppins',
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: 16.h),
-                            Text(
-                              'Henüz favori ürün yok',
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                color: colors.textPrimary,
-                                fontFamily: 'Poppins',
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       )
-                    : Padding(
-                        padding: EdgeInsets.all(16.w),
-                        child: GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12.w,
-                            mainAxisSpacing: 12.h,
-                            childAspectRatio: 0.72,
+                    : SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 16.w,
+                            right: 16.w,
+                            top: 8.h,
+                            bottom: 20.h,
                           ),
-                          itemCount: _favorites.length,
-                          itemBuilder: (context, index) {
-                            final coffee = _favorites[index];
-                            return CoffeeCard(
-                              coffee: coffee,
-                              isFavorite: true,
-                              onTap: () async {
-                                final result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CoffeeDetail(coffee: coffee),
-                                  ),
-                                );
-                                if (result == true) {
-                                  _loadFavorites();
-                                }
-                              },
-                              onFavoriteTap: () => _removeFavorite(coffee),
-                            );
-                          },
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 12.w,
+                              mainAxisSpacing: 12.h,
+                              childAspectRatio: 0.72,
+                            ),
+                            itemCount: _favorites.length,
+                            itemBuilder: (context, index) {
+                              final coffee = _favorites[index];
+                              return CoffeeCard(
+                                coffee: coffee,
+                                isFavorite: true,
+                                onTap: () async {
+                                  final result = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CoffeeDetail(coffee: coffee),
+                                    ),
+                                  );
+                                  if (result == true && mounted) {
+                                    _loadFavorites();
+                                  }
+                                },
+                                onFavoriteTap: () => _removeFavorite(coffee),
+                              );
+                            },
+                          ),
                         ),
                       ),
               ),

@@ -102,9 +102,27 @@ func getFavorites(w http.ResponseWriter, r *http.Request) {
 	}
 	var coffeeIds []primitive.ObjectID
 	for _, fav := range favorites {
-		if objID, ok := fav["coffeeObjId"].(primitive.ObjectID); ok {
-			coffeeIds = append(coffeeIds, objID)
+		var objID primitive.ObjectID
+		if o, ok := fav["coffeeObjId"].(primitive.ObjectID); ok {
+			objID = o
+		} else if o, ok := fav["coffeeobjid"].(primitive.ObjectID); ok {
+			objID = o
+		} else if sid, ok := fav["coffeeId"].(string); ok && sid != "" {
+			if parsed, err := primitive.ObjectIDFromHex(sid); err == nil {
+				objID = parsed
+			} else {
+				continue
+			}
+		} else if sid, ok := fav["coffeeid"].(string); ok && sid != "" {
+			if parsed, err := primitive.ObjectIDFromHex(sid); err == nil {
+				objID = parsed
+			} else {
+				continue
+			}
+		} else {
+			continue
 		}
+		coffeeIds = append(coffeeIds, objID)
 	}
 	if len(coffeeIds) == 0 {
 		w.Header().Set("Content-Type", "application/json")

@@ -129,7 +129,11 @@ class CoffeeRepository {
         headers: {'Authorization': 'Bearer $token'},
       );
       if (res.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(res.body) as List;
+        final body = res.body.trim();
+        if (body.isEmpty) return [];
+        final decoded = jsonDecode(body);
+        if (decoded is! List) return [];
+        final List<dynamic> data = decoded;
         return data.map((e) => Coffee.fromJson(e as Map<String, dynamic>)).toList();
       }
       return [];

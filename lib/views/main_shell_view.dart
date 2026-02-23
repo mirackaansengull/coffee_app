@@ -35,7 +35,7 @@ class _MainShellState extends State<MainShell> {
     final pages = [
       const HomeView(),
       const CartView(),
-      const FavoritesView(),
+      FavoritesView(selectedTabIndex: _currentIndex),
       ProfileView(
         user: widget.user,
         onThemeToggle: widget.onThemeToggle,
