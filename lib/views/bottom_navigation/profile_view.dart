@@ -1,7 +1,10 @@
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/data/models/auth_user.dart';
 import 'package:coffee_app/data/repositories/order_repository.dart';
+import 'package:coffee_app/views/profile_view/about_view.dart';
 import 'package:coffee_app/views/profile_view/all_orders_view.dart';
+import 'package:coffee_app/views/profile_view/help_view.dart';
+import 'package:coffee_app/views/profile_view/payment_methods_view.dart';
 import 'package:coffee_app/widgets/profile/last_order_card.dart';
 import 'package:coffee_app/widgets/profile/orders_section_header.dart';
 import 'package:coffee_app/widgets/profile/profile_header.dart';
@@ -65,17 +68,38 @@ class ProfileView extends StatelessWidget {
                 ProfileTile(
                   icon: Icons.credit_card_rounded,
                   title: 'Ödeme Yöntemleri',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PaymentMethodsView(),
+                      ),
+                    );
+                  },
                 ),
                 ProfileTile(
                   icon: Icons.help_outline_rounded,
                   title: 'Yardım',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HelpView(),
+                      ),
+                    );
+                  },
                 ),
                 ProfileTile(
                   icon: Icons.info_outline_rounded,
                   title: 'Hakkında',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AboutView(),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(height: 16.h),
                 ProfileTile(
