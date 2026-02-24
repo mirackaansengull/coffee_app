@@ -17,9 +17,11 @@ class OrderRepository extends ChangeNotifier {
   static OrderRepository get instance => _instance;
 
   List<Order> _orders = [];
+  List<Order> _adminOrders = [];
   String get _base => ApiConstants.baseUrl;
 
   List<Order> getOrders() => List.unmodifiable(_orders);
+  List<Order> getAdminOrders() => List.unmodifiable(_adminOrders);
 
   Order? getLastOrder() =>
       _orders.isNotEmpty ? _orders.first : null;
@@ -96,6 +98,56 @@ class OrderRepository extends ChangeNotifier {
       );
       if (res.statusCode == 200 || res.statusCode == 201) {
         await loadOrders();
+        return true;
+      }
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Admin: tüm siparişleri çeker (userName dahil).
+  Future<void> loadAdminOrders() async {
+    final token = await _getToken();
+    if (token == null) {
+      _adminOrders = [];
+      notifyListeners();
+      return;
+    }
+    try {
+      final res = await http.get(
+        Uri.parse('$_base/api/admin/orders'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (res.statusCode != 200) {
+        _adminOrders = [];
+      } else {
+        final list = jsonDecode(res.body) as List<dynamic>?;
+        _adminOrders = (list ?? [])
+            .map((e) => Order.fromJson(e as Map<String, dynamic>))
+            .toList();
+      }
+    } catch (_) {
+      _adminOrders = [];
+    }
+    notifyListeners();
+  }
+
+  /// Admin: sipariş durumunu günceller (0–3).
+  Future<bool> updateOrderStatus(String orderId, int status) async {
+    final token = await _getToken();
+    if (token == null) return false;
+    try {
+      final res = await http.put(
+        Uri.parse('$_base/api/admin/orders/$orderId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({'status': status}),
+      );
+      if (res.statusCode == 200) {
+        await loadAdminOrders();
         return true;
       }
       return false;

@@ -114,6 +114,14 @@ func main() {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
 	}))
+	mux.HandleFunc("/api/admin/orders", adminMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			getAdminOrders(w, r)
+		} else {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	}))
+	mux.HandleFunc("/api/admin/orders/", adminMiddleware(updateOrderStatus))
 
 	log.Fatal(http.ListenAndServe(":"+port, mux))
 }

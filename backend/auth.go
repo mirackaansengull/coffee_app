@@ -150,7 +150,7 @@ func verifyRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	_, _ = codesCol.DeleteMany(ctx, bson.M{"email": req.Email, "type": VerificationTypeRegister})
-	token, _ := createToken(user.ID.Hex(), user.Email)
+	token, _ := createToken(user.ID.Hex(), user.Email, user.IsAdmin)
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]any{
 		"token": token,
@@ -187,7 +187,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error":"Email veya şifre hatalı"}`, http.StatusUnauthorized)
 		return
 	}
-	token, _ := createToken(user.ID.Hex(), user.Email)
+	token, _ := createToken(user.ID.Hex(), user.Email, user.IsAdmin)
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]any{
 		"token": token,
@@ -280,10 +280,11 @@ func resetPassword(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(map[string]string{"message": "Şifreniz güncellendi. Giriş yapabilirsiniz."})
 }
 
-func createToken(userID, email string) (string, error) {
+func createToken(userID, email string, isAdmin bool) (string, error) {
 	claims := Claims{
-		UserID: userID,
-		Email:  email,
+		UserID:  userID,
+		Email:   email,
+		IsAdmin: isAdmin,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(jwtExpiry)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -291,6 +292,30 @@ func createToken(userID, email string) (string, error) {
 	}
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return t.SignedString(jwtSecret)
+}
+
+func adminMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		auth := r.Header.Get("Authorization")
+		if auth == "" || !strings.HasPrefix(auth, "Bearer ") {
+			http.Error(w, `{"error":"Yetkilendirme gerekli"}`, http.StatusUnauthorized)
+			return
+		}
+		tokenStr := strings.TrimPrefix(auth, "Bearer ")
+		token, err := jwt.ParseWithClaims(tokenStr, &Claims{}, func(t *jwt.Token) (interface{}, error) { return jwtSecret, nil })
+		if err != nil || !token.Valid {
+			http.Error(w, `{"error":"Geçersiz veya süresi dolmuş oturum"}`, http.StatusUnauthorized)
+			return
+		}
+		claims := token.Claims.(*Claims)
+		if !claims.IsAdmin {
+			http.Error(w, `{"error":"Yetki gerekli"}`, http.StatusForbidden)
+			return
+		}
+		ctx := context.WithValue(r.Context(), "userId", claims.UserID)
+		ctx = context.WithValue(ctx, "email", claims.Email)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	}
 }
 
 func authMiddleware(next http.HandlerFunc) http.HandlerFunc {

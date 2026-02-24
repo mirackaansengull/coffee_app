@@ -43,8 +43,9 @@ const (
 )
 
 type Claims struct {
-	UserID string `json:"userId"`
-	Email  string `json:"email"`
+	UserID  string `json:"userId"`
+	Email   string `json:"email"`
+	IsAdmin bool   `json:"isAdmin"`
 	jwt.RegisteredClaims
 }
 
