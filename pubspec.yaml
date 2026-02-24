@@ -21,6 +21,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   flutter_dotenv: ^5.2.1
   cupertino_icons: ^1.0.8
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -28,6 +29,13 @@ dev_dependencies:
 
   
   flutter_lints: ^6.0.0
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/uygulama.png"
+  min_sdk_android: 21 # opsiyonel
 
 
 flutter:
