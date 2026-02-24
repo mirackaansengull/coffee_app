@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:coffee_app/core/constants/product_options.dart';
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
+import 'package:coffee_app/data/models/cart_item.dart';
 import 'package:coffee_app/data/models/coffee.dart';
+import 'package:coffee_app/data/repositories/cart_repository.dart';
 import 'package:coffee_app/data/repositories/coffee_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -99,6 +103,40 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
   }
 
   int get _totalPrice => (_basePrice + _extrasPrice) * _quantity;
+
+  Future<void> _addToCart() async {
+    final sizeLabel =
+        _sizes[_selectedSizeIndex.clamp(0, _sizes.length - 1)]['label']
+            ?.toString() ??
+            'M';
+    final milkLabel =
+        _milkOptions[_milkIndex.clamp(0, _milkOptions.length - 1)]['label']
+            ?.toString() ??
+            'Standart süt';
+    final syrupNames = <String>[];
+    for (int i = 0; i < _syrups.length; i++) {
+      if (_syrups[i]) syrupNames.add(_syrupOptions[i]);
+    }
+    final unitPrice = _basePrice + _extrasPrice;
+    final item = CartItem(
+      id: '${DateTime.now().millisecondsSinceEpoch}_${widget.coffee.id}_${Random().nextInt(9999)}',
+      productId: widget.coffee.id,
+      name: widget.coffee.name,
+      imageUrl: widget.coffee.imageUrl,
+      unitPrice: unitPrice,
+      quantity: _quantity,
+      sizeLabel: sizeLabel,
+      milkLabel: milkLabel,
+      extraShot: _extraShot,
+      syrupNames: syrupNames,
+    );
+    await CartRepository.instance.addItem(item);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Sepete eklendi')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -635,7 +673,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
               SizedBox(width: 12.w),
               Expanded(
                 child: FilledButton(
-                  onPressed: () {},
+                  onPressed: _addToCart,
                   style: FilledButton.styleFrom(
                     backgroundColor: const Color(0xFF8B4513),
                     foregroundColor: Colors.white,

@@ -47,6 +47,7 @@ func main() {
 	initAuth(db)
 	initCoffee(db)
 	initFavorites(db)
+	initCart(db)
 
 	fmt.Println("MongoDB'ye başarıyla bağlandık! 🚀")
 
@@ -83,6 +84,24 @@ func main() {
 			isFavorite(w, r)
 		} else {
 			removeFavorite(w, r)
+		}
+	}))
+	mux.HandleFunc("/api/cart", authMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			getCart(w, r)
+		} else if r.Method == http.MethodPost {
+			addToCart(w, r)
+		} else {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	}))
+	mux.HandleFunc("/api/cart/item/", authMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPut {
+			updateCartItemQuantity(w, r)
+		} else if r.Method == http.MethodDelete {
+			removeCartItem(w, r)
+		} else {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
 	}))
 
