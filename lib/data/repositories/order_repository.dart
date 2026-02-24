@@ -40,10 +40,12 @@ class OrderRepository extends ChangeNotifier {
       return;
     }
     try {
-      final res = await http.get(
-        Uri.parse('$_base/api/orders'),
-        headers: {'Authorization': 'Bearer $token'},
-      );
+      final res = await http
+          .get(
+            Uri.parse('$_base/api/orders'),
+            headers: {'Authorization': 'Bearer $token'},
+          )
+          .timeout(ApiConstants.apiTimeout);
       if (res.statusCode != 200) {
         _orders = [];
       } else {
@@ -88,14 +90,16 @@ class OrderRepository extends ChangeNotifier {
       },
     };
     try {
-      final res = await http.post(
-        Uri.parse('$_base/api/orders'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode(body),
-      );
+      final res = await http
+          .post(
+            Uri.parse('$_base/api/orders'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode(body),
+          )
+          .timeout(ApiConstants.apiTimeout);
       if (res.statusCode == 200 || res.statusCode == 201) {
         await loadOrders();
         return true;
@@ -115,10 +119,12 @@ class OrderRepository extends ChangeNotifier {
       return;
     }
     try {
-      final res = await http.get(
-        Uri.parse('$_base/api/admin/orders'),
-        headers: {'Authorization': 'Bearer $token'},
-      );
+      final res = await http
+          .get(
+            Uri.parse('$_base/api/admin/orders'),
+            headers: {'Authorization': 'Bearer $token'},
+          )
+          .timeout(ApiConstants.apiTimeout);
       if (res.statusCode != 200) {
         _adminOrders = [];
       } else {
@@ -138,14 +144,16 @@ class OrderRepository extends ChangeNotifier {
     final token = await _getToken();
     if (token == null) return false;
     try {
-      final res = await http.put(
-        Uri.parse('$_base/api/admin/orders/$orderId'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({'status': status}),
-      );
+      final res = await http
+          .put(
+            Uri.parse('$_base/api/admin/orders/$orderId'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode({'status': status}),
+          )
+          .timeout(ApiConstants.apiTimeout);
       if (res.statusCode == 200) {
         await loadAdminOrders();
         return true;

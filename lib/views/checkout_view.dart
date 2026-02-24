@@ -26,6 +26,7 @@ class _CheckoutViewState extends State<CheckoutView> {
   List<SavedCard> _cards = [];
   SavedCard? _selectedCard;
   bool _loadingCards = true;
+  bool _placingOrder = false;
 
   @override
   void initState() {
@@ -61,6 +62,8 @@ class _CheckoutViewState extends State<CheckoutView> {
       );
       return;
     }
+    if (_placingOrder) return;
+    setState(() => _placingOrder = true);
     final total = _cartRepo.grandTotal;
     final success = await OrderRepository.instance.createOrder(
       items: items,
@@ -68,14 +71,19 @@ class _CheckoutViewState extends State<CheckoutView> {
       delivery: location,
     );
     if (!mounted) return;
+    setState(() => _placingOrder = false);
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sipariş gönderilemedi, tekrar deneyin')),
+        const SnackBar(
+          content: Text(
+            'Sipariş gönderilemedi. Bağlantı zaman aşımı veya sunucu yanıt vermiyor olabilir; tekrar deneyin.',
+          ),
+        ),
       );
       return;
     }
     for (final item in List<CartItem>.from(items)) {
-      await _cartRepo.removeItem(item.id);
+      _cartRepo.removeItem(item.id);
     }
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Siparişiniz alındı')),
@@ -214,7 +222,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                   ),
                 SizedBox(height: 32.h),
                 FilledButton(
-                  onPressed: _placeOrder,
+                  onPressed: _placingOrder ? null : _placeOrder,
                   style: FilledButton.styleFrom(
                     backgroundColor: const Color(0xFF8B4513),
                     foregroundColor: Colors.white,
@@ -223,7 +231,16 @@ class _CheckoutViewState extends State<CheckoutView> {
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
-                  child: const Text('Siparişi tamamla'),
+                  child: _placingOrder
+                      ? SizedBox(
+                          height: 22.h,
+                          width: 22.w,
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text('Siparişi tamamla'),
                 ),
                 SizedBox(height: 24.h),
               ],

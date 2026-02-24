@@ -125,6 +125,9 @@ func getOrders(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(out)
 }
 
+// Teslim edildi (status=3) siparişler admin panelinde gösterilmez.
+const statusDelivered = 3
+
 func getAdminOrders(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -132,7 +135,8 @@ func getAdminOrders(w http.ResponseWriter, r *http.Request) {
 	}
 	ctx := r.Context()
 	opts := options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}})
-	cursor, err := ordersCol.Find(ctx, bson.M{}, opts)
+	filter := bson.M{"status": bson.M{"$ne": statusDelivered}}
+	cursor, err := ordersCol.Find(ctx, filter, opts)
 	if err != nil {
 		http.Error(w, `{"error":"Siparişler getirilemedi"}`, http.StatusInternalServerError)
 		return

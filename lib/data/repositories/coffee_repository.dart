@@ -18,7 +18,9 @@ class CoffeeRepository {
 
   Future<List<Coffee>> getCoffees() async {
     try {
-      final res = await http.get(Uri.parse('$_base/api/coffees'));
+      final res = await http
+          .get(Uri.parse('$_base/api/coffees'))
+          .timeout(ApiConstants.apiTimeout);
       if (res.statusCode == 200) {
         final List<dynamic> data = jsonDecode(res.body) as List;
         return data.map((e) => Coffee.fromJson(e as Map<String, dynamic>)).toList();
@@ -42,24 +44,26 @@ class CoffeeRepository {
     try {
       final token = await _getToken();
       if (token == null) return null;
-      final res = await http.post(
-        Uri.parse('$_base/api/coffee'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({
-          'name': name,
-          'imageUrl': imageUrl,
-          'price': priceM,
-          'priceS': priceS,
-          'priceM': priceM,
-          'priceL': priceL,
-          'priceXL': priceXL,
-          if (description != null) 'description': description,
-          'categories': categories,
-        }),
-      );
+      final res = await http
+          .post(
+            Uri.parse('$_base/api/coffee'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode({
+              'name': name,
+              'imageUrl': imageUrl,
+              'price': priceM,
+              'priceS': priceS,
+              'priceM': priceM,
+              'priceL': priceL,
+              'priceXL': priceXL,
+              if (description != null) 'description': description,
+              'categories': categories,
+            }),
+          )
+          .timeout(ApiConstants.apiTimeout);
       if (res.statusCode == 200) {
         return Coffee.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
       }
@@ -83,24 +87,26 @@ class CoffeeRepository {
     try {
       final token = await _getToken();
       if (token == null) return null;
-      final res = await http.put(
-        Uri.parse('$_base/api/coffee/$id'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({
-          'name': name,
-          'imageUrl': imageUrl,
-          'price': priceM,
-          'priceS': priceS,
-          'priceM': priceM,
-          'priceL': priceL,
-          'priceXL': priceXL,
-          if (description != null) 'description': description,
-          'categories': categories,
-        }),
-      );
+      final res = await http
+          .put(
+            Uri.parse('$_base/api/coffee/$id'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode({
+              'name': name,
+              'imageUrl': imageUrl,
+              'price': priceM,
+              'priceS': priceS,
+              'priceM': priceM,
+              'priceL': priceL,
+              'priceXL': priceXL,
+              if (description != null) 'description': description,
+              'categories': categories,
+            }),
+          )
+          .timeout(ApiConstants.apiTimeout);
       if (res.statusCode == 200) {
         return Coffee.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
       }
@@ -114,10 +120,12 @@ class CoffeeRepository {
     try {
       final token = await _getToken();
       if (token == null) return false;
-      final res = await http.delete(
-        Uri.parse('$_base/api/coffee/$id'),
-        headers: {'Authorization': 'Bearer $token'},
-      );
+      final res = await http
+          .delete(
+            Uri.parse('$_base/api/coffee/$id'),
+            headers: {'Authorization': 'Bearer $token'},
+          )
+          .timeout(ApiConstants.apiTimeout);
       return res.statusCode == 200;
     } catch (_) {
       return false;
@@ -128,10 +136,12 @@ class CoffeeRepository {
     try {
       final token = await _getToken();
       if (token == null) return [];
-      final res = await http.get(
-        Uri.parse('$_base/api/favorites'),
-        headers: {'Authorization': 'Bearer $token'},
-      );
+      final res = await http
+          .get(
+            Uri.parse('$_base/api/favorites'),
+            headers: {'Authorization': 'Bearer $token'},
+          )
+          .timeout(ApiConstants.apiTimeout);
       if (res.statusCode == 200) {
         final body = res.body.trim();
         if (body.isEmpty) return [];
@@ -150,14 +160,16 @@ class CoffeeRepository {
     try {
       final token = await _getToken();
       if (token == null) return false;
-      final res = await http.post(
-        Uri.parse('$_base/api/favorites/add'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({'coffeeId': coffeeId}),
-      );
+      final res = await http
+          .post(
+            Uri.parse('$_base/api/favorites/add'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode({'coffeeId': coffeeId}),
+          )
+          .timeout(ApiConstants.apiTimeout);
       return res.statusCode == 200;
     } catch (_) {
       return false;
@@ -168,10 +180,12 @@ class CoffeeRepository {
     try {
       final token = await _getToken();
       if (token == null) return false;
-      final res = await http.delete(
-        Uri.parse('$_base/api/favorites/$coffeeId'),
-        headers: {'Authorization': 'Bearer $token'},
-      );
+      final res = await http
+          .delete(
+            Uri.parse('$_base/api/favorites/$coffeeId'),
+            headers: {'Authorization': 'Bearer $token'},
+          )
+          .timeout(ApiConstants.apiTimeout);
       return res.statusCode == 200;
     } catch (_) {
       return false;
@@ -182,10 +196,12 @@ class CoffeeRepository {
     try {
       final token = await _getToken();
       if (token == null) return false;
-      final res = await http.get(
-        Uri.parse('$_base/api/favorites/check/$coffeeId'),
-        headers: {'Authorization': 'Bearer $token'},
-      );
+      final res = await http
+          .get(
+            Uri.parse('$_base/api/favorites/check/$coffeeId'),
+            headers: {'Authorization': 'Bearer $token'},
+          )
+          .timeout(ApiConstants.apiTimeout);
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body) as Map<String, dynamic>;
         return data['isFavorite'] as bool? ?? false;

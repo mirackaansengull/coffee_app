@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/data/models/coffee.dart';
 import 'package:flutter/material.dart';

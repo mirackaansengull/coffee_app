@@ -50,27 +50,27 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
     });
   }
 
-  Future<void> _toggleFavorite() async {
-    setState(() => _loadingFavorite = true);
-    final success = _isFavorite
-        ? await _repo.removeFavorite(widget.coffee.id)
-        : await _repo.addFavorite(widget.coffee.id);
-    if (success) {
-      setState(() {
-        _isFavorite = !_isFavorite;
-        _loadingFavorite = false;
-      });
-      if (mounted) {
+  void _toggleFavorite() {
+    if (_loadingFavorite) return;
+    final newValue = !_isFavorite;
+    setState(() {
+      _isFavorite = newValue;
+      _loadingFavorite = false;
+    });
+    Future<void>.microtask(() async {
+      final success = newValue
+          ? await _repo.addFavorite(widget.coffee.id)
+          : await _repo.removeFavorite(widget.coffee.id);
+      if (!mounted) return;
+      if (success) {
         Navigator.pop(context, true);
-      }
-    } else {
-      setState(() => _loadingFavorite = false);
-      if (mounted) {
+      } else {
+        setState(() => _isFavorite = !newValue);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('İşlem başarısız')),
+          const SnackBar(content: Text('İşlem başarısız, tekrar deneyin')),
         );
       }
-    }
+    });
   }
 
   @override
