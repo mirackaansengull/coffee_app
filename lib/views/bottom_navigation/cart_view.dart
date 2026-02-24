@@ -90,9 +90,13 @@ class _CartViewState extends State<CartView> {
                           (item) => _CartItemRow(
                             item: item,
                             onIncrease: () => _repo.updateQuantity(
-                                item.id, item.quantity + 1),
+                              item.id,
+                              item.quantity + 1,
+                            ),
                             onDecrease: () => _repo.updateQuantity(
-                                item.id, item.quantity - 1),
+                              item.id,
+                              item.quantity - 1,
+                            ),
                             onRemove: () => _repo.removeItem(item.id),
                           ),
                         ),
@@ -157,7 +161,9 @@ class _CartViewState extends State<CartView> {
                           backgroundColor: const Color(0xFF8B4513),
                           foregroundColor: Colors.white,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 24.w, vertical: 14.h),
+                            horizontal: 24.w,
+                            vertical: 14.h,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.r),
                           ),

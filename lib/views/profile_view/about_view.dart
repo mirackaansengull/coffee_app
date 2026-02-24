@@ -33,11 +33,7 @@ class AboutView extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 20.h),
-            Icon(
-              Icons.coffee_rounded,
-              size: 80.sp,
-              color: colors.textHint,
-            ),
+            Icon(Icons.coffee_rounded, size: 80.sp, color: colors.textHint),
             SizedBox(height: 16.h),
             Text(
               'Kahve App',

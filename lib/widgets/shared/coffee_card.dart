@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/data/models/coffee.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +57,9 @@ class CoffeeCard extends StatelessWidget {
                     child: Container(
                       decoration: const BoxDecoration(shape: BoxShape.circle),
                       child: IconButton(
-                        icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
+                        icon: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                        ),
                         color: isFavorite ? Colors.red : Colors.white,
                         onPressed: onFavoriteTap,
                       ),

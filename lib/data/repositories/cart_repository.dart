@@ -23,11 +23,9 @@ class CartRepository extends ChangeNotifier {
 
   bool get isEmpty => _items.isEmpty;
 
-  int get totalItemCount =>
-      _items.fold(0, (sum, item) => sum + item.quantity);
+  int get totalItemCount => _items.fold(0, (sum, item) => sum + item.quantity);
 
-  int get grandTotal =>
-      _items.fold(0, (sum, item) => sum + item.totalPrice);
+  int get grandTotal => _items.fold(0, (sum, item) => sum + item.totalPrice);
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -95,8 +93,9 @@ class CartRepository extends ChangeNotifier {
     final existingIndex = _items.indexWhere((e) => e.hasSameOptions(item));
     if (existingIndex >= 0) {
       final existing = _items[existingIndex];
-      _items[existingIndex] =
-          existing.copyWith(quantity: existing.quantity + item.quantity);
+      _items[existingIndex] = existing.copyWith(
+        quantity: existing.quantity + item.quantity,
+      );
     } else {
       _items.add(item);
     }

@@ -61,9 +61,9 @@ class _HomeViewState extends State<HomeView> {
         : await _repo.addFavorite(coffee.id);
     if (!success && mounted) {
       setState(() => _favorites[coffee.id] = isFav);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('İşlem başarısız')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('İşlem başarısız')));
     }
   }
 
@@ -78,7 +78,9 @@ class _HomeViewState extends State<HomeView> {
         decoration: BoxDecoration(gradient: colors.gradientBackground),
         child: _loading
             ? Center(
-                child: CircularProgressIndicator(color: colors.progressIndicator),
+                child: CircularProgressIndicator(
+                  color: colors.progressIndicator,
+                ),
               )
             : RefreshIndicator(
                 onRefresh: _loadData,
@@ -106,22 +108,29 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 20.w),
                           itemCount: coffeeTypes.length,
-                          separatorBuilder: (context, index) => SizedBox(width: 12.w),
+                          separatorBuilder: (context, index) =>
+                              SizedBox(width: 12.w),
                           itemBuilder: (context, index) {
                             final category = coffeeTypes[index];
                             return Categories(
                               icon: category.icon,
                               label: category.label,
                               isSelected: _selectedCategoryIndex == index,
-                              onTap: () => setState(() => _selectedCategoryIndex = index),
+                              onTap: () => setState(
+                                () => _selectedCategoryIndex = index,
+                              ),
                             );
                           },
                         ),
                       ),
                       SizedBox(height: 20.h),
                       Padding(
-                        padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
-                          child: _filteredCoffees.isEmpty
+                        padding: EdgeInsets.only(
+                          left: 16.w,
+                          right: 16.w,
+                          bottom: 20.h,
+                        ),
+                        child: _filteredCoffees.isEmpty
                             ? Center(
                                 child: Padding(
                                   padding: EdgeInsets.all(32.w),
@@ -148,12 +157,13 @@ class _HomeViewState extends State<HomeView> {
                             : GridView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 12.w,
-                                  mainAxisSpacing: 12.h,
-                                  childAspectRatio: 0.72,
-                                ),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 12.w,
+                                      mainAxisSpacing: 12.h,
+                                      childAspectRatio: 0.72,
+                                    ),
                                 itemCount: _filteredCoffees.length,
                                 itemBuilder: (context, index) {
                                   final coffee = _filteredCoffees[index];
@@ -164,14 +174,16 @@ class _HomeViewState extends State<HomeView> {
                                       final result = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => CoffeeDetail(coffee: coffee),
+                                          builder: (context) =>
+                                              CoffeeDetail(coffee: coffee),
                                         ),
                                       );
                                       if (result == true) {
                                         _loadData();
                                       }
                                     },
-                                    onFavoriteTap: () => _toggleFavorite(coffee),
+                                    onFavoriteTap: () =>
+                                        _toggleFavorite(coffee),
                                     isFavorite: isFav,
                                   );
                                 },

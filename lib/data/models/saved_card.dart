@@ -31,10 +31,10 @@ class SavedCard {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'holderName': holderName,
-        'lastFour': lastFour,
-        'expiryMonth': expiryMonth,
-        'expiryYear': expiryYear,
-      };
+    'id': id,
+    'holderName': holderName,
+    'lastFour': lastFour,
+    'expiryMonth': expiryMonth,
+    'expiryYear': expiryYear,
+  };
 }

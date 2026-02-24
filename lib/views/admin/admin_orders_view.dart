@@ -152,8 +152,7 @@ class _AdminOrderExpandableCardState extends State<_AdminOrderExpandableCard> {
     final order = widget.order;
     final statuses = widget.statuses;
     final step = order.step.clamp(0, statuses.length - 1);
-    final shortId =
-        order.id.length > 8 ? order.id.substring(0, 8) : order.id;
+    final shortId = order.id.length > 8 ? order.id.substring(0, 8) : order.id;
 
     return Container(
       width: double.infinity,
@@ -209,7 +208,9 @@ class _AdminOrderExpandableCardState extends State<_AdminOrderExpandableCard> {
                         ),
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 4.h),
+                            horizontal: 10.w,
+                            vertical: 4.h,
+                          ),
                           decoration: BoxDecoration(
                             color: _statusColor(step).withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(20.r),
@@ -252,29 +253,28 @@ class _AdminOrderExpandableCardState extends State<_AdminOrderExpandableCard> {
                     ],
                     SizedBox(height: 14.h),
                     Row(
-                      children: List.generate(
-                        statuses.length,
-                        (i) {
-                          final isFilled = i <= order.step;
-                          return Expanded(
-                            child: Container(
-                              height: 4.h,
-                              margin: EdgeInsets.only(
-                                  right: i < statuses.length - 1 ? 2.w : 0),
-                              decoration: BoxDecoration(
-                                color: isFilled
-                                    ? _statusColor(order.step)
-                                    : colors.surfaceBorder,
-                                borderRadius: BorderRadius.horizontal(
-                                  left: Radius.circular(i == 0 ? 2.r : 0),
-                                  right: Radius.circular(
-                                      i == statuses.length - 1 ? 2.r : 0),
+                      children: List.generate(statuses.length, (i) {
+                        final isFilled = i <= order.step;
+                        return Expanded(
+                          child: Container(
+                            height: 4.h,
+                            margin: EdgeInsets.only(
+                              right: i < statuses.length - 1 ? 2.w : 0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isFilled
+                                  ? _statusColor(order.step)
+                                  : colors.surfaceBorder,
+                              borderRadius: BorderRadius.horizontal(
+                                left: Radius.circular(i == 0 ? 2.r : 0),
+                                right: Radius.circular(
+                                  i == statuses.length - 1 ? 2.r : 0,
                                 ),
                               ),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      }),
                     ),
                     SizedBox(height: 6.h),
                     Row(
@@ -392,7 +392,9 @@ class _AdminOrderExpandableCardState extends State<_AdminOrderExpandableCard> {
                             onSelected: isCurrent
                                 ? null
                                 : (_) => widget.onStatusChanged(i),
-                            selectedColor: _statusColor(i).withValues(alpha: 0.3),
+                            selectedColor: _statusColor(
+                              i,
+                            ).withValues(alpha: 0.3),
                             labelStyle: TextStyle(
                               color: isCurrent
                                   ? _statusColor(i)

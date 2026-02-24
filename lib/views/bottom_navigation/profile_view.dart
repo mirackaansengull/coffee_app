@@ -99,9 +99,7 @@ class _ProfileViewState extends State<ProfileView> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const HelpView(),
-                      ),
+                      MaterialPageRoute(builder: (context) => const HelpView()),
                     );
                   },
                 ),

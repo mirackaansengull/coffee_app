@@ -56,7 +56,11 @@ class _AllOrdersViewState extends State<AllOrdersView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.receipt_long_outlined, size: 64.sp, color: colors.textHint),
+                  Icon(
+                    Icons.receipt_long_outlined,
+                    size: 64.sp,
+                    color: colors.textHint,
+                  ),
                   SizedBox(height: 16.h),
                   Text(
                     'Henüz siparişiniz yok',
@@ -169,96 +173,98 @@ class _OrderCardState extends State<_OrderCard> {
                     SizedBox(height: 8.h),
                     Text(
                       widget.statuses[step],
-            style: TextStyle(
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w500,
-              color: orange,
-              fontFamily: AppConstants.fontFamily,
-            ),
-          ),
-          if (order.items.isNotEmpty) ...[
-            SizedBox(height: 4.h),
-            Text(
-              order.items.map((e) => '${e.name} x${e.quantity}').join(', '),
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: colors.textHint,
-                fontFamily: AppConstants.fontFamily,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-          SizedBox(height: 14.h),
-          Row(
-            children: List.generate(4, (i) {
-              final isFilled = i <= order.step;
-              return Expanded(
-                child: Container(
-                  height: 6.h,
-                  margin: EdgeInsets.only(right: i < 3 ? 2.w : 0),
-                  decoration: BoxDecoration(
-                    color: isFilled ? orange : colors.surfaceMedium,
-                    borderRadius: BorderRadius.horizontal(
-                      left: Radius.circular(i == 0 ? 3.r : 0),
-                      right: Radius.circular(i == 3 ? 3.r : 0),
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w500,
+                        color: orange,
+                        fontFamily: AppConstants.fontFamily,
+                      ),
                     ),
-                  ),
-                ),
-              );
-            }),
-          ),
-          SizedBox(height: 6.h),
-          Padding(
-            padding: EdgeInsets.only(top: 4.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ...OrderConstants.stepLabels.map(
-                  (label) => Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 9.sp,
-                      color: colors.textHint,
-                      fontFamily: AppConstants.fontFamily,
+                    if (order.items.isNotEmpty) ...[
+                      SizedBox(height: 4.h),
+                      Text(
+                        order.items
+                            .map((e) => '${e.name} x${e.quantity}')
+                            .join(', '),
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: colors.textHint,
+                          fontFamily: AppConstants.fontFamily,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                    SizedBox(height: 14.h),
+                    Row(
+                      children: List.generate(4, (i) {
+                        final isFilled = i <= order.step;
+                        return Expanded(
+                          child: Container(
+                            height: 6.h,
+                            margin: EdgeInsets.only(right: i < 3 ? 2.w : 0),
+                            decoration: BoxDecoration(
+                              color: isFilled ? orange : colors.surfaceMedium,
+                              borderRadius: BorderRadius.horizontal(
+                                left: Radius.circular(i == 0 ? 3.r : 0),
+                                right: Radius.circular(i == 3 ? 3.r : 0),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                     ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (order.step == 3 && !_expanded) ...[
-            SizedBox(height: 16.h),
-            Text(
-              '5 yıldız üzerinden puan verin',
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: colors.textHint,
-                fontFamily: AppConstants.fontFamily,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Row(
-              children: List.generate(5, (i) {
-                final star = i + 1;
-                final selected = _rating >= star;
-                return Padding(
-                  padding: EdgeInsets.only(right: 4.w),
-                  child: InkWell(
-                    onTap: () => setState(() => _rating = star),
-                    borderRadius: BorderRadius.circular(8.r),
-                    child: Icon(
-                      selected
-                          ? Icons.star_rounded
-                          : Icons.star_outline_rounded,
-                      size: 26.sp,
-                      color: selected ? orange : colors.textHint,
+                    SizedBox(height: 6.h),
+                    Padding(
+                      padding: EdgeInsets.only(top: 4.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ...OrderConstants.stepLabels.map(
+                            (label) => Text(
+                              label,
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                color: colors.textHint,
+                                fontFamily: AppConstants.fontFamily,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }),
-            ),
-          ],
+                    if (order.step == 3 && !_expanded) ...[
+                      SizedBox(height: 16.h),
+                      Text(
+                        '5 yıldız üzerinden puan verin',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: colors.textHint,
+                          fontFamily: AppConstants.fontFamily,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        children: List.generate(5, (i) {
+                          final star = i + 1;
+                          final selected = _rating >= star;
+                          return Padding(
+                            padding: EdgeInsets.only(right: 4.w),
+                            child: InkWell(
+                              onTap: () => setState(() => _rating = star),
+                              borderRadius: BorderRadius.circular(8.r),
+                              child: Icon(
+                                selected
+                                    ? Icons.star_rounded
+                                    : Icons.star_outline_rounded,
+                                size: 26.sp,
+                                color: selected ? orange : colors.textHint,
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                    ],
                   ],
                 ),
               ),

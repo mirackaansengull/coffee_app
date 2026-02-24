@@ -64,9 +64,9 @@ class _MyAppState extends State<MyApp> {
                                   .read<AuthRepository>()
                                   .wakeUpBackend();
                               if (context.mounted) {
-                                context
-                                    .read<AuthBloc>()
-                                    .add(AuthCheckRequested());
+                                context.read<AuthBloc>().add(
+                                  AuthCheckRequested(),
+                                );
                               }
                             }
                           : null,

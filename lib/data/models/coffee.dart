@@ -57,7 +57,8 @@ class Coffee {
       priceL: (json['priceL'] as num?)?.toInt(),
       priceXL: (json['priceXL'] as num?)?.toInt(),
       description: json['description'] as String?,
-      categories: (json['categories'] as List<dynamic>?)
+      categories:
+          (json['categories'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
           [],
@@ -65,15 +66,15 @@ class Coffee {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'imageUrl': imageUrl,
-        'price': price,
-        if (priceS != null) 'priceS': priceS,
-        if (priceM != null) 'priceM': priceM,
-        if (priceL != null) 'priceL': priceL,
-        if (priceXL != null) 'priceXL': priceXL,
-        if (description != null) 'description': description,
-        'categories': categories,
-      };
+    'id': id,
+    'name': name,
+    'imageUrl': imageUrl,
+    'price': price,
+    if (priceS != null) 'priceS': priceS,
+    if (priceM != null) 'priceM': priceM,
+    if (priceL != null) 'priceL': priceL,
+    if (priceXL != null) 'priceXL': priceXL,
+    if (description != null) 'description': description,
+    'categories': categories,
+  };
 }

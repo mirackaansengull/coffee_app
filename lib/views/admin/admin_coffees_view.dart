@@ -57,14 +57,14 @@ class _AdminCoffeesViewState extends State<AdminCoffeesView> {
       final success = await _repo.deleteCoffee(coffee.id);
       if (mounted) {
         if (success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Kahve silindi')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Kahve silindi')));
           _loadCoffees();
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Silme başarısız')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Silme başarısız')));
         }
       }
     }
@@ -73,9 +73,7 @@ class _AdminCoffeesViewState extends State<AdminCoffeesView> {
   Future<void> _editCoffee(Coffee coffee) async {
     final result = await Navigator.push<Coffee?>(
       context,
-      MaterialPageRoute(
-        builder: (ctx) => AdminCoffeeForm(coffee: coffee),
-      ),
+      MaterialPageRoute(builder: (ctx) => AdminCoffeeForm(coffee: coffee)),
     );
     if (result != null && mounted) _loadCoffees();
   }
@@ -250,9 +248,7 @@ class _AdminCoffeesViewState extends State<AdminCoffeesView> {
               onPressed: () async {
                 final result = await Navigator.push<Coffee?>(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => const AdminCoffeeForm(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const AdminCoffeeForm()),
                 );
                 if (result != null && mounted) _loadCoffees();
               },

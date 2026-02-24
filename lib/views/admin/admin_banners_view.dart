@@ -54,9 +54,9 @@ class _AdminBannersViewState extends State<AdminBannersView> {
     }
     await _repo.setBannerImageUrls(urls);
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Bannerlar kaydedildi')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Bannerlar kaydedildi')));
       setState(() => _loading = false);
     }
   }
@@ -113,10 +113,7 @@ class _AdminBannersViewState extends State<AdminBannersView> {
               ),
             )
           else
-            TextButton(
-              onPressed: _save,
-              child: const Text('Kaydet'),
-            ),
+            TextButton(onPressed: _save, child: const Text('Kaydet')),
         ],
       ),
       body: ListView(
@@ -157,10 +154,7 @@ class _AdminBannersViewState extends State<AdminBannersView> {
 }
 
 class _BannerTile extends StatelessWidget {
-  const _BannerTile({
-    required this.controller,
-    this.onRemove,
-  });
+  const _BannerTile({required this.controller, this.onRemove});
 
   final TextEditingController controller;
   final VoidCallback? onRemove;
@@ -215,7 +209,10 @@ class _BannerTile extends StatelessWidget {
               if (onRemove != null) ...[
                 SizedBox(width: 8.w),
                 IconButton(
-                  icon: Icon(Icons.delete_outline_rounded, color: Colors.red.shade400),
+                  icon: Icon(
+                    Icons.delete_outline_rounded,
+                    color: Colors.red.shade400,
+                  ),
                   onPressed: onRemove,
                 ),
               ],

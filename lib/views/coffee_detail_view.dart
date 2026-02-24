@@ -108,11 +108,11 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
     final sizeLabel =
         _sizes[_selectedSizeIndex.clamp(0, _sizes.length - 1)]['label']
             ?.toString() ??
-            'M';
+        'M';
     final milkLabel =
         _milkOptions[_milkIndex.clamp(0, _milkOptions.length - 1)]['label']
             ?.toString() ??
-            'Standart süt';
+        'Standart süt';
     final syrupNames = <String>[];
     for (int i = 0; i < _syrups.length; i++) {
       if (_syrups[i]) syrupNames.add(_syrupOptions[i]);
@@ -132,9 +132,9 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
     );
     await CartRepository.instance.addItem(item);
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sepete eklendi')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Sepete eklendi')));
     }
   }
 
@@ -204,7 +204,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
+                                  loadingProgress.expectedTotalBytes!
                             : null,
                         color: colors.progressIndicator,
                       ),

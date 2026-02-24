@@ -23,8 +23,7 @@ class OrderRepository extends ChangeNotifier {
   List<Order> getOrders() => List.unmodifiable(_orders);
   List<Order> getAdminOrders() => List.unmodifiable(_adminOrders);
 
-  Order? getLastOrder() =>
-      _orders.isNotEmpty ? _orders.first : null;
+  Order? getLastOrder() => _orders.isNotEmpty ? _orders.first : null;
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -70,16 +69,18 @@ class OrderRepository extends ChangeNotifier {
     if (token == null) return false;
     final body = {
       'items': items
-          .map((e) => {
-                'productId': e.productId,
-                'name': e.name,
-                'quantity': e.quantity,
-                'unitPrice': e.unitPrice,
-                'sizeLabel': e.sizeLabel,
-                'milkLabel': e.milkLabel,
-                'extraShot': e.extraShot,
-                'syrupNames': e.syrupNames,
-              })
+          .map(
+            (e) => {
+              'productId': e.productId,
+              'name': e.name,
+              'quantity': e.quantity,
+              'unitPrice': e.unitPrice,
+              'sizeLabel': e.sizeLabel,
+              'milkLabel': e.milkLabel,
+              'extraShot': e.extraShot,
+              'syrupNames': e.syrupNames,
+            },
+          )
           .toList(),
       'total': total,
       'delivery': {

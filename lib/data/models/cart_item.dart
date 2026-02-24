@@ -75,17 +75,17 @@ class CartItem {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'productId': productId,
-        'name': name,
-        'imageUrl': imageUrl,
-        'unitPrice': unitPrice,
-        'quantity': quantity,
-        'sizeLabel': sizeLabel,
-        'milkLabel': milkLabel,
-        'extraShot': extraShot,
-        'syrupNames': syrupNames,
-      };
+    'id': id,
+    'productId': productId,
+    'name': name,
+    'imageUrl': imageUrl,
+    'unitPrice': unitPrice,
+    'quantity': quantity,
+    'sizeLabel': sizeLabel,
+    'milkLabel': milkLabel,
+    'extraShot': extraShot,
+    'syrupNames': syrupNames,
+  };
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
     return CartItem(
@@ -98,7 +98,8 @@ class CartItem {
       sizeLabel: json['sizeLabel'] as String? ?? 'M',
       milkLabel: json['milkLabel'] as String? ?? 'Standart süt',
       extraShot: json['extraShot'] as bool? ?? false,
-      syrupNames: (json['syrupNames'] as List<dynamic>?)
+      syrupNames:
+          (json['syrupNames'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
           [],

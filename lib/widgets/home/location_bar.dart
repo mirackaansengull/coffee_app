@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GetLocation extends StatelessWidget {
-  const GetLocation({
-    super.key,
-    this.selectedSummary,
-    required this.onTap,
-  });
+  const GetLocation({super.key, this.selectedSummary, required this.onTap});
 
   /// Seçili konum özeti (örn. "Muğla, Menteşe · Aromacafe"). Null ise "Konumunuzu Seçiniz" gösterilir.
   final String? selectedSummary;

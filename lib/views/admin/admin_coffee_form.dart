@@ -71,7 +71,11 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
     return (p != null && p > 0) ? p : null;
   }
 
-  Widget _priceField(String label, TextEditingController controller, AppThemeColors colors) {
+  Widget _priceField(
+    String label,
+    TextEditingController controller,
+    AppThemeColors colors,
+  ) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
@@ -142,9 +146,9 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
       );
       Navigator.pop(context, result);
     } else if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('İşlem başarısız')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('İşlem başarısız')));
     }
   }
 
@@ -208,7 +212,8 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
                 fillColor: colors.surfaceDark,
               ),
               style: TextStyle(color: colors.textPrimary),
-              validator: (v) => v?.trim().isEmpty ?? true ? 'Resim URL gerekli' : null,
+              validator: (v) =>
+                  v?.trim().isEmpty ?? true ? 'Resim URL gerekli' : null,
             ),
             SizedBox(height: 12.h),
             Text(
@@ -222,25 +227,17 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
             SizedBox(height: 8.h),
             Row(
               children: [
-                Expanded(
-                  child: _priceField('S', _priceSController, colors),
-                ),
+                Expanded(child: _priceField('S', _priceSController, colors)),
                 SizedBox(width: 10.w),
-                Expanded(
-                  child: _priceField('M', _priceMController, colors),
-                ),
+                Expanded(child: _priceField('M', _priceMController, colors)),
               ],
             ),
             SizedBox(height: 10.h),
             Row(
               children: [
-                Expanded(
-                  child: _priceField('L', _priceLController, colors),
-                ),
+                Expanded(child: _priceField('L', _priceLController, colors)),
                 SizedBox(width: 10.w),
-                Expanded(
-                  child: _priceField('XL', _priceXLController, colors),
-                ),
+                Expanded(child: _priceField('XL', _priceXLController, colors)),
               ],
             ),
             SizedBox(height: 16.h),
@@ -266,7 +263,9 @@ class _AdminCoffeeFormState extends State<AdminCoffeeForm> {
                       if (v) {
                         _selectedCategories = [..._selectedCategories, label];
                       } else {
-                        _selectedCategories = _selectedCategories.where((c) => c != label).toList();
+                        _selectedCategories = _selectedCategories
+                            .where((c) => c != label)
+                            .toList();
                       }
                     });
                   },

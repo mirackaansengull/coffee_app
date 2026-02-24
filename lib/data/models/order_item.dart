@@ -37,7 +37,8 @@ class OrderItem {
       sizeLabel: json['sizeLabel'] as String? ?? 'M',
       milkLabel: json['milkLabel'] as String? ?? 'Standart süt',
       extraShot: json['extraShot'] as bool? ?? false,
-      syrupNames: (json['syrupNames'] as List<dynamic>?)
+      syrupNames:
+          (json['syrupNames'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
           [],

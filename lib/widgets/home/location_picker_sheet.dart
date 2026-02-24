@@ -26,16 +26,17 @@ class _LocationPickerSheetState extends State<_LocationPickerSheet> {
   String? _selectedCity;
   final _cityList = cities;
 
-  List<String> get _neighborhoods =>
-      _selectedCity != null
-          ? getNeighborhoodsForCity(_selectedCity!)
-          : <String>[];
+  List<String> get _neighborhoods => _selectedCity != null
+      ? getNeighborhoodsForCity(_selectedCity!)
+      : <String>[];
 
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
     return Container(
-      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.6,
+      ),
       decoration: BoxDecoration(
         color: colors.backgroundPrimary,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
@@ -60,7 +61,10 @@ class _LocationPickerSheetState extends State<_LocationPickerSheet> {
                 if (_selectedCity != null)
                   TextButton(
                     onPressed: () => setState(() => _selectedCity = null),
-                    child: Text('Geri', style: TextStyle(color: colors.textPrimary)),
+                    child: Text(
+                      'Geri',
+                      style: TextStyle(color: colors.textPrimary),
+                    ),
                   ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
@@ -73,7 +77,9 @@ class _LocationPickerSheetState extends State<_LocationPickerSheet> {
             child: ListView.builder(
               shrinkWrap: true,
               padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 24.h),
-              itemCount: _selectedCity == null ? _cityList.length : _neighborhoods.length,
+              itemCount: _selectedCity == null
+                  ? _cityList.length
+                  : _neighborhoods.length,
               itemBuilder: (context, index) {
                 if (_selectedCity == null) {
                   final city = _cityList[index];
@@ -107,11 +113,7 @@ class _LocationPickerSheetState extends State<_LocationPickerSheet> {
 }
 
 class _Tile extends StatelessWidget {
-  const _Tile({
-    required this.title,
-    this.subtitle,
-    required this.onTap,
-  });
+  const _Tile({required this.title, this.subtitle, required this.onTap});
 
   final String title;
   final String? subtitle;
@@ -135,7 +137,11 @@ class _Tile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(Icons.location_on_outlined, size: 22.sp, color: colors.textHint),
+              Icon(
+                Icons.location_on_outlined,
+                size: 22.sp,
+                color: colors.textHint,
+              ),
               SizedBox(width: 12.w),
               Expanded(
                 child: Column(
@@ -164,7 +170,11 @@ class _Tile extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right_rounded, color: colors.textHint, size: 22.sp),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: colors.textHint,
+                size: 22.sp,
+              ),
             ],
           ),
         ),

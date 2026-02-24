@@ -24,7 +24,11 @@ class _CardNumberInputFormatter extends TextInputFormatter {
     }
     final formatted = buffer.toString();
     int digitCount = 0;
-    for (int i = 0; i < newValue.selection.baseOffset && i < newValue.text.length; i++) {
+    for (
+      int i = 0;
+      i < newValue.selection.baseOffset && i < newValue.text.length;
+      i++
+    ) {
       if (RegExp(r'\d').hasMatch(newValue.text[i])) digitCount++;
     }
     if (digitCount > 16) digitCount = 16;
@@ -75,7 +79,9 @@ class _LiveCardVisual extends StatelessWidget {
       if (i < 3) buffer.write(' ');
     }
     final cardNumberDisplay = buffer.toString();
-    final holderDisplay = holderName.isEmpty ? 'KART SAHİBİ' : holderName.toUpperCase();
+    final holderDisplay = holderName.isEmpty
+        ? 'KART SAHİBİ'
+        : holderName.toUpperCase();
     final expiryDisplay = expiry.isEmpty ? 'AA/YY' : expiry;
 
     return Container(
@@ -248,7 +254,11 @@ class _ExpiryInputFormatter extends TextInputFormatter {
       formatted = '${digits.substring(0, 2)}/${digits.substring(2)}';
     }
     int digitCount = 0;
-    for (int i = 0; i < newValue.selection.baseOffset && i < newValue.text.length; i++) {
+    for (
+      int i = 0;
+      i < newValue.selection.baseOffset && i < newValue.text.length;
+      i++
+    ) {
       if (RegExp(r'\d').hasMatch(newValue.text[i])) digitCount++;
     }
     if (digitCount > 4) digitCount = 4;
@@ -297,7 +307,9 @@ class _PaymentMethodsViewState extends State<PaymentMethodsView> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Kartı Kaldır'),
-        content: Text('${card.maskedNumber} kayıtlı kartlarınızdan kaldırılsın mı?'),
+        content: Text(
+          '${card.maskedNumber} kayıtlı kartlarınızdan kaldırılsın mı?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -339,7 +351,9 @@ class _PaymentMethodsViewState extends State<PaymentMethodsView> {
         ),
       ),
       body: _loading
-          ? Center(child: CircularProgressIndicator(color: colors.progressIndicator))
+          ? Center(
+              child: CircularProgressIndicator(color: colors.progressIndicator),
+            )
           : SingleChildScrollView(
               padding: EdgeInsets.all(20.w),
               child: Column(
@@ -368,10 +382,12 @@ class _PaymentMethodsViewState extends State<PaymentMethodsView> {
                       ),
                     ),
                     SizedBox(height: 12.h),
-                    ..._cards.map((card) => _CardTile(
-                          card: card,
-                          onRemove: () => _removeCard(card),
-                        )),
+                    ..._cards.map(
+                      (card) => _CardTile(
+                        card: card,
+                        onRemove: () => _removeCard(card),
+                      ),
+                    ),
                     SizedBox(height: 24.h),
                   ],
                   if (!_showAddForm)
@@ -439,7 +455,10 @@ class _CardTile extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.delete_outline_rounded, color: Colors.red.shade300),
+            icon: Icon(
+              Icons.delete_outline_rounded,
+              color: Colors.red.shade300,
+            ),
             onPressed: onRemove,
           ),
         ],
@@ -449,11 +468,7 @@ class _CardTile extends StatelessWidget {
 }
 
 class AddCardForm extends StatefulWidget {
-  const AddCardForm({
-    super.key,
-    required this.onSaved,
-    required this.onCancel,
-  });
+  const AddCardForm({super.key, required this.onSaved, required this.onCancel});
 
   final VoidCallback onSaved;
   final VoidCallback onCancel;
@@ -497,9 +512,9 @@ class _AddCardFormState extends State<AddCardForm> {
     final expiry = _expiryController.text.trim();
     final cvv = _cvvController.text.trim();
     if (holder.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Kart sahibi adı girin')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Kart sahibi adı girin')));
       return;
     }
     if (number.length < 16) {
@@ -510,7 +525,9 @@ class _AddCardFormState extends State<AddCardForm> {
     }
     if (expiry.length != 5 || !expiry.contains('/')) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Son kullanma tarihi MM/YY formatında girin')),
+        const SnackBar(
+          content: Text('Son kullanma tarihi MM/YY formatında girin'),
+        ),
       );
       return;
     }
@@ -524,7 +541,9 @@ class _AddCardFormState extends State<AddCardForm> {
     final month = int.tryParse(parts[0]) ?? 0;
     var year = int.tryParse(parts[1]) ?? 0;
     if (year < 100) year += 2000;
-    final lastFour = number.length >= 4 ? number.substring(number.length - 4) : number;
+    final lastFour = number.length >= 4
+        ? number.substring(number.length - 4)
+        : number;
     final card = SavedCard(
       id: '${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(9999)}',
       holderName: holder,
@@ -534,9 +553,9 @@ class _AddCardFormState extends State<AddCardForm> {
     );
     await _repo.addCard(card);
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Kart eklendi')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Kart eklendi')));
       widget.onSaved();
     }
   }
@@ -584,100 +603,104 @@ class _AddCardFormState extends State<AddCardForm> {
               ),
               SizedBox(height: 16.h),
               TextField(
-            controller: _holderController,
-            decoration: inputDecoration.copyWith(labelText: 'Kart üzerindeki isim'),
-            style: TextStyle(color: colors.textPrimary),
-            textCapitalization: TextCapitalization.words,
-          ),
-          SizedBox(height: 12.h),
-          TextField(
-            controller: _numberController,
-            decoration: inputDecoration.copyWith(labelText: 'Kart numarası (16 hane)'),
-            style: TextStyle(color: colors.textPrimary),
-            keyboardType: TextInputType.number,
-            maxLength: 19,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              _CardNumberInputFormatter(),
-            ],
-          ),
-          SizedBox(height: 12.h),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _expiryController,
-                  decoration: inputDecoration.copyWith(labelText: 'MM/YY'),
-                  style: TextStyle(color: colors.textPrimary),
-                  keyboardType: TextInputType.number,
-                  maxLength: 5,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    _ExpiryInputFormatter(),
-                  ],
+                controller: _holderController,
+                decoration: inputDecoration.copyWith(
+                  labelText: 'Kart üzerindeki isim',
                 ),
+                style: TextStyle(color: colors.textPrimary),
+                textCapitalization: TextCapitalization.words,
               ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: TextField(
-                  controller: _cvvController,
-                  decoration: inputDecoration.copyWith(labelText: 'CVV'),
-                  style: TextStyle(color: colors.textPrimary),
-                  keyboardType: TextInputType.number,
-                  obscureText: true,
-                  maxLength: 4,
+              SizedBox(height: 12.h),
+              TextField(
+                controller: _numberController,
+                decoration: inputDecoration.copyWith(
+                  labelText: 'Kart numarası (16 hane)',
                 ),
+                style: TextStyle(color: colors.textPrimary),
+                keyboardType: TextInputType.number,
+                maxLength: 19,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  _CardNumberInputFormatter(),
+                ],
               ),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: widget.onCancel,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: colors.textPrimary,
-                    side: BorderSide(color: colors.surfaceBorder),
+              SizedBox(height: 12.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _expiryController,
+                      decoration: inputDecoration.copyWith(labelText: 'MM/YY'),
+                      style: TextStyle(color: colors.textPrimary),
+                      keyboardType: TextInputType.number,
+                      maxLength: 5,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        _ExpiryInputFormatter(),
+                      ],
+                    ),
                   ),
-                  child: const Text('İptal'),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                flex: 2,
-                child: FilledButton(
-                  onPressed: _submit,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFF8B4513),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: TextField(
+                      controller: _cvvController,
+                      decoration: inputDecoration.copyWith(labelText: 'CVV'),
+                      style: TextStyle(color: colors.textPrimary),
+                      keyboardType: TextInputType.number,
+                      obscureText: true,
+                      maxLength: 4,
+                    ),
                   ),
-                  child: const Text('Kaydet'),
-                ),
+                ],
+              ),
+              SizedBox(height: 20.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: widget.onCancel,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: colors.textPrimary,
+                        side: BorderSide(color: colors.surfaceBorder),
+                      ),
+                      child: const Text('İptal'),
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    flex: 2,
+                    child: FilledButton(
+                      onPressed: _submit,
+                      style: FilledButton.styleFrom(
+                        backgroundColor: const Color(0xFF8B4513),
+                      ),
+                      child: const Text('Kaydet'),
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
-      ),
-    ),
-      // Kart görseli üstte (z-index 1)
-      Positioned(
-        top: -80.h,
-        left: 20.w,
-        right: 20.w,
-        child: ListenableBuilder(
-          listenable: Listenable.merge([
-            _holderController,
-            _numberController,
-            _expiryController,
-          ]),
-          builder: (context, _) => _LiveCardVisual(
-            holderName: _holderController.text,
-            cardNumber: _numberController.text,
-            expiry: _expiryController.text,
           ),
         ),
-      ),
-    ],
+        // Kart görseli üstte (z-index 1)
+        Positioned(
+          top: -80.h,
+          left: 20.w,
+          right: 20.w,
+          child: ListenableBuilder(
+            listenable: Listenable.merge([
+              _holderController,
+              _numberController,
+              _expiryController,
+            ]),
+            builder: (context, _) => _LiveCardVisual(
+              holderName: _holderController.text,
+              cardNumber: _numberController.text,
+              expiry: _expiryController.text,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

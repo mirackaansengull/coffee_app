@@ -51,9 +51,9 @@ class _FavoritesViewState extends State<FavoritesView> {
     if (success) {
       _loadFavorites();
     } else if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Kaldırma başarısız')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Kaldırma başarısız')));
     }
   }
 
@@ -68,7 +68,9 @@ class _FavoritesViewState extends State<FavoritesView> {
         decoration: BoxDecoration(gradient: colors.gradientBackground),
         child: _loading
             ? Center(
-                child: CircularProgressIndicator(color: colors.progressIndicator),
+                child: CircularProgressIndicator(
+                  color: colors.progressIndicator,
+                ),
               )
             : RefreshIndicator(
                 onRefresh: _loadFavorites,
@@ -112,12 +114,13 @@ class _FavoritesViewState extends State<FavoritesView> {
                           child: GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 12.w,
-                              mainAxisSpacing: 12.h,
-                              childAspectRatio: 0.72,
-                            ),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 12.w,
+                                  mainAxisSpacing: 12.h,
+                                  childAspectRatio: 0.72,
+                                ),
                             itemCount: _favorites.length,
                             itemBuilder: (context, index) {
                               final coffee = _favorites[index];
@@ -128,7 +131,8 @@ class _FavoritesViewState extends State<FavoritesView> {
                                   final result = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => CoffeeDetail(coffee: coffee),
+                                      builder: (context) =>
+                                          CoffeeDetail(coffee: coffee),
                                     ),
                                   );
                                   if (result == true && mounted) {

@@ -37,7 +37,8 @@ class AdminView extends StatelessWidget {
             actions: [
               IconButton(
                 icon: Icon(Icons.logout_rounded, size: 24.sp),
-                onPressed: () => context.read<AuthBloc>().add(AuthLogoutRequested()),
+                onPressed: () =>
+                    context.read<AuthBloc>().add(AuthLogoutRequested()),
                 tooltip: 'Çıkış',
               ),
               SizedBox(width: 8.w),

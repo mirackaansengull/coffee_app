@@ -57,9 +57,9 @@ class _CheckoutViewState extends State<CheckoutView> {
     }
     final items = _cartRepo.getItems();
     if (items.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sepetiniz boş')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Sepetiniz boş')));
       return;
     }
     if (_placingOrder) return;
@@ -85,9 +85,9 @@ class _CheckoutViewState extends State<CheckoutView> {
     for (final item in List<CartItem>.from(items)) {
       _cartRepo.removeItem(item.id);
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Siparişiniz alındı')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Siparişiniz alındı')));
     Navigator.pop(context);
   }
 
@@ -207,7 +207,8 @@ class _CheckoutViewState extends State<CheckoutView> {
                 else if (_cards.isEmpty)
                   _PaymentTile(
                     title: 'Kart bilgisi kayıtlı değil',
-                    subtitle: 'Profil > Ödeme Yöntemleri\'nden kart ekleyebilir veya kapıda ödeyebilirsiniz.',
+                    subtitle:
+                        'Profil > Ödeme Yöntemleri\'nden kart ekleyebilir veya kapıda ödeyebilirsiniz.',
                     isSelected: true,
                     onTap: () {},
                   )
@@ -273,10 +274,7 @@ class _SectionTitle extends StatelessWidget {
 }
 
 class _AddressCard extends StatelessWidget {
-  const _AddressCard({
-    required this.location,
-    required this.onTap,
-  });
+  const _AddressCard({required this.location, required this.onTap});
 
   final DeliveryLocation? location;
   final VoidCallback onTap;
@@ -376,14 +374,18 @@ class _PaymentTile extends StatelessWidget {
               color: colors.surfaceDark,
               borderRadius: BorderRadius.circular(12.r),
               border: Border.all(
-                color: isSelected ? const Color(0xFF8B4513) : colors.surfaceBorder,
+                color: isSelected
+                    ? const Color(0xFF8B4513)
+                    : colors.surfaceBorder,
                 width: isSelected ? 2 : 1,
               ),
             ),
             child: Row(
               children: [
                 Icon(
-                  isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
+                  isSelected
+                      ? Icons.radio_button_checked
+                      : Icons.radio_button_off,
                   size: 22.sp,
                   color: isSelected ? const Color(0xFF8B4513) : colors.textHint,
                 ),

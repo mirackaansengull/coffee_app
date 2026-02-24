@@ -23,7 +23,9 @@ class CoffeeRepository {
           .timeout(ApiConstants.apiTimeout);
       if (res.statusCode == 200) {
         final List<dynamic> data = jsonDecode(res.body) as List;
-        return data.map((e) => Coffee.fromJson(e as Map<String, dynamic>)).toList();
+        return data
+            .map((e) => Coffee.fromJson(e as Map<String, dynamic>))
+            .toList();
       }
       return [];
     } catch (_) {
@@ -148,7 +150,9 @@ class CoffeeRepository {
         final decoded = jsonDecode(body);
         if (decoded is! List) return [];
         final List<dynamic> data = decoded;
-        return data.map((e) => Coffee.fromJson(e as Map<String, dynamic>)).toList();
+        return data
+            .map((e) => Coffee.fromJson(e as Map<String, dynamic>))
+            .toList();
       }
       return [];
     } catch (_) {
