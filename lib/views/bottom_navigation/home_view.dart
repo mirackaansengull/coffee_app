@@ -1,10 +1,12 @@
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/data/models/coffee.dart';
 import 'package:coffee_app/data/repositories/coffee_repository.dart';
+import 'package:coffee_app/data/repositories/location_repository.dart';
 import 'package:coffee_app/views/coffee_detail_view.dart';
 import 'package:coffee_app/widgets/home/banner_slider.dart';
 import 'package:coffee_app/widgets/home/home_categories.dart';
 import 'package:coffee_app/widgets/home/location_bar.dart';
+import 'package:coffee_app/widgets/home/location_picker_sheet.dart';
 import 'package:coffee_app/widgets/shared/coffee_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -85,13 +87,12 @@ class _HomeViewState extends State<HomeView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Material(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(50.r),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(50.r),
-                          onTap: () {},
-                          child: GetLocation(),
+                      ListenableBuilder(
+                        listenable: LocationRepository.instance,
+                        builder: (_, __) => GetLocation(
+                          selectedSummary:
+                              LocationRepository.instance.selected?.summary,
+                          onTap: () => showLocationPickerSheet(context),
                         ),
                       ),
                       BannerSlider(),

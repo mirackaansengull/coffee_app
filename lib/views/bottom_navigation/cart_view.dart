@@ -2,6 +2,7 @@ import 'package:coffee_app/core/constants/app_constants.dart';
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:coffee_app/data/models/cart_item.dart';
 import 'package:coffee_app/data/repositories/cart_repository.dart';
+import 'package:coffee_app/views/checkout_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -145,10 +146,11 @@ class _CartViewState extends State<CartView> {
                       ),
                       FilledButton(
                         onPressed: () {
-                          // Ödeme ekranı ileride eklenebilir
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Ödeme ekranı yakında')),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CheckoutView(),
+                            ),
                           );
                         },
                         style: FilledButton.styleFrom(

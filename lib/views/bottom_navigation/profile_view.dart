@@ -12,7 +12,7 @@ import 'package:coffee_app/widgets/profile/profile_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({
     super.key,
     required this.user,
@@ -25,11 +25,21 @@ class ProfileView extends StatelessWidget {
   final VoidCallback onLogout;
 
   @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  @override
+  void initState() {
+    super.initState();
+    OrderRepository.instance.loadOrders();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
-    final lastOrder = OrderRepository.instance.getLastOrder();
-    final userName = user.name.isEmpty ? 'Kullanıcı' : user.name;
-    final userEmail = user.email;
+    final userName = widget.user.name.isEmpty ? 'Kullanıcı' : widget.user.name;
+    final userEmail = widget.user.email;
     return Scaffold(
       backgroundColor: colors.backgroundSecondary,
       body: Container(
@@ -44,7 +54,7 @@ class ProfileView extends StatelessWidget {
                 ProfileHeader(
                   userName: userName,
                   userEmail: userEmail,
-                  onThemeToggle: onThemeToggle,
+                  onThemeToggle: widget.onThemeToggle,
                 ),
                 SizedBox(height: 24.h),
                 OrdersSectionHeader(
@@ -58,12 +68,18 @@ class ProfileView extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: 10.h),
-                if (lastOrder != null)
-                  LastOrderCard(
-                    orderStep: lastOrder.step,
-                    orderDate: lastOrder.date,
-                    orderTime: lastOrder.time,
-                  ),
+                ListenableBuilder(
+                  listenable: OrderRepository.instance,
+                  builder: (_, __) {
+                    final lastOrder = OrderRepository.instance.getLastOrder();
+                    if (lastOrder == null) return const SizedBox.shrink();
+                    return LastOrderCard(
+                      orderStep: lastOrder.step,
+                      orderDate: lastOrder.date,
+                      orderTime: lastOrder.time,
+                    );
+                  },
+                ),
                 SizedBox(height: 20.h),
                 ProfileTile(
                   icon: Icons.credit_card_rounded,
@@ -105,7 +121,7 @@ class ProfileView extends StatelessWidget {
                 ProfileTile(
                   icon: Icons.logout_rounded,
                   title: 'Çıkış Yap',
-                  onTap: onLogout,
+                  onTap: widget.onLogout,
                   isDestructive: true,
                 ),
                 SizedBox(height: 24.h),

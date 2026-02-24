@@ -6,13 +6,23 @@ import 'package:coffee_app/data/models/order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AllOrdersView extends StatelessWidget {
+class AllOrdersView extends StatefulWidget {
   const AllOrdersView({super.key});
+
+  @override
+  State<AllOrdersView> createState() => _AllOrdersViewState();
+}
+
+class _AllOrdersViewState extends State<AllOrdersView> {
+  @override
+  void initState() {
+    super.initState();
+    OrderRepository.instance.loadOrders();
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
-    final orders = OrderRepository.instance.getOrders();
     return Scaffold(
       backgroundColor: colors.backgroundPrimary,
       appBar: AppBar(
@@ -37,14 +47,39 @@ class AllOrdersView extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
-        itemCount: orders.length,
-        itemBuilder: (context, index) {
-          final order = orders[index];
-          return _OrderCard(
-            order: order,
-            statuses: OrderConstants.statusLabels,
+      body: ListenableBuilder(
+        listenable: OrderRepository.instance,
+        builder: (context, _) {
+          final orders = OrderRepository.instance.getOrders();
+          if (orders.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.receipt_long_outlined, size: 64.sp, color: colors.textHint),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'Henüz siparişiniz yok',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: colors.textHint,
+                      fontFamily: AppConstants.fontFamily,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return ListView.builder(
+            padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
+            itemCount: orders.length,
+            itemBuilder: (context, index) {
+              final order = orders[index];
+              return _OrderCard(
+                order: order,
+                statuses: OrderConstants.statusLabels,
+              );
+            },
           );
         },
       ),
