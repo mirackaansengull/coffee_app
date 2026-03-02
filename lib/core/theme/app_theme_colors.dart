@@ -15,6 +15,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.progressIndicator,
     required this.gradientBackground,
     required this.gradientSearchBar,
+    required this.accent,
   });
 
   final Color backgroundPrimary;
@@ -30,6 +31,8 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color progressIndicator;
   final LinearGradient gradientBackground;
   final LinearGradient gradientSearchBar;
+  /// Turuncu vurgu rengi (login butonu, linkler)
+  final Color accent;
 
   static AppThemeColors of(BuildContext context) {
     final ext = Theme.of(context).extension<AppThemeColors>();
@@ -60,6 +63,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       end: Alignment.centerRight,
       colors: [Color(0xFF272727), Color(0xFF3D3D3D)],
     ),
+    accent: Color(0xFFE65100),
   );
 
   static const AppThemeColors light = AppThemeColors(
@@ -84,6 +88,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       end: Alignment.centerRight,
       colors: [Color(0xFFEEEEEE), Color(0xFFE0E0E0)],
     ),
+    accent: Color(0xFFE65100),
   );
 
   @override
@@ -101,6 +106,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? progressIndicator,
     LinearGradient? gradientBackground,
     LinearGradient? gradientSearchBar,
+    Color? accent,
   }) {
     return AppThemeColors(
       backgroundPrimary: backgroundPrimary ?? this.backgroundPrimary,
@@ -116,6 +122,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       progressIndicator: progressIndicator ?? this.progressIndicator,
       gradientBackground: gradientBackground ?? this.gradientBackground,
       gradientSearchBar: gradientSearchBar ?? this.gradientSearchBar,
+      accent: accent ?? this.accent,
     );
   }
 
@@ -155,6 +162,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           ? gradientBackground
           : other.gradientBackground,
       gradientSearchBar: t < 0.5 ? gradientSearchBar : other.gradientSearchBar,
+      accent: Color.lerp(accent, other.accent, t)!,
     );
   }
 }

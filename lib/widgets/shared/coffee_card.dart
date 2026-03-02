@@ -9,30 +9,40 @@ class CoffeeCard extends StatelessWidget {
     required this.coffee,
     this.onTap,
     this.onFavoriteTap,
+    this.onAddToCart,
     this.isFavorite = false,
   });
 
   final Coffee coffee;
   final VoidCallback? onTap;
   final VoidCallback? onFavoriteTap;
+  final VoidCallback? onAddToCart;
   final bool isFavorite;
+
+  /// Rating gösterimi için (veri yoksa 4.5–4.9 arası sabit)
+  double get _rating => 4.5 + (coffee.name.hashCode % 5) / 10;
 
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
+    final isLight = Theme.of(context).brightness == Brightness.light;
+    final accent = colors.accent;
+
     return Card(
-      elevation: 6,
-      shadowColor: Colors.black.withValues(alpha: 0.1),
+      elevation: 0,
       margin: EdgeInsets.zero,
-      color: colors.backgroundSecondary,
+      color: isLight ? Colors.white : colors.surfaceDark,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.r),
-        side: BorderSide(color: colors.surfaceBorder, width: 1),
+        borderRadius: BorderRadius.circular(12.r),
+        side: BorderSide(
+          color: colors.surfaceBorder.withValues(alpha: 0.5),
+          width: 1,
+        ),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(15.r),
+        borderRadius: BorderRadius.circular(12.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -41,9 +51,10 @@ class CoffeeCard extends StatelessWidget {
               child: Stack(
                 children: [
                   Container(
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(15.r),
+                        top: Radius.circular(12.r),
                       ),
                       image: DecorationImage(
                         image: NetworkImage(coffee.imageUrl),
@@ -52,52 +63,112 @@ class CoffeeCard extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: 10.h,
-                    right: 10.w,
+                    top: 8.h,
+                    right: 8.w,
                     child: Container(
-                      decoration: const BoxDecoration(shape: BoxShape.circle),
-                      child: IconButton(
-                        icon: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                        ),
-                        color: isFavorite ? Colors.red : Colors.white,
-                        onPressed: onFavoriteTap,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 5.w,
+                        vertical: 3.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.star_rounded,
+                            size: 11.sp,
+                            color: Colors.amber.shade400,
+                          ),
+                          SizedBox(width: 3.w),
+                          Text(
+                            _rating.toStringAsFixed(1),
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 8.h),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              padding: EdgeInsets.fromLTRB(10.w, 8.h, 10.w, 10.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     coffee.name,
                     style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
                       color: colors.textPrimary,
                       fontFamily: 'Poppins',
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text(
-                    '${coffee.price} TL',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: colors.textPrimary,
-                      fontFamily: 'Poppins',
+                  if (coffee.description != null &&
+                      coffee.description!.isNotEmpty) ...[
+                    SizedBox(height: 4.h),
+                    Text(
+                      coffee.description!,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: colors.textHint,
+                        fontFamily: 'Poppins',
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                  ],
+                  SizedBox(height: 10.h),
+                  Row(
+                    children: [
+                      Text(
+                        '${coffee.price} TL',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                          color: accent,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      const Spacer(),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: onAddToCart != null
+                              ? () => onAddToCart!()
+                              : onTap,
+                          borderRadius: BorderRadius.circular(10.r),
+                          child: Container(
+                            width: 36.w,
+                            height: 36.w,
+                            decoration: BoxDecoration(
+                              color: accent,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 22.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 4.h),
           ],
         ),
       ),

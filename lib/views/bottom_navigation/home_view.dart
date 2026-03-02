@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:coffee_app/core/theme/app_theme_colors.dart';
+import 'package:coffee_app/data/models/cart_item.dart';
 import 'package:coffee_app/data/models/coffee.dart';
+import 'package:coffee_app/data/repositories/cart_repository.dart';
 import 'package:coffee_app/data/repositories/coffee_repository.dart';
 import 'package:coffee_app/data/repositories/location_repository.dart';
 import 'package:coffee_app/views/coffee_detail_view.dart';
@@ -53,17 +57,26 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  Future<void> _toggleFavorite(Coffee coffee) async {
-    final isFav = _favorites[coffee.id] ?? false;
-    setState(() => _favorites[coffee.id] = !isFav);
-    final success = isFav
-        ? await _repo.removeFavorite(coffee.id)
-        : await _repo.addFavorite(coffee.id);
-    if (!success && mounted) {
-      setState(() => _favorites[coffee.id] = isFav);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('İşlem başarısız')));
+  Future<void> _addToCart(Coffee coffee) async {
+    final unitPrice = coffee.getPriceForSizeIndex(1);
+    final item = CartItem(
+      id:
+          '${DateTime.now().millisecondsSinceEpoch}_${coffee.id}_${Random().nextInt(9999)}',
+      productId: coffee.id,
+      name: coffee.name,
+      imageUrl: coffee.imageUrl,
+      unitPrice: unitPrice,
+      quantity: 1,
+      sizeLabel: 'M',
+      milkLabel: 'Standart süt',
+      extraShot: false,
+      syrupNames: const [],
+    );
+    await CartRepository.instance.addItem(item);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Sepete eklendi')),
+      );
     }
   }
 
@@ -98,9 +111,44 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
                       BannerSlider(),
-                      SizedBox(height: 16.h),
+                      SizedBox(height: 20.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Kategoriler',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w700,
+                                color: colors.textPrimary,
+                                fontFamily: 'Poppins',
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: Size.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: Text(
+                                'Tümünü Gör',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: colors.accent,
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
                       SizedBox(
-                        height: 40.h,
+                        height: 44.h,
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           physics: const BouncingScrollPhysics(
@@ -123,7 +171,42 @@ class _HomeViewState extends State<HomeView> {
                           },
                         ),
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 24.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Şimdi Popüler',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w700,
+                                color: colors.textPrimary,
+                                fontFamily: 'Poppins',
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: _loadData,
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: Size.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: Text(
+                                'Yenile',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: colors.accent,
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
                       Padding(
                         padding: EdgeInsets.only(
                           left: 16.w,
@@ -162,7 +245,7 @@ class _HomeViewState extends State<HomeView> {
                                       crossAxisCount: 2,
                                       crossAxisSpacing: 12.w,
                                       mainAxisSpacing: 12.h,
-                                      childAspectRatio: 0.72,
+                                      childAspectRatio: 0.68,
                                     ),
                                 itemCount: _filteredCoffees.length,
                                 itemBuilder: (context, index) {
@@ -182,8 +265,7 @@ class _HomeViewState extends State<HomeView> {
                                         _loadData();
                                       }
                                     },
-                                    onFavoriteTap: () =>
-                                        _toggleFavorite(coffee),
+                                    onAddToCart: () => _addToCart(coffee),
                                     isFavorite: isFav,
                                   );
                                 },

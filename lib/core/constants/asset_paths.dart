@@ -4,6 +4,8 @@ class AssetPaths {
   static const String background = 'assets/images/loading_background.png';
   static const String logoHorizontal =
       'assets/images/logo_horizontal_light.png';
+  static const String logoDark = 'assets/images/logo_dark.png';
+  static const String googleIcon = 'assets/icons/google.png';
   static const String _categoriesBase = 'assets/icons/categories_icons';
 
   static const String categoryEnCokSatanlar =

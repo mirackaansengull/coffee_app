@@ -1,4 +1,5 @@
 import 'package:coffee_app/core/constants/asset_paths.dart';
+import 'package:coffee_app/core/theme/app_theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -59,49 +60,71 @@ class Categories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected
-        ? const Color.fromARGB(255, 139, 69, 19)
-        : const Color.fromARGB(255, 189, 113, 0);
+    final colors = AppThemeColors.of(context);
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(7.r),
+        borderRadius: BorderRadius.circular(12.r),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
           decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(7.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.2),
-                blurRadius: 10,
-                offset: const Offset(0, 3),
-              ),
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.12),
-                blurRadius: 4,
-                offset: const Offset(0, 1),
-              ),
-            ],
+            color: isSelected
+                ? colors.accent
+                : (isLight ? Colors.white : colors.surfaceDark),
+            borderRadius: BorderRadius.circular(12.r),
+            border: isSelected
+                ? null
+                : Border.all(color: colors.surfaceBorder, width: 1),
+            boxShadow: isLight && !isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.06),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : null,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ImageIcon(icon.image, size: 18.sp, color: Colors.white),
-              SizedBox(width: 6.w),
+              if (isSelected)
+                ColorFiltered(
+                  colorFilter: const ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  ),
+                  child: Image(
+                    image: icon.image!,
+                    width: 20.w,
+                    height: 20.w,
+                    fit: BoxFit.contain,
+                  ),
+                )
+              else
+                Image(
+                  image: icon.image!,
+                  width: 20.w,
+                  height: 20.w,
+                  fit: BoxFit.contain,
+                ),
+              SizedBox(width: 8.w),
               Flexible(
                 child: Text(
                   label,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 11.sp,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    color: isSelected
+                        ? Colors.white
+                        : colors.textPrimary,
                     fontFamily: 'Poppins',
                   ),
-                  maxLines: 2,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

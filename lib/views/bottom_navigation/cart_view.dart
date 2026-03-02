@@ -100,7 +100,34 @@ class _CartViewState extends State<CartView> {
                             onRemove: () => _repo.removeItem(item.id),
                           ),
                         ),
-                        SizedBox(height: 100.h),
+                        OutlinedButton(
+                          onPressed: () {
+                            Navigator.of(context).maybePop();
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                              color: colors.accent.withValues(alpha: 0.7),
+                              width: 1.5,
+                            ),
+                            foregroundColor: colors.accent,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                              vertical: 14.h,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14.r),
+                            ),
+                          ),
+                          child: Text(
+                            'Daha fazla ürün ekle',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: AppConstants.fontFamily,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 24.h),
                       ],
                     ),
                   ),
@@ -113,10 +140,10 @@ class _CartViewState extends State<CartView> {
                     12.h + MediaQuery.paddingOf(context).bottom,
                   ),
                   decoration: BoxDecoration(
-                    color: colors.surfaceDark,
+                    color: colors.backgroundPrimary,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.3),
+                        color: Colors.black.withValues(alpha: 0.16),
                         blurRadius: 12,
                         offset: const Offset(0, -4),
                       ),
@@ -140,7 +167,7 @@ class _CartViewState extends State<CartView> {
                           Text(
                             '${_repo.grandTotal} TL',
                             style: TextStyle(
-                              fontSize: 20.sp,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w600,
                               color: colors.textPrimary,
                               fontFamily: AppConstants.fontFamily,
@@ -158,17 +185,24 @@ class _CartViewState extends State<CartView> {
                           );
                         },
                         style: FilledButton.styleFrom(
-                          backgroundColor: const Color(0xFF8B4513),
+                          backgroundColor: colors.accent,
                           foregroundColor: Colors.white,
                           padding: EdgeInsets.symmetric(
                             horizontal: 24.w,
                             vertical: 14.h,
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
-                        child: const Text('Ödemeye Geç'),
+                        child: Text(
+                          'Ödemeye Geç',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: AppConstants.fontFamily,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -198,13 +232,24 @@ class _CartItemRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
+    final isLight = Theme.of(context).brightness == Brightness.light;
+    final accent = colors.accent;
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: colors.surfaceDark,
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: colors.surfaceBorder),
+        color: isLight ? Colors.white : colors.surfaceDark,
+        borderRadius: BorderRadius.circular(16.r),
+        border: isLight ? null : Border.all(color: colors.surfaceBorder),
+        boxShadow: isLight
+            ? [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.06),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,9 +292,19 @@ class _CartItemRow extends StatelessWidget {
                 Text(
                   item.name,
                   style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: colors.textPrimary,
+                    fontFamily: AppConstants.fontFamily,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '${item.unitPrice} TL',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700,
+                    color: accent,
                     fontFamily: AppConstants.fontFamily,
                   ),
                 ),
@@ -264,64 +319,29 @@ class _CartItemRow extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 6.h),
-                Text(
-                  '${item.unitPrice} TL x ${item.quantity} = ${item.totalPrice} TL',
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w600,
-                    color: colors.textPrimary,
-                    fontFamily: AppConstants.fontFamily,
-                  ),
-                ),
                 SizedBox(height: 8.h),
                 Row(
                   children: [
-                    InkWell(
+                    _CircleButton(
+                      icon: Icons.remove_rounded,
                       onTap: onDecrease,
-                      borderRadius: BorderRadius.circular(8.r),
-                      child: Container(
-                        padding: EdgeInsets.all(6.w),
-                        decoration: BoxDecoration(
-                          color: colors.backgroundPrimary,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(color: colors.surfaceBorder),
-                        ),
-                        child: Icon(
-                          Icons.remove_rounded,
-                          size: 18.sp,
-                          color: colors.textPrimary,
-                        ),
+                      accent: accent,
+                    ),
+                    SizedBox(width: 10.w),
+                    Text(
+                      '${item.quantity}',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: colors.textPrimary,
+                        fontFamily: AppConstants.fontFamily,
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: Text(
-                        '${item.quantity}',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: colors.textPrimary,
-                          fontFamily: AppConstants.fontFamily,
-                        ),
-                      ),
-                    ),
-                    InkWell(
+                    SizedBox(width: 10.w),
+                    _CircleButton(
+                      icon: Icons.add_rounded,
                       onTap: onIncrease,
-                      borderRadius: BorderRadius.circular(8.r),
-                      child: Container(
-                        padding: EdgeInsets.all(6.w),
-                        decoration: BoxDecoration(
-                          color: colors.backgroundPrimary,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(color: colors.surfaceBorder),
-                        ),
-                        child: Icon(
-                          Icons.add_rounded,
-                          size: 18.sp,
-                          color: colors.textPrimary,
-                        ),
-                      ),
+                      accent: accent,
                     ),
                     const Spacer(),
                     IconButton(
@@ -340,6 +360,46 @@ class _CartItemRow extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _CircleButton extends StatelessWidget {
+  const _CircleButton({
+    required this.icon,
+    required this.onTap,
+    required this.accent,
+  });
+
+  final IconData icon;
+  final VoidCallback onTap;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(999),
+      child: Container(
+        width: 26.w,
+        height: 26.w,
+        decoration: BoxDecoration(
+          color: accent,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.10),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Icon(
+          icon,
+          size: 14.sp,
+          color: Colors.white,
+        ),
       ),
     );
   }
