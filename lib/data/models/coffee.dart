@@ -10,6 +10,8 @@ class Coffee {
     this.priceXL,
     this.description,
     this.categories = const [],
+    this.rating = 4.5,
+    this.reviewCount = 0,
   });
 
   final String id;
@@ -22,6 +24,8 @@ class Coffee {
   final int? priceXL;
   final String? description;
   final List<String> categories;
+  final double rating;
+  final int reviewCount;
 
   int getPriceForSizeIndex(int index) {
     switch (index) {
@@ -45,6 +49,14 @@ class Coffee {
     return value.toString();
   }
 
+  static double _parseRating(dynamic value) {
+    if (value == null) return 4.5;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is num) return value.toDouble();
+    return 4.5;
+  }
+
   factory Coffee.fromJson(Map<String, dynamic> json) {
     final idVal = json['id'] ?? json['_id'];
     return Coffee(
@@ -62,6 +74,8 @@ class Coffee {
               ?.map((e) => e.toString())
               .toList() ??
           [],
+      rating: _parseRating(json['rating']),
+      reviewCount: (json['reviewCount'] as num?)?.toInt() ?? 0,
     );
   }
 
@@ -76,5 +90,7 @@ class Coffee {
     if (priceXL != null) 'priceXL': priceXL,
     if (description != null) 'description': description,
     'categories': categories,
+    'rating': rating,
+    'reviewCount': reviewCount,
   };
 }

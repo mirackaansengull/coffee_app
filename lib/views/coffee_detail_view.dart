@@ -141,10 +141,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
   @override
   Widget build(BuildContext context) {
     final colors = AppThemeColors.of(context);
-    final brown = const Color(0xFF8B4513);
-    final iconColor = Theme.of(context).brightness == Brightness.light
-        ? Colors.black
-        : Colors.white;
+    final brown = const Color.fromARGB(255, 255, 87, 34);
     return Scaffold(
       backgroundColor: colors.backgroundPrimary,
       body: CustomScrollView(
@@ -343,9 +340,51 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                       height: 1.35,
                     ),
                   ),
+                  SizedBox(height: 12.h),
+                  Row(
+                    children: [
+                      ...List.generate(5, (i) {
+                        final isFilled = i < widget.coffee.rating.toInt();
+                        final isHalf = i == widget.coffee.rating.toInt() &&
+                            widget.coffee.rating % 1 >= 0.5;
+                        return Padding(
+                          padding: EdgeInsets.only(right: 2.w),
+                          child: Icon(
+                            isHalf
+                                ? Icons.star_half_rounded
+                                : isFilled
+                                    ? Icons.star_rounded
+                                    : Icons.star_outline_rounded,
+                            color: const Color(0xFFFFB84D),
+                            size: 16.sp,
+                          ),
+                        );
+                      }),
+                      SizedBox(width: 6.w),
+                      Text(
+                        '${widget.coffee.rating}',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: colors.textPrimary,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(
+                        '(${widget.coffee.reviewCount} reviews)',
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w400,
+                          color: colors.textHint,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 14.h),
                   Text(
-                    'Boyut',
+                    'Size',
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
@@ -354,94 +393,79 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  ...List.generate(_sizes.length, (i) {
-                    final sz = _sizes[i];
-                    final sizeLabel = sz['label']?.toString() ?? '';
-                    final sizePrice = widget.coffee.getPriceForSizeIndex(i);
-                    final iconSz = (sz['iconSize'] is num)
-                        ? (sz['iconSize'] as num)
-                        : 28.0;
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 6.h),
-                      child: InkWell(
-                        onTap: () => setState(() => _selectedSizeIndex = i),
-                        borderRadius: BorderRadius.circular(10.r),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 8.h,
-                            horizontal: 12.w,
-                          ),
-                          decoration: BoxDecoration(
-                            color: _selectedSizeIndex == i
-                                ? brown.withValues(alpha: 0.3)
-                                : colors.surfaceDark,
+                  Row(
+                    children: List.generate(_sizes.length, (i) {
+                      final sz = _sizes[i];
+                      final sizeLabel = sz['label']?.toString() ?? '';
+                      return Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: i < _sizes.length - 1 ? 8.w : 0),
+                          child: InkWell(
+                            onTap: () => setState(() => _selectedSizeIndex = i),
                             borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(
-                              color: _selectedSizeIndex == i
-                                  ? brown
-                                  : colors.surfaceBorder,
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(
-                                  alpha: _selectedSizeIndex == i ? 0.12 : 0.06,
-                                ),
-                                blurRadius: _selectedSizeIndex == i ? 10 : 6,
-                                offset: const Offset(0, 2),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 12.h,
+                                horizontal: 8.w,
                               ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 48.w,
-                                height: 44.h,
-                                child: Center(
-                                  child: SizedBox(
-                                    width: iconSz.w,
-                                    height: iconSz.h,
-                                    child: Image.asset(
-                                      'assets/icons/boy_secimi.png',
-                                      fit: BoxFit.contain,
-                                      color: iconColor,
-                                      colorBlendMode: BlendMode.srcIn,
-                                      errorBuilder:
-                                          (context, error, stackTrace) => Icon(
-                                            Icons.coffee_rounded,
-                                            size: iconSz.sp,
-                                            color: iconColor,
-                                          ),
+                              decoration: BoxDecoration(
+                                color: _selectedSizeIndex == i
+                                    ? brown.withValues(alpha: 0.3)
+                                    : colors.surfaceDark,
+                                borderRadius: BorderRadius.circular(10.r),
+                                border: Border.all(
+                                  color: _selectedSizeIndex == i
+                                      ? brown
+                                      : colors.surfaceBorder,
+                                  width: 1,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(
+                                      alpha:
+                                          _selectedSizeIndex == i ? 0.12 : 0.06,
+                                    ),
+                                    blurRadius: _selectedSizeIndex == i ? 10 : 6,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    sizeLabel,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: colors.textPrimary,
+                                      fontFamily: 'Poppins',
                                     ),
                                   ),
-                                ),
+                                  SizedBox(height: 2.h),
+                                  Text(
+                                    i == 0
+                                        ? 'Small'
+                                        : i == 1
+                                            ? 'Medium'
+                                            : i == 2
+                                                ? 'Large'
+                                                : 'XL',
+                                    style: TextStyle(
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w300,
+                                      color: colors.textHint,
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(width: 12.w),
-                              Text(
-                                sizeLabel,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: colors.textPrimary,
-                                  fontFamily: 'Poppins',
-                                ),
-                              ),
-                              const Spacer(),
-                              Text(
-                                '$sizePrice TL',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: colors.textPrimary,
-                                  fontFamily: 'Poppins',
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
                   SizedBox(height: 14.h),
                   Text(
                     'Süt seçimi',
@@ -675,7 +699,7 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                 child: FilledButton(
                   onPressed: _addToCart,
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFF8B4513),
+                    backgroundColor: const Color.fromARGB(255, 255, 87, 34),
                     foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(vertical: 14.h),
                     shape: RoundedRectangleBorder(
