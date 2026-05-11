@@ -119,9 +119,7 @@ class Categories extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w500,
-                    color: isSelected
-                        ? Colors.white
-                        : colors.textPrimary,
+                    color: isSelected ? Colors.white : colors.textPrimary,
                     fontFamily: 'Poppins',
                   ),
                   maxLines: 1,

@@ -49,9 +49,9 @@ class _CheckoutViewState extends State<CheckoutView> {
   Future<void> _placeOrder() async {
     final location = _locationRepo.selected;
     if (location == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Lütfen dükkan seçin')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Lütfen dükkan seçin')));
       return;
     }
     final items = _cartRepo.getItems();
@@ -166,7 +166,9 @@ class _CheckoutViewState extends State<CheckoutView> {
     final colors = AppThemeColors.of(context);
     final isLight = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
-      backgroundColor: isLight ? colors.backgroundPrimary : colors.backgroundPrimary,
+      backgroundColor: isLight
+          ? colors.backgroundPrimary
+          : colors.backgroundPrimary,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -243,8 +245,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                           onAction: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content:
-                                    Text('Önce bir ödeme yöntemi ekleyin'),
+                                content: Text('Önce bir ödeme yöntemi ekleyin'),
                               ),
                             );
                           },
@@ -252,8 +253,11 @@ class _CheckoutViewState extends State<CheckoutView> {
                       else
                         _ActionCard(
                           leadingIcon: Icons.credit_card_rounded,
-                          title: _selectedCard?.maskedNumber ?? _cards.first.maskedNumber,
-                          subtitle: _selectedCard?.expiry ?? _cards.first.expiry,
+                          title:
+                              _selectedCard?.maskedNumber ??
+                              _cards.first.maskedNumber,
+                          subtitle:
+                              _selectedCard?.expiry ?? _cards.first.expiry,
                           actionLabel: 'Değiştir',
                           onAction: _showCardPicker,
                         ),
@@ -580,11 +584,7 @@ class _SummaryCard extends StatelessWidget {
           SizedBox(height: 10.h),
           Divider(color: colors.surfaceBorder.withValues(alpha: 0.5)),
           SizedBox(height: 10.h),
-          _SummaryLine(
-            label: 'Toplam',
-            value: '$total TL',
-            isTotal: true,
-          ),
+          _SummaryLine(label: 'Toplam', value: '$total TL', isTotal: true),
         ],
       ),
     );

@@ -60,8 +60,7 @@ class _HomeViewState extends State<HomeView> {
   Future<void> _addToCart(Coffee coffee) async {
     final unitPrice = coffee.getPriceForSizeIndex(1);
     final item = CartItem(
-      id:
-          '${DateTime.now().millisecondsSinceEpoch}_${coffee.id}_${Random().nextInt(9999)}',
+      id: '${DateTime.now().millisecondsSinceEpoch}_${coffee.id}_${Random().nextInt(9999)}',
       productId: coffee.id,
       name: coffee.name,
       imageUrl: coffee.imageUrl,
@@ -74,9 +73,9 @@ class _HomeViewState extends State<HomeView> {
     );
     await CartRepository.instance.addItem(item);
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sepete eklendi')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Sepete eklendi')));
     }
   }
 

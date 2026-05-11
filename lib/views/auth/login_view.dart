@@ -154,11 +154,11 @@ class _LoginViewState extends State<LoginView> {
                           ? null
                           : () {
                               context.read<AuthBloc>().add(
-                                    AuthLoginRequested(
-                                      email: _emailController.text.trim(),
-                                      password: _passwordController.text,
-                                    ),
-                                  );
+                                AuthLoginRequested(
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text,
+                                ),
+                              );
                             },
                       style: FilledButton.styleFrom(
                         backgroundColor: accent,
@@ -216,8 +216,10 @@ class _LoginViewState extends State<LoginView> {
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text(
-                                      'Google ile giriş yakında eklenecek')),
+                                content: Text(
+                                  'Google ile giriş yakında eklenecek',
+                                ),
+                              ),
                             );
                           },
                         ),
@@ -231,8 +233,10 @@ class _LoginViewState extends State<LoginView> {
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text(
-                                      'Apple ile giriş yakında eklenecek')),
+                                content: Text(
+                                  'Apple ile giriş yakında eklenecek',
+                                ),
+                              ),
                             );
                           },
                         ),

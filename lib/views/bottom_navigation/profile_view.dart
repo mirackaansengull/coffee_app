@@ -208,7 +208,10 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
                 SizedBox(height: 8.h),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 14.w,
+                    vertical: 12.h,
+                  ),
                   decoration: BoxDecoration(
                     color: Theme.of(ctx).brightness == Brightness.light
                         ? Colors.white
@@ -267,7 +270,9 @@ class _OrderStatusCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: isLight ? Colors.white : colors.surfaceDark,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: colors.surfaceBorder.withValues(alpha: 0.5)),
+          border: Border.all(
+            color: colors.surfaceBorder.withValues(alpha: 0.5),
+          ),
           boxShadow: isLight
               ? [
                   BoxShadow(
@@ -381,7 +386,11 @@ class _OrderStatusCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10.h),
-          _ProgressBar(step: step, accent: colors.accent, bg: colors.surfaceMedium),
+          _ProgressBar(
+            step: step,
+            accent: colors.accent,
+            bg: colors.surfaceMedium,
+          ),
           SizedBox(height: 6.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -404,7 +413,11 @@ class _OrderStatusCard extends StatelessWidget {
 }
 
 class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({required this.step, required this.accent, required this.bg});
+  const _ProgressBar({
+    required this.step,
+    required this.accent,
+    required this.bg,
+  });
 
   final int step;
   final Color accent;

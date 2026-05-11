@@ -31,6 +31,7 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color progressIndicator;
   final LinearGradient gradientBackground;
   final LinearGradient gradientSearchBar;
+
   /// Turuncu vurgu rengi (login butonu, linkler)
   final Color accent;
 

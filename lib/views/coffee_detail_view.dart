@@ -345,7 +345,8 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                     children: [
                       ...List.generate(5, (i) {
                         final isFilled = i < widget.coffee.rating.toInt();
-                        final isHalf = i == widget.coffee.rating.toInt() &&
+                        final isHalf =
+                            i == widget.coffee.rating.toInt() &&
                             widget.coffee.rating % 1 >= 0.5;
                         return Padding(
                           padding: EdgeInsets.only(right: 2.w),
@@ -353,8 +354,8 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                             isHalf
                                 ? Icons.star_half_rounded
                                 : isFilled
-                                    ? Icons.star_rounded
-                                    : Icons.star_outline_rounded,
+                                ? Icons.star_rounded
+                                : Icons.star_outline_rounded,
                             color: const Color(0xFFFFB84D),
                             size: 16.sp,
                           ),
@@ -399,7 +400,9 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                       final sizeLabel = sz['label']?.toString() ?? '';
                       return Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(right: i < _sizes.length - 1 ? 8.w : 0),
+                          padding: EdgeInsets.only(
+                            right: i < _sizes.length - 1 ? 8.w : 0,
+                          ),
                           child: InkWell(
                             onTap: () => setState(() => _selectedSizeIndex = i),
                             borderRadius: BorderRadius.circular(10.r),
@@ -422,10 +425,13 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withValues(
-                                      alpha:
-                                          _selectedSizeIndex == i ? 0.12 : 0.06,
+                                      alpha: _selectedSizeIndex == i
+                                          ? 0.12
+                                          : 0.06,
                                     ),
-                                    blurRadius: _selectedSizeIndex == i ? 10 : 6,
+                                    blurRadius: _selectedSizeIndex == i
+                                        ? 10
+                                        : 6,
                                     offset: const Offset(0, 2),
                                   ),
                                 ],
@@ -447,10 +453,10 @@ class _CoffeeDetailState extends State<CoffeeDetail> {
                                     i == 0
                                         ? 'Small'
                                         : i == 1
-                                            ? 'Medium'
-                                            : i == 2
-                                                ? 'Large'
-                                                : 'XL',
+                                        ? 'Medium'
+                                        : i == 2
+                                        ? 'Large'
+                                        : 'XL',
                                     style: TextStyle(
                                       fontSize: 10.sp,
                                       fontWeight: FontWeight.w300,
